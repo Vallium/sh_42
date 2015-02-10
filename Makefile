@@ -46,9 +46,11 @@ NORMINETTE	= ~/project/colorminette/colorminette
 $(shell mkdir -p $(STATIC_DIR) $(DEBUG_DIR))
 
 all: $(STATIC_EXE)
+	@echo "Compilation completed (Realease)"
 
 debug: $(DEBUG_EXE)
-
+	@echo "Compilation completed (Debug)"
+	
 $(DEBUG_EXE): $(DEBUG_OBJ) $(LIBFT_DEBUG)
 	$(CC) -I $(HEAD_DIR) -I $(LIBFT_HEAD) -o $(DEBUG_EXE) $(DEBUG_OBJ) $(LIBFT_DEBUG) $(FLAGS) -g
 
@@ -78,7 +80,7 @@ fclean: clean
 	@rm -f $(STATIC_EXE) $(DEBUG_EXE)
 
 normeLibft:
-		@make -C libft norme
+	@make -C libft norme
 
 norme: normeLibft
 	@$(NORMINETTE) $(SRC_DIR)/ $(HEAD_DIR)/
