@@ -2,3 +2,4 @@
 *.o
 ft_minishell1
 ft_minishell1_debug
+static/
