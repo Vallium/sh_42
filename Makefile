@@ -46,16 +46,16 @@ NORMINETTE	= ~/project/colorminette/colorminette
 $(shell mkdir -p $(STATIC_DIR) $(DEBUG_DIR))
 
 all: $(STATIC_EXE)
-	@echo "Compilation completed (Realease)"
 
 debug: $(DEBUG_EXE)
-	@echo "Compilation completed (Debug)"
 	
 $(DEBUG_EXE): $(DEBUG_OBJ) $(LIBFT_DEBUG)
 	$(CC) -I $(HEAD_DIR) -I $(LIBFT_HEAD) -o $(DEBUG_EXE) $(DEBUG_OBJ) $(LIBFT_DEBUG) $(FLAGS) -g
+	@echo "\n\033[32mCompilation complete. (debug)\n"
 
 $(STATIC_EXE): $(STATIC_OBJ) $(LIBFT_STATIC)
 	$(CC) -O3 -I $(HEAD_DIR) -I $(LIBFT_HEAD) -o $@ $(STATIC_OBJ) $(LIBFT_STATIC) $(FLAGS)
+	@echo "\n\033[32mCompilation complete. (realease)\n"
 
 $(STATIC_DIR)/%.o: $(SRC_DIR)/%.c $(LIBFT)
 	$(CC) -O3 -I $(HEAD_DIR) -I $(LIBFT_HEAD) -o $@ -c $< $(FLAGS)

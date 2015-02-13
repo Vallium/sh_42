@@ -10,12 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "sh_1.h"
 #include <stdio.h>
-#include <unistd.h>
-#include "libft.h"
-#include "get_next_line.h"
-
-//#define BUFF_SIZE 1024
 
 int		main(int argc, char *argv[])
 {
@@ -23,7 +19,6 @@ int		main(int argc, char *argv[])
 	char	**ex;
 	int		ret;
 	pid_t	father;
-
 
 	(void)argc;
 	(void)argv;
