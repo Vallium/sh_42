@@ -124,7 +124,7 @@ int		c_env(t_list *env)
 	return (0);
 }
 
-int		c_setenv(t_list *env, char **args)
+int		c_setenv(t_list *env, char *args[])
 {
 	t_list			*tmp;
 	t_list_elem		*elem;
@@ -149,7 +149,7 @@ int		c_setenv(t_list *env, char **args)
 	return (0);
 }
 
-int		c_unsetenv(t_list **env, char **args)
+int		c_unsetenv(t_list **env, char *args[])
 {
 	t_list			**tmp;
 	t_list			*last;
@@ -176,7 +176,40 @@ int		c_unsetenv(t_list **env, char **args)
 	return (0);
 }
 
-int		exec(char *bin, char **args, t_list *env)
+int		c_cd(t_list *env, char *args[])
+{
+	char	*path;
+	char	*home;
+
+	home = get_data(env, "HOME");
+	if (home)
+	{
+		if (args && args[1] && args[1][0] == '~')
+			path = ft_strjoin(home, args[1] + 1);
+		else if (args && args[1])
+			path = ft_strdup(args[1]);
+		else
+			path = ft_strdup(home);
+	}
+	else
+	{
+		if (args && args[1])
+			path = ft_strdup(args[1]);
+		else
+		{
+			ft_putendl("Home error");
+			return (0);
+		}
+	}
+	if (chdir(path))
+	{
+		ft_putstr("cd: no such file or directory:");
+		ft_putendl(path);
+	}
+	return (0);
+}
+
+int		exec(char *bin, char *args[], t_list *env)
 {
 	pid_t	father;
 	char	**strenv;
@@ -210,8 +243,7 @@ void	prompt(t_list *env)
 	ft_putstr(pwd);
 	ft_putstr(" $ ");
 	ft_putchar('\033');
-	ft_putstr("[39m");
-}
+	ft_putstr("[39m");}
 
 int		command(char *line, t_list *env)
 {
@@ -229,6 +261,8 @@ int		command(char *line, t_list *env)
 		ft_putendl("exit");
 		exit(2);
 	}
+	else if (!ft_strcmp(args[0], "cd"))
+		return (c_cd(env, args));
 	else if (!ft_strcmp(args[0], "env"))
 		return (c_env(env));
 	else if (ft_strcmp(args[0], "unsetenv") == 0)
@@ -257,6 +291,7 @@ int		main(int argc, char *argv[], char *envp[])
 		prompt(env);
 		get_next_line(0, &line);
 		command(line, env);
+		ft_putchar('\n');
 	}
 	return(0);
 }
