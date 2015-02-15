@@ -123,6 +123,58 @@ int		c_env(t_list *env)
 	return (0);
 }
 
+int		c_setenv(t_list *env, char **args)
+{
+	t_list			*tmp;
+	t_list_elem		*elem;
+	t_list_elem		new;
+
+	tmp = env;
+	if (!args[1] || !args[1][0])
+		return (0);
+	while (tmp != NULL)
+	{
+		elem = tmp->content;
+		if (!ft_strcmp(elem->key, args[1]))
+		{
+			elem->data = args[2];
+			return(0);
+		}
+		tmp = tmp->next;
+	}
+	new.key = args[1];
+	new.data = args[2];
+	ft_lstpushback(&env, ft_lstnew(&new, sizeof(t_list_elem)));
+	return (0);
+}
+
+int		c_unsetenv(t_list **env, char **args)
+{
+	t_list			**tmp;
+	t_list			*last;
+	t_list_elem		*elem;
+
+	tmp = env;
+	last = NULL;
+	if (!args[1] || !args[1][0])
+		return (0);
+	while (tmp != NULL)
+	{
+		elem = (*tmp)->content;
+		if (!ft_strcmp(elem->key, args[1]))
+		{
+			if (!(*tmp)->next)
+				last->next = NULL;
+			else
+				ft_lstdelnode(tmp);
+			return (0);
+		}
+		last = *tmp;
+		*tmp = (*tmp)->next;
+	}
+	return (0);
+}
+
 int		exec(char *bin, char **args, t_list *env)
 {
 	pid_t	father;
@@ -162,6 +214,10 @@ int		command(char *line, t_list *env)
 	}
 	else if (!ft_strcmp(args[0], "env"))
 		return (c_env(env));
+	else if (ft_strcmp(args[0], "unsetenv") == 0)
+		return (c_unsetenv(&env, args));
+	else if (ft_strcmp(args[0], "setenv") == 0)
+		return (c_setenv(env, args));
 	bin = get_path(env, args[0]);
 	if (bin == NULL)
 		ft_putendl("Does not exist!");

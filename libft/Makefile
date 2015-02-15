@@ -6,7 +6,7 @@
 #    By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/10 11:30:22 by aalliot           #+#    #+#              #
-#    Updated: 2015/01/02 16:57:31 by aalliot          ###   ########.fr        #
+#    Updated: 2015/02/15 19:34:52 by aalliot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,6 +79,7 @@ SRC		=	ft_bzero.c				\
 			ft_lstsmartpushback.c	\
 			ft_lstsimpledel.c		\
 			ft_lstsimpledelone.c	\
+			ft_lstdelnode.c			\
 			ft_malloc.c				\
 			ft_burger.c				\
 			ft_kebab.c				\

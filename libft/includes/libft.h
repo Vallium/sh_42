@@ -71,6 +71,7 @@ void				ft_lstpushback(t_list **start, t_list *nw);
 void				ft_lstsmartpushback(t_list **start, t_list *nw);
 void				ft_lstsimpledel(t_list **alst);
 void				ft_lstsimpledelone(t_list **alst);
+void				ft_lstdelnode(t_list **node);
 
 void				*ft_malloc(size_t n);
 void				*ft_memset(void *b, int c, size_t len);
