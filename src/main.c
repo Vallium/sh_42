@@ -219,7 +219,7 @@ int		exec(char *bin, char *args[], t_list *env)
 		waitpid(father, NULL, 0);
 	if (!father)
 	{
-		strenv = env_to_str(env);/*ho putin con, ca fuit fada!!*/
+		strenv = env_to_str(env); /*ho putin con, ca fuit fada!!*/
 		execve(bin, args, strenv);
 	}
 	return (1);
