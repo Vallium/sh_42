@@ -106,7 +106,7 @@ char	**env_to_str(t_list *env)
 	return (strenv);
 }
 
-int		print_env(t_list *env)
+int		c_env(t_list *env)
 {
 	t_list		*tmp;
 	t_list_elem	*elem;
@@ -123,15 +123,19 @@ int		print_env(t_list *env)
 	return (0);
 }
 
-int		exec(char *bin, char **args, char **strenv)
+int		exec(char *bin, char **args, t_list *env)
 {
 	pid_t	father;
+	char	**strenv;
 
 	father = fork();
 	if (father > 0)
 		waitpid(father, NULL, 0);
 	if (!father)
+	{
+		strenv = env_to_str(env);/*ho putin con, ca fuit fada!!*/
 		execve(bin, args, strenv);
+	}
 	return (1);
 }
 
@@ -142,26 +146,26 @@ void	prompt()
 
 int		command(char *line, t_list *env)
 {
-	char	*cmd;
 	char	*bin;
 	char	**args;
-	char	**strenv;
 
-	if (!ft_strchr(line, ' '))
-		cmd = ft_strdup(line);
-	else
-		cmd = ft_strsub(line, 0, ft_strchr(line, ' ') - line);
-	if (!ft_strcmp(cmd, "exit"))
+	line = ft_strtrim(line);
+	if (!line || !line[0])
+		return (0);
+	args = ft_strsplit(line, ' ');
+	if (!args || !args[0] || !args[0][0])
+		return (0);
+	if (!ft_strcmp(args[0], "exit"))
 	{
 		ft_putendl("exit");
 		exit(2);
 	}
-	else if (!ft_strcmp(cmd, "env"))
-		return (print_env(env));
-	args = ft_strsplit(line, ' ');
-	strenv = env_to_str(env);
-	bin = get_path(env, cmd);
-	if (!exec(bin, args, strenv))
+	else if (!ft_strcmp(args[0], "env"))
+		return (c_env(env));
+	bin = get_path(env, args[0]);
+	if (bin == NULL)
+		ft_putendl("Does not exist!");
+	else if (exec(bin, args, env) == -1)
 		ft_putendl("Error");
 	return (0);
 }
