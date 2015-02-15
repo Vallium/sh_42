@@ -56,26 +56,33 @@ char	*get_path(t_list *env, char *bin)
 	char		**paths;
 	char		**tmp;
 	char		buff[1024];
+	char		*ret;
 	struct stat	stat_buff;
 
 	path = get_data(env, "PATH");
 	if (!path)
 		return (bin);
-	paths = ft_strsplit(path, ':');
 	if (!stat(bin, &stat_buff))
 		return (bin);
+	paths = ft_strsplit(path, ':');
 	tmp = paths;
+	ret = NULL;
 	while (tmp && *tmp)
 	{
 		ft_kebab(buff, *tmp, "/", bin, NULL);
 		if (!stat(buff, &stat_buff))
 		{
 			printf("%s found at %s\n", bin, buff);
-			return (ft_strdup(buff));
+			ret = ft_strdup(buff);
+			break ;
 		}
 		tmp++;
 	}
-	return (NULL);
+	tmp = paths;
+	while (tmp && *tmp)
+		free(*tmp++);
+	free(paths);
+	return (ret);
 }
 
 char	**env_to_str(t_list *env)
