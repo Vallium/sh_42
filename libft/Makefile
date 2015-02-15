@@ -72,6 +72,7 @@ SRC		=	ft_bzero.c				\
 			ft_lstdelone.c			\
 			ft_lstdel.c				\
 			ft_lstadd.c				\
+			ft_lstlen.c				\
 			ft_lstiter.c			\
 			ft_lstmap.c				\
 			ft_lstpushback.c		\

@@ -50,27 +50,51 @@ char	*get_data(t_list *env, char *key)
 	return (NULL);
 }
 
-//char	*get_path(t_list *env, char *bin)
-//{
-//	char		*path;
-//	char		**paths;
-//	char		**tmp;
-//	char		buff[1024];
-//	struct stat	stat_buff;
-//
-//	path = get_data(env, "PATH");
-//	if (!path)
-//		return (bin);
-//	paths = ft_strsplit(path, ':');
-//	if (!stat(bin, &stat_buff))
-//		return (bin);
-//	tmp = paths;
-//	while (tmp && *tmp)
-//	{
-//		ft_kebab(buff)
-//	}
-//	return (NULL);
-//}
+char	*get_path(t_list *env, char *bin)
+{
+	char		*path;
+	char		**paths;
+	char		**tmp;
+	char		buff[1024];
+	struct stat	stat_buff;
+
+	path = get_data(env, "PATH");
+	if (!path)
+		return (bin);
+	paths = ft_strsplit(path, ':');
+	if (!stat(bin, &stat_buff))
+		return (bin);
+	tmp = paths;
+	while (tmp && *tmp)
+	{
+		ft_kebab(buff, "/", bin, NULL);
+		if (!stat(buff, &stat_buff))
+			return (ft_strdup(buff));
+		tmp++;
+	}
+	return (NULL);
+}
+
+char	**env_to_str(t_list *env)
+{
+	char		**strenv;
+	t_list		*tmp;
+	t_list_elem	*elem;
+	int			i;
+
+	tmp = env;
+	strenv = (char**)ft_malloc((ft_lstlen(env) + 1));
+	i = 0;
+	while (tmp)
+	{
+		elem = tmp->content;
+		strenv[i]= (char*)ft_malloc((ft_strlen(elem->key) + ft_strlen(elem->data) + 1));
+		ft_kebab(strenv[i], elem->key, "=", elem->data, NULL);
+		i++;
+		tmp = tmp->next;
+	}
+	return (strenv);
+}
 
 int		print_env(t_list *env)
 {
@@ -89,6 +113,18 @@ int		print_env(t_list *env)
 	return (0);
 }
 
+int		exec(char *bin, char **args, char **strenv)
+{
+	pid_t	father;
+
+	father = fork();
+	if (father > 0)
+		waitpid(father, NULL, 0);
+	if (!father)
+		execve(bin, args, strenv);
+	return (1);
+}
+
 void	prompt()
 {
 	ft_putstr("$> ");
@@ -97,6 +133,9 @@ void	prompt()
 int		command(char *line, t_list *env)
 {
 	char	*cmd;
+	char	*bin;
+	char	**args;
+	char	**strenv;
 
 	if (!ft_strchr(line, ' '))
 		cmd = ft_strdup(line);
@@ -109,15 +148,16 @@ int		command(char *line, t_list *env)
 	}
 	else if (!ft_strcmp(cmd, "env"))
 		return (print_env(env));
+	args = ft_strsplit(line, ' ');
+	strenv = env_to_str(env);
+	bin = get_path(env, cmd);
+	if (!exec(bin, args, strenv))
+		ft_putendl("Error");
 	return (0);
 }
 
 int		main(int argc, char *argv[], char *envp[])
 {
-//	char	*args;
-//	char	**ex;
-//	int		ret;
-//	pid_t	father;
 	t_list	*env;
 	char	*line;
 
@@ -131,23 +171,5 @@ int		main(int argc, char *argv[], char *envp[])
 		get_next_line(0, &line);
 		command(line, env);
 	}
-//	args = NULL;
-//	while(42)
-//	{
-//		father = fork();
-//		if (father > 0)
-//		{
-//			waitpid(father, NULL, 0);
-//		}
-//		if (father == 0)
-//		{
-//			ft_putstr("$> ");
-//			while ((ret = get_next_line(0, &args)))
-//			{
-//				ex = ft_strsplit(args, ' ');
-//				execve("/bin/ls", ex, NULL);
-//			}
-//		}
-//	}
 	return(0);
 }
