@@ -52,7 +52,7 @@ char	*get_data(t_list *env, char *key)
 
 char	*get_path(t_list *env, char *bin)
 {
-	char		*path;				//
+	char		*path;
 	char		**paths;
 	char		**tmp;
 	char		buff[1024];
@@ -70,7 +70,7 @@ char	*get_path(t_list *env, char *bin)
 		ft_kebab(buff, *tmp, "/", bin, NULL);
 		if (!stat(buff, &stat_buff))
 		{
-			printf("%s found at %s\n", *tmp, buff);
+			printf("%s found at %s\n", bin, buff);
 			return (ft_strdup(buff));
 		}
 		tmp++;
