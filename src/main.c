@@ -13,31 +13,42 @@
 #include "sh_1.h"
 #include <stdio.h>
 
-void	get_env(t_list *env, char *envp[])
+t_list		*get_env(char *envp[])
 {
 	t_list_elem	elem;
+	t_list		*env;
 	char		**tmp;
 	char		*chr;
 
+	env = NULL;
 	tmp = envp;
 	while(tmp && *tmp)
 	{
 		chr = ft_strchr(*tmp, '=');
 		elem.key = ft_strsub(*tmp, 0, chr - *tmp);
 		elem.data = ft_strdup(chr + 1);
-		ft_lstadd(&env, ft_lstnew(&elem, sizeof(t_list_elem)));
+		ft_lstpushback(&env, ft_lstnew(&elem, sizeof(t_list_elem)));
 //		printf("%s=%s\n", elem.key, elem.data);
 		tmp++;
 	}
+	return (env);
 }
 
-void	test(char *envp[])
+int		print_env(t_list *env)
 {
-	int	i;
+	t_list		*tmp;
+	t_list_elem	*elem;
 
-	printf("env :\n");
-	for(i=0; envp[i] ;i++)
-		printf("%s\n",envp[i]);
+	tmp = env;
+	while (tmp != NULL)
+	{
+		elem = tmp->content;
+		ft_putstr(elem->key);
+		ft_putchar('=');
+		ft_putendl(elem->data);
+		tmp = tmp->next;
+	}
+	return (0);
 }
 
 void	prompt()
@@ -45,13 +56,21 @@ void	prompt()
 	ft_putstr("$> ");
 }
 
-int		command(char *line)
+int		command(char *line, t_list *env)
 {
-	if (!ft_strcmp(line, "exit"))
+	char	*cmd;
+
+	if (!ft_strchr(line, ' '))
+		cmd = ft_strdup(line);
+	else
+		cmd = ft_strsub(line, 0, ft_strchr(line, ' ') - line);
+	if (!ft_strcmp(cmd, "exit"))
 	{
 		ft_putendl("exit");
 		exit(2);
 	}
+	else if (!ft_strcmp(cmd, "env"))
+		return (print_env(env));
 	return (0);
 }
 
@@ -66,15 +85,13 @@ int		main(int argc, char *argv[], char *envp[])
 
 	(void)argc;
 	(void)argv;
-//	test(envp);
-	env = NULL;
-	get_env(env, envp);
+	env = get_env(envp);
 
 	while (42)
 	{
 		prompt();
 		get_next_line(0, &line);
-		command(line);
+		command(line, env);
 	}
 //	args = NULL;
 //	while(42)
