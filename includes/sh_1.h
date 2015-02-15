@@ -18,6 +18,13 @@
 # include <unistd.h>
 # include <sys/stat.h>
 
+# ifdef __APPLE__
+#  include <sys/types.h>
+# elif __linux
+#  include <sys/types.h>
+#  include <sys/wait.h>
+# endif
+
 typedef struct	s_list_elem
 {
 	char		*key;
