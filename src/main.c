@@ -199,10 +199,18 @@ void	prompt(t_list *env)
 
 	user = get_data(env, "USER");
 	pwd = get_data(env, "PWD");
+	ft_putchar('\033');
+	ft_putstr("[34m# ");
 	ft_putstr(user);
-	ft_putstr(" • ");
+	ft_putchar('\033');
+	ft_putstr("[39m");
+	ft_putstr(" in ");
+	ft_putchar('\033');
+	ft_putstr("[33m");
 	ft_putstr(pwd);
-	ft_putstr(" » ");
+	ft_putstr(" $ ");
+	ft_putchar('\033');
+	ft_putstr("[39m");
 }
 
 int		command(char *line, t_list *env)

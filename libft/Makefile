@@ -148,3 +148,5 @@ fclean: clean
 
 re: fclean
 	make
+	
+reall: all
