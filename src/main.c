@@ -13,7 +13,7 @@
 #include "sh_1.h"
 #include <stdio.h>
 
-t_list		*get_env(char *envp[])
+t_list	*get_env(char *envp[])
 {
 	t_list_elem	elem;
 	t_list		*env;
@@ -34,13 +34,47 @@ t_list		*get_env(char *envp[])
 	return (env);
 }
 
+char	*get_data(t_list *env, char *key)
+{
+	t_list		*tmp;
+	t_list_elem	*elem;
+
+	tmp = env;
+	while (tmp)
+	{
+		elem = tmp->content;
+		if (!ft_strcmp(elem->key, key))
+			return (elem->data);
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
+char	*get_path(t_list *env, char *bin)
+{
+	char		*path;
+	char		**paths;
+	char		**tmp;
+	char		buff[1024];
+	struct stat	stat_buff;
+
+	path = get_data(env, "PATH");
+	if (!path)
+		return (bin);
+	paths = ft_strsplit(path, ':');
+	if (!stat(bin, &stat_buff))
+		return (bin);
+	tmp = paths;
+	return (NULL);
+}
+
 int		print_env(t_list *env)
 {
 	t_list		*tmp;
 	t_list_elem	*elem;
 
 	tmp = env;
-	while (tmp != NULL)
+	while (tmp)
 	{
 		elem = tmp->content;
 		ft_putstr(elem->key);

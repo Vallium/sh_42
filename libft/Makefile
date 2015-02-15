@@ -80,6 +80,7 @@ SRC		=	ft_bzero.c				\
 			ft_lstsimpledelone.c	\
 			ft_malloc.c				\
 			ft_burger.c				\
+			ft_kebab.c				\
 			ft_swap.c				\
 			ft_sort_bbl.c			\
 			ft_sort_qck.c			\

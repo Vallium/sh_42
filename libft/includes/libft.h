@@ -96,6 +96,7 @@ char				*ft_strtrim(const char *s);
 char				*ft_strjoin(const char *s1, const char *s2);
 char				*ft_itoa(int n);
 char				*ft_burger(const char *s1, char c, const char *s2);
+void				ft_kebab(char *buff, const char *first, ...);
 char				**ft_strsplit(const char *s, char c);
 size_t				ft_strlen(const char *s);
 size_t				ft_strlcat(char *dst, const char *src, size_t size);

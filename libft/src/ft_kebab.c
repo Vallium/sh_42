@@ -1,25 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_kebab.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/11/13 12:44:13 by aalliot           #+#    #+#             */
-/*   Updated: 2014/12/10 10:37:34 by aalliot          ###   ########.fr       */
+/*   Created: 2015/01/15 21:45:47 by aalliot           #+#    #+#             */
+/*   Updated: 2015/01/15 21:45:47 by aalliot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
+#include <stdarg.h>
+#include "libft.h"
 
-# define GET_NEXT_LINE_H
-# define BUFF_SIZE 1000
+void		ft_kebab(char *buff, const char *first, ...)
+{
+	int			i;
+	int			j;
+	const char	*next;
+	va_list		lst;
 
-# include "libft.h"
-# include <unistd.h>
-# include <fcntl.h>
-# include <stdlib.h>
-
-int			get_next_line(int fd, char **line);
-
-#endif
+	va_start(lst, first);
+	next = first;
+	i = 0;
+	while (next != NULL)
+	{
+		j = 0;
+		while (next[j] != 0)
+		{
+			buff[i] = next[j];
+			i++;
+			j++;
+		}
+		next = va_arg(lst, char*);
+	}
+	va_end(lst);
+	buff[i] = 0;
+}
