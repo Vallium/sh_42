@@ -27,8 +27,7 @@ t_list	*get_env(char *envp[])
 		chr = ft_strchr(*tmp, '=');
 		elem.key = ft_strsub(*tmp, 0, chr - *tmp);
 		elem.data = ft_strdup(chr + 1);
-		ft_lstpushback(&env, ft_lstnew(&elem, sizeof(t_list_elem)));
-//		printf("%s=%s\n", elem.key, elem.data);
+		ft_lstsmartpushback(&env, ft_lstnew(&elem, sizeof(t_list_elem)));
 		tmp++;
 	}
 	return (env);
@@ -144,7 +143,7 @@ int		c_setenv(t_list *env, char **args)
 	}
 	new.key = args[1];
 	new.data = args[2];
-	ft_lstpushback(&env, ft_lstnew(&new, sizeof(t_list_elem)));
+	ft_lstsmartpushback(&env, ft_lstnew(&new, sizeof(t_list_elem)));
 	return (0);
 }
 
