@@ -18,12 +18,12 @@ SRC		=	main.c
 UNAME_S := $(shell uname -s)
 
 ifeq ($(UNAME_S),Linux)
-
+FLAGS		= -Wall -Wextra
 SRC	+=
 
 endif
 ifeq ($(UNAME_S),Darwin)
-
+FLAGS		= -Wall -Wextra -Werror
 SRC	+=
 
 endif
@@ -40,7 +40,6 @@ LIBFT_DEBUG	= libft/libft_debug.a
 LIBFT_HEAD	= libft/includes/
 
 CC			= gcc
-FLAGS		= -Wall -Wextra -Werror
 NORMINETTE	= ~/project/colorminette/colorminette
 
 $(shell mkdir -p $(STATIC_DIR) $(DEBUG_DIR))
