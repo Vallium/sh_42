@@ -192,9 +192,17 @@ int		exec(char *bin, char **args, t_list *env)
 	return (1);
 }
 
-void	prompt()
+void	prompt(t_list *env)
 {
-	ft_putstr("$> ");
+	char	*user;
+	char	*pwd;
+
+	user = get_data(env, "USER");
+	pwd = get_data(env, "PWD");
+	ft_putstr(user);
+	ft_putstr(" • ");
+	ft_putstr(pwd);
+	ft_putstr(" » ");
 }
 
 int		command(char *line, t_list *env)
@@ -238,7 +246,7 @@ int		main(int argc, char *argv[], char *envp[])
 
 	while (42)
 	{
-		prompt();
+		prompt(env);
 		get_next_line(0, &line);
 		command(line, env);
 	}
