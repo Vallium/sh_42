@@ -50,23 +50,27 @@ char	*get_data(t_list *env, char *key)
 	return (NULL);
 }
 
-char	*get_path(t_list *env, char *bin)
-{
-	char		*path;
-	char		**paths;
-	char		**tmp;
-	char		buff[1024];
-	struct stat	stat_buff;
-
-	path = get_data(env, "PATH");
-	if (!path)
-		return (bin);
-	paths = ft_strsplit(path, ':');
-	if (!stat(bin, &stat_buff))
-		return (bin);
-	tmp = paths;
-	return (NULL);
-}
+//char	*get_path(t_list *env, char *bin)
+//{
+//	char		*path;
+//	char		**paths;
+//	char		**tmp;
+//	char		buff[1024];
+//	struct stat	stat_buff;
+//
+//	path = get_data(env, "PATH");
+//	if (!path)
+//		return (bin);
+//	paths = ft_strsplit(path, ':');
+//	if (!stat(bin, &stat_buff))
+//		return (bin);
+//	tmp = paths;
+//	while (tmp && *tmp)
+//	{
+//		ft_kebab(buff)
+//	}
+//	return (NULL);
+//}
 
 int		print_env(t_list *env)
 {
