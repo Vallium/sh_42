@@ -71,7 +71,6 @@ char	*get_path(t_list *env, char *bin)
 		ft_kebab(buff, *tmp, "/", bin, NULL);
 		if (!stat(buff, &stat_buff))
 		{
-			printf("%s found at %s\n", bin, buff);
 			ret = ft_strdup(buff);
 			break ;
 		}
@@ -102,6 +101,7 @@ char	**env_to_str(t_list *env)
 		i++;
 		tmp = tmp->next;
 	}
+	strenv[i] = NULL;
 	return (strenv);
 }
 
