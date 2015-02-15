@@ -17,4 +17,10 @@
 # include "get_next_line.h"
 # include <unistd.h>
 
+typedef struct	s_list_elem
+{
+	char		*key;
+	char		*data;
+}				t_list_elem;
+
 #endif
