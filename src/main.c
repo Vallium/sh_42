@@ -96,7 +96,7 @@ char	**env_to_str(t_list *env)
 	while (tmp)
 	{
 		elem = tmp->content;
-		strenv[i]= (char*)ft_malloc((ft_strlen(elem->key) + ft_strlen(elem->data) + 1));
+		strenv[i]= (char*)ft_malloc((ft_strlen(elem->key) + ft_strlen(elem->data) + 2));
 		ft_kebab(strenv[i], elem->key, "=", elem->data, NULL);
 //		strenv[i] = ft_strjoin(elem->key, "=");
 //		strenv[i] = ft_strjoin(strenv[i], elem->data);
