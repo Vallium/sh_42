@@ -49,7 +49,7 @@ char	*get_data(t_list *env, char *key)
 	return (NULL);
 }
 
-char	*get_path(t_list *env, char *bin)
+char	*get_path(t_list *env, char *bin)//ca fuit ici
 {
 	char		*path;
 	char		**paths;
