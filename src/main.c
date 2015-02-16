@@ -166,29 +166,29 @@ int		c_unsetenv(t_list **env, char *args[])
 	t_list			**tmp;
 	t_list			*last;
 	t_list_elem		*elem;
+	int				i;
 
 	tmp = env;
+	i = 1;
 	last = NULL;
 	if (!args[1] || !args[1][0])
 		return (0);
-	if (args[3])
+	while (args[i++])
 	{
-		ft_putstr_fd("Trops d'arg boulet !!! ", 2);
-		return (0);
-	}
-	while (tmp != NULL)
-	{
-		elem = (*tmp)->content;
-		if (!ft_strcmp(elem->key, args[1]))
+		while (*tmp)
 		{
-			if (!(*tmp)->next)
-				last->next = NULL;
-			else
-				ft_lstdelnode(tmp);
-			return (0);
+			elem = (*tmp)->content;
+			if (!ft_strcmp(elem->key, args[i - 1]))
+			{
+				if (!(*tmp)->next)
+					last->next = NULL;
+				else
+					ft_lstdelnode(tmp);
+				break ;
+			}
+			last = *tmp;
+			*tmp = (*tmp)->next;
 		}
-		last = *tmp;
-		*tmp = (*tmp)->next;
 	}
 	return (0);
 }
