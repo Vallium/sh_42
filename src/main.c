@@ -235,6 +235,8 @@ int		exec(char *bin, char *args[], t_list *env)
 	pid_t	father;
 	char	**strenv;
 
+	if (!ft_strchr(bin, '/'))
+		return (-1);
 	father = fork();
 	if (father > 0)
 		waitpid(father, NULL, 0);
@@ -302,7 +304,10 @@ int		command(char *line, t_list *env)
 		ft_putendl_fd(": Permission denied.", 2);
 	}
 	else if (exec(bin, args, env) == -1)
-		ft_putendl("Error");
+	{
+			ft_putstr_fd(args[0], 2);
+			ft_putendl_fd(": Command not found.", 2);
+	}
 	return (0);
 }
 
