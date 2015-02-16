@@ -23,18 +23,19 @@ int					get_next_line(int fd, char **line)
 		return (-1);
 	if (!mem)
 		mem = ft_strnew(0);
-	while (!(ft_strchr(mem, '\n')) && (ret = read(fd, buff, BUFF_SIZE)))
+	while (!(ft_strchr(mem, '\n')) && (ret = read(0, buff, BUFF_SIZE)))
 	{
+		printf(buff);
 		if (ret == -1)
 			return (-1);
 		buff[ret] = 0;
-		mem = ft_strjoin(mem, buff);
+		mem = ft_strjoinfree(mem, buff);								//free ici connard
 	}
-	if (ft_strchr(mem, '\n') || ((*line = ft_strdup(mem)) && 0))
-		*line = ft_strsub(mem, 0, ft_strchr(mem, '\n') - mem + 1);
+	if (ft_strchr(mem, '\n') || ((*line = ft_strdup(mem)) && 0))		//free ici connard
+		*line = ft_strsub(mem, 0, ft_strchr(mem, '\n') - mem + 1);		//free ici connard
 	if (ret)
 		line[0][ft_strlen(*line) - 1] = 0;
-	mem = ft_strsub(mem, ft_strchr(mem, '\n') - mem + 1, \
+	mem = ft_strsub(mem, ft_strchr(mem, '\n') - mem + 1,				//free ici connard
 			ft_strlen(ft_strchr(mem, '\n')));
 	return (ret == 0 ? 0 : 1);
 }

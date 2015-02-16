@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   test.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adoussau <antoine@doussaud.org>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/11/13 12:44:13 by aalliot           #+#    #+#             */
-/*   Updated: 2015/02/16 20:48:09 by adoussau         ###   ########.fr       */
+/*   Created: 2015/01/15 21:45:47 by adoussau          #+#    #+#             */
+/*   Updated: 2015/01/15 21:45:47 by adoussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
+#include "includes/libft.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-# define GET_NEXT_LINE_H
-# define BUFF_SIZE 8
+int main()
+{
+	char *str;
 
-# include "libft.h"
-# include <unistd.h>
-# include <fcntl.h>
-# include <stdlib.h>
+	while (get_next_line(0, &str))
+	{
+		printf("%s\n",str);
+		free(str);
+	}
 
-int			get_next_line(int fd, char **line);
-
-#endif
+	while(42);
+}
