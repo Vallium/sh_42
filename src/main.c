@@ -71,7 +71,10 @@ char	*get_path(t_list *env, char *bin)//ca fuit ici
 		ft_kebab(buff, *tmp, "/", bin, NULL);
 		if (!stat(buff, &stat_buff))
 		{
-			ret = ft_strdup(buff);
+			if (!(stat_buff.st_mode & 1))
+				ret = (char*)1;
+			else
+				ret = ft_strdup(buff);
 			break ;
 		}
 		tmp++;
@@ -288,7 +291,15 @@ int		command(char *line, t_list *env)
 		return (c_setenv(env, args));
 	bin = get_path(env, args[0]);
 	if (bin == NULL)
-		ft_putendl("Does not exist!");
+	{
+		ft_putstr_fd(args[0], 2);
+		ft_putendl_fd(": Command not found.", 2);
+	}
+	else if (bin == (char*)1)
+	{
+		ft_putstr_fd(args[0], 2);
+		ft_putendl_fd(": Permission denied.", 2);
+	}
 	else if (exec(bin, args, env) == -1)
 		ft_putendl("Error");
 	return (0);
