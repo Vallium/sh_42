@@ -92,17 +92,18 @@ char	**env_to_str(t_list *env)
 	t_list		*tmp;
 	t_list_elem	*elem;
 	int			i;
+	int			size;
 
 	tmp = env;
-	strenv = (char**)ft_malloc((ft_lstlen(env) + 1));
+	size = ft_lstlen(env);
+	strenv = (char**)ft_malloc(sizeof(char*) * (size + 1));
 	i = 0;
 	while (tmp)
 	{
 		elem = tmp->content;
-		strenv[i]= (char*)ft_malloc((ft_strlen(elem->key) + ft_strlen(elem->data) + 2));
-		ft_kebab(strenv[i], elem->key, "=", elem->data, NULL);
-//		strenv[i] = ft_strjoin(elem->key, "=");
-//		strenv[i] = ft_strjoin(strenv[i], elem->data);
+		//strenv[i]= (char*)ft_malloc((ft_strlen(elem->key) + ft_strlen(elem->data) + 2));
+		//ft_kebab(strenv[i], elem->key, "=", elem->data, NULL);
+		strenv[i] = ft_burger(elem->key, '=', elem->data);
 		i++;
 		tmp = tmp->next;
 	}
@@ -319,7 +320,7 @@ int		main(int argc, char *argv[], char *envp[])
 		prompt(env);
 		get_next_line(0, &line);
 		command(line, env);
-		ft_putchar('\n');
+//		ft_putchar('\n');
 	}
 	return(0);
 }
