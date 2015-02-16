@@ -305,8 +305,8 @@ int		command(char *line, t_list *env)
 	}
 	else if (exec(bin, args, env) == -1)
 	{
-			ft_putstr_fd(args[0], 2);
-			ft_putendl_fd(": Command not found.", 2);
+		ft_putstr_fd(args[0], 2);
+		ft_putendl_fd(": Command not found.", 2);
 	}
 	return (0);
 }
