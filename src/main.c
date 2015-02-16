@@ -140,6 +140,11 @@ int		c_setenv(t_list *env, char *args[])
 	tmp = env;
 	if (!args[1] || !args[1][0])
 		return (0);
+	if (args[3])
+	{
+		ft_putendl_fd("setenv: Too many arguments.", 2);
+		return (0);
+	}
 	while (tmp != NULL)
 	{
 		elem = tmp->content;
@@ -151,7 +156,7 @@ int		c_setenv(t_list *env, char *args[])
 		tmp = tmp->next;
 	}
 	new.key = args[1];
-	new.data = args[2];
+	new.data = args[2] ? args[2] : "";
 	ft_lstsmartpushback(&env, ft_lstnew(&new, sizeof(t_list_elem)));
 	return (0);
 }
@@ -270,7 +275,7 @@ int		command(char *line, t_list *env)
 	}
 	else if (!ft_strcmp(args[0], "cd"))
 		return (c_cd(env, args));
-	else if (!ft_strcmp(args[0], "env"))
+	else if (!ft_strcmp(args[0], "env") || (!ft_strcmp(args[0], "setenv") && !args[1]))
 		return (c_env(env, args));
 	else if (ft_strcmp(args[0], "unsetenv") == 0)
 		return (c_unsetenv(&env, args));
