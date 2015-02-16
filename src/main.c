@@ -98,8 +98,8 @@ char	**env_to_str(t_list *env)
 		elem = tmp->content;
 		strenv[i]= (char*)ft_malloc((ft_strlen(elem->key) + ft_strlen(elem->data) + 1));
 		ft_kebab(strenv[i], elem->key, "=", elem->data, NULL);
-		// strenv[i] = ft_strjoin(elem->key, "=");
-		// strenv[i] = ft_strjoin(strenv[i], elem->data);
+//		strenv[i] = ft_strjoin(elem->key, "=");
+//		strenv[i] = ft_strjoin(strenv[i], elem->data);
 		i++;
 		tmp = tmp->next;
 	}
@@ -228,19 +228,19 @@ int		exec(char *bin, char *args[], t_list *env)
 void	prompt(t_list *env)
 {
 	char	*user;
-	char	*pwd;
+//	char	*pwd;
 
 	user = get_data(env, "USER");
-	pwd = get_data(env, "PWD");
+//	pwd = get_data(env, "PWD");
 	ft_putchar('\033');
-	ft_putstr("[34m# ");
+	ft_putstr("[36m# ");
 	ft_putstr(user);
-	ft_putchar('\033');
-	ft_putstr("[39m");
-	ft_putstr(" in ");
-	ft_putchar('\033');
-	ft_putstr("[33m");
-	ft_putstr(pwd);
+//	ft_putchar('\033');
+//	ft_putstr("[39m");
+//	ft_putstr(" in ");
+//	ft_putchar('\033');
+//	ft_putstr("[33m");
+//	ft_putstr(pwd);
 	ft_putstr(" $ ");
 	ft_putchar('\033');
 	ft_putstr("[39m");}

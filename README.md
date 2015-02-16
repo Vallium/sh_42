@@ -1,0 +1,1 @@
+[![Build Status](https://travis-ci.org/Vallium/sh_42.svg)](https://travis-ci.org/Vallium/sh_42)
