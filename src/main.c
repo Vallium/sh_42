@@ -107,11 +107,18 @@ char	**env_to_str(t_list *env)
 	return (strenv);
 }
 
-int		c_env(t_list *env)
+int		c_env(t_list *env, char *args[])
 {
 	t_list		*tmp;
 	t_list_elem	*elem;
 
+	if (args[1])
+	{
+		ft_putstr_fd("env: ", 2);
+		ft_putstr_fd(args[1], 2);
+		ft_putendl_fd(": No such file or directory", 2);
+		return (0);
+	}
 	tmp = env;
 	while (tmp)
 	{
@@ -264,7 +271,7 @@ int		command(char *line, t_list *env)
 	else if (!ft_strcmp(args[0], "cd"))
 		return (c_cd(env, args));
 	else if (!ft_strcmp(args[0], "env"))
-		return (c_env(env));
+		return (c_env(env, args));
 	else if (ft_strcmp(args[0], "unsetenv") == 0)
 		return (c_unsetenv(&env, args));
 	else if (ft_strcmp(args[0], "setenv") == 0)
