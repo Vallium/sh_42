@@ -166,6 +166,11 @@ int		c_unsetenv(t_list **env, char *args[])
 	last = NULL;
 	if (!args[1] || !args[1][0])
 		return (0);
+	if (args[3])
+	{
+		ft_putstr_fd("Trops d'arg boulet !!! ", 2);
+		return (0);
+	}
 	while (tmp != NULL)
 	{
 		elem = (*tmp)->content;
