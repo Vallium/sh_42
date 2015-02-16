@@ -101,8 +101,6 @@ char	**env_to_str(t_list *env)
 	while (tmp)
 	{
 		elem = tmp->content;
-		//strenv[i]= (char*)ft_malloc((ft_strlen(elem->key) + ft_strlen(elem->data) + 2));
-		//ft_kebab(strenv[i], elem->key, "=", elem->data, NULL);
 		strenv[i] = ft_burger(elem->key, '=', elem->data);
 		i++;
 		tmp = tmp->next;
@@ -242,8 +240,12 @@ int		exec(char *bin, char *args[], t_list *env)
 		waitpid(father, NULL, 0);
 	if (!father)
 	{
+		signal(SIGINT, SIG_DFL);
 		strenv = env_to_str(env); /*ho putin con, ca fuit fada!!*/
 		execve(bin, args, strenv);
+		while (*strenv)
+			free(*strenv++);
+		free(strenv);
 	}
 	return (1);
 }
@@ -251,19 +253,11 @@ int		exec(char *bin, char *args[], t_list *env)
 void	prompt(t_list *env)
 {
 	char	*user;
-//	char	*pwd;
 
 	user = get_data(env, "USER");
-//	pwd = get_data(env, "PWD");
 	ft_putchar('\033');
 	ft_putstr("[36m# ");
 	ft_putstr(user);
-//	ft_putchar('\033');
-//	ft_putstr("[39m");
-//	ft_putstr(" in ");
-//	ft_putchar('\033');
-//	ft_putstr("[33m");
-//	ft_putstr(pwd);
 	ft_putstr(" $ ");
 	ft_putchar('\033');
 	ft_putstr("[39m");}
@@ -279,6 +273,7 @@ int		command(char *line, t_list *env)
 	args = ft_strsplit(line, ' ');
 	if (!args || !args[0] || !args[0][0])
 		return (0);
+	bin = get_path(env, args[0]);
 	if (!ft_strcmp(args[0], "exit"))
 	{
 		ft_putendl("exit");
@@ -292,8 +287,7 @@ int		command(char *line, t_list *env)
 		return (c_unsetenv(&env, args));
 	else if (ft_strcmp(args[0], "setenv") == 0)
 		return (c_setenv(env, args));
-	bin = get_path(env, args[0]);
-	if (bin == NULL)
+	else if (bin == NULL)
 	{
 		ft_putstr_fd(args[0], 2);
 		ft_putendl_fd(": Command not found.", 2);
@@ -318,6 +312,7 @@ int		main(int argc, char *argv[], char *envp[])
 
 	(void)argc;
 	(void)argv;
+	signal(SIGINT, SIG_IGN);
 	env = get_env(envp);
 
 	while (42)
@@ -325,7 +320,6 @@ int		main(int argc, char *argv[], char *envp[])
 		prompt(env);
 		get_next_line(0, &line);
 		command(line, env);
-//		ft_putchar('\n');
 	}
 	return(0);
 }
