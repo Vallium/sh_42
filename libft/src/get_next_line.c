@@ -23,9 +23,8 @@ int					get_next_line(int fd, char **line)
 		return (-1);
 	if (!mem)
 		mem = ft_strnew(0);
-	while (!(ft_strchr(mem, '\n')) && (ret = read(0, buff, BUFF_SIZE)))
+	while (!(ft_strchr(mem, '\n')) && (ret = read(fd, buff, BUFF_SIZE)))
 	{
-		printf(buff);
 		if (ret == -1)
 			return (-1);
 		buff[ret] = 0;
