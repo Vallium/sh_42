@@ -257,7 +257,10 @@ void	prompt(t_list *env)
 	user = get_data(env, "USER");
 	ft_putchar('\033');
 	ft_putstr("[36m# ");
-	ft_putstr(user);
+	if (user)
+		ft_putstr(user);
+	else
+		ft_putstr("LongZboobDu06");
 	ft_putstr(" $ ");
 	ft_putchar('\033');
 	ft_putstr("[39m");}
