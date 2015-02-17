@@ -25,10 +25,38 @@
 #  include <sys/wait.h>
 # endif
 
-typedef struct	s_list_elem
+typedef struct		s_list_elem
 {
-	char		*key;
-	char		*data;
-}				t_list_elem;
+	char			*key;
+	char			*data;
+}					t_list_elem;
+
+typedef struct		s_path
+{
+	char			*path;
+	char			**paths;
+	char			**tmp;
+	char			buff[1024];
+	char			*ret;
+	struct stat		stat_buff;
+}					t_path;
+
+t_list				*get_env(char *envp[]);
+char				*get_data(t_list *env, char *key);
+void				free_path(t_path *path);
+char				*get_path(t_list *env, char *bin);
+char				**env_to_str(t_list *env);
+
+int					c_env(t_list *env, char *args[]);
+int					c_setenv(t_list *env, char *args[]);
+int					c_unsetenv(t_list **env, char *args[]);
+int					c_cd(t_list *env, char *args[]);
+
+int					exec(char *bin, char *args[], t_list *env);
+void				prompt(t_list *env);
+int					command(char *line, t_list *env);
+
+void				print_error(int ind, char *args);
+void				ft_exit();
 
 #endif

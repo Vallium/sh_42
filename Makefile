@@ -13,7 +13,10 @@
 STATIC_EXE	= ft_minishell1
 DEBUG_EXE	= ft_minishell1_debug
 
-SRC		=	main.c
+SRC		=	main.c		\
+			env.c		\
+			command.c	\
+			built_in.c
 
 UNAME_S := $(shell uname -s)
 
