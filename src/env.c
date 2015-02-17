@@ -52,7 +52,11 @@ void	free_path(t_path *path)
 {
 	path->tmp = path->paths;
 	while (path->tmp && *path->tmp)
+	{
 		free(*(path->tmp));
+		*path->tmp = NULL;
+		path->tmp++;
+	}
 	free(path->paths);
 }
 

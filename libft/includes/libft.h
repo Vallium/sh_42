@@ -22,6 +22,12 @@ typedef struct		s_list
 	struct s_list	*next;
 }					t_list;
 
+typedef struct		s_cpl
+{
+	size_t			i;
+	size_t			e;
+}					t_cpl;
+
 int					ft_isalnum(int c);
 int					ft_isalpha(int c);
 int					ft_isascii(int c);
@@ -94,7 +100,7 @@ char				*ft_strnew(size_t size);
 char				*ft_strmap(const char *s, char (*f)(char));
 char				*ft_strmapi(const char *s, char (*f)(unsigned int, char));
 char				*ft_strsub(const char *s, unsigned int start, size_t len);
-char				*ft_strtrim(const char *s);
+char				*ft_strtrim(char *s);
 char				*ft_strjoin(const char *s1, const char *s2);
 char				*ft_itoa(int n);
 char				*ft_burger(const char *s1, char c, const char *s2);

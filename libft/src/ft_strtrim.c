@@ -18,24 +18,29 @@ static unsigned int		ft_sp(char c)
 	return (c == ' ' || c == '\t' || c == '\n');
 }
 
-char					*ft_strtrim(const char *s)
+char					*ft_strtrim(char *s)
 {
 	char				*dst;
-	size_t				i;
-	size_t				e;
+	char				*tmp;
+	t_cpl				c;
 
+	tmp = s;
 	if (!s)
 		return (NULL);
-	i = 0;
+	c.i = 0;
 	while (ft_sp(*s++))
-		i++;
-	s -= i + 1;
-	e = ft_strlen(s) - 1;
-	if (!*s || e == i - 1)
+		c.i++;
+	s -= c.i + 1;
+	c.e = ft_strlen(s) - 1;
+	if (!*s || c.e == c.i - 1)
+	{
+		free(tmp);
 		return (dst = ft_strnew(1));
-	if (i != (e + 1))
-		while (ft_sp(s[e]))
-			e--;
-	dst = ft_strsub(s, i, (e - i + 1));
+	}
+	if (c.i != (c.e + 1))
+		while (ft_sp(s[c.e]))
+			c.e--;
+	dst = ft_strsub(s, c.i, (c.e - c.i + 1));
+	free(tmp);
 	return (dst);
 }

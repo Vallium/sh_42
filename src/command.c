@@ -24,29 +24,45 @@ int		command(char *line, t_list *env)
 {
 	char	*bin;
 	char	**args;
+	char	**tmp;
 
 	if (!line_trim(&line))
+	{
+		free(line);
 		return (0);
+	}
 	args = ft_strsplit(line, ' ');
-	free(line);
 	if (!args || !args[0] || !args[0][0])
+	{
+		free(line);
 		return (0);
+	}
 	bin = get_path(env, args[0]);
 	if (!ft_strcmp(args[0], "exit"))
 		ft_exit();
 	else if (!ft_strcmp(args[0], "cd"))
-		return (c_cd(env, args));
+		c_cd(env, args);
 	else if (!ft_strcmp(args[0], "env") ||
 			(!ft_strcmp(args[0], "setenv") && !args[1]))
-		return (c_env(env, args));
+		c_env(env, args);
 	else if (ft_strcmp(args[0], "unsetenv") == 0)
-		return (c_unsetenv(&env, args));
+		c_unsetenv(&env, args);
 	else if (ft_strcmp(args[0], "setenv") == 0)
-		return (c_setenv(env, args));
+		c_setenv(env, args);
 	else if (bin == (char*)1)
 		print_error(1, args[0]);
 	else if (bin == NULL || exec(bin, args, env) == -1)
 		print_error(2, args[0]);
+
+	tmp = args;
+
+	while (tmp && *tmp)
+	{
+		free(*tmp++);
+	}
+	free(args);
+	free(line);
+	free(bin);
 	return (0);
 }
 
@@ -63,10 +79,11 @@ int		exec(char *bin, char *args[], t_list *env)
 	if (!father)
 	{
 		signal(SIGINT, SIG_DFL);
-		strenv = env_to_str(env); /*ho putin con, ca fuit fada!!*/
+		strenv = env_to_str(env);
 		execve(bin, args, strenv);
 		while (*strenv)
 			free(*strenv++);
+		free(bin);
 		free(strenv);
 	}
 	return (1);

@@ -92,6 +92,13 @@ int		c_unsetenv(t_list **env, char *args[])
 	return (0);
 }
 
+int		free_home_path(t_cd *cd)
+{
+	if (cd->path)
+		free(cd->path);
+	return (0);
+}
+
 int		c_cd(t_list *env, char *args[])
 {
 	t_cd	cd;
@@ -118,5 +125,5 @@ int		c_cd(t_list *env, char *args[])
 	}
 	if (chdir(cd.path))
 		print_error(3, cd.path);
-	return (0);
+	return (free_home_path(&cd));
 }
