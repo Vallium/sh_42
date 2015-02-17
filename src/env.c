@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/02/17 12:56:24 by aalliot           #+#    #+#             */
+/*   Updated: 2015/02/17 12:56:25 by aalliot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "sh_1.h"
 
 t_list	*get_env(char *envp[])
@@ -9,7 +21,7 @@ t_list	*get_env(char *envp[])
 
 	env = NULL;
 	tmp = envp;
-	while(tmp && *tmp)
+	while (tmp && *tmp)
 	{
 		chr = ft_strchr(*tmp, '=');
 		elem.key = ft_strsub(*tmp, 0, chr - *tmp);

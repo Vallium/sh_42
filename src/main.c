@@ -44,5 +44,5 @@ int		main(int argc, char *argv[], char *envp[])
 		get_next_line(0, &line);
 		command(line, env);
 	}
-	return(0);
+	return (0);
 }

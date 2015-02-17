@@ -1,14 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   command.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/02/17 12:56:17 by aalliot           #+#    #+#             */
+/*   Updated: 2015/02/17 12:56:19 by aalliot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "sh_1.h"
 
-//int		line_trim(char **line)
+int		line_trim(char **line)
+{
+	*line = ft_strtrim(*line);
+	if (!*line || !*line[0])
+		return (0);
+	return (1);
+}
 
 int		command(char *line, t_list *env)
 {
 	char	*bin;
 	char	**args;
 
-	line = ft_strtrim(line);
-	if (!line || !line[0])
+	if (!line_trim(&line))
 		return (0);
 	args = ft_strsplit(line, ' ');
 	if (!args || !args[0] || !args[0][0])
@@ -18,7 +35,8 @@ int		command(char *line, t_list *env)
 		ft_exit();
 	else if (!ft_strcmp(args[0], "cd"))
 		return (c_cd(env, args));
-	else if (!ft_strcmp(args[0], "env") || (!ft_strcmp(args[0], "setenv") && !args[1]))
+	else if (!ft_strcmp(args[0], "env") ||
+			(!ft_strcmp(args[0], "setenv") && !args[1]))
 		return (c_env(env, args));
 	else if (ft_strcmp(args[0], "unsetenv") == 0)
 		return (c_unsetenv(&env, args));
@@ -53,7 +71,7 @@ int		exec(char *bin, char *args[], t_list *env)
 	return (1);
 }
 
-void	ft_exit()
+void	ft_exit(void)
 {
 	ft_putendl("exit");
 	exit(2);
@@ -77,4 +95,3 @@ void	print_error(int ind, char *args)
 		ft_putendl_fd(args, 2);
 	}
 }
-

@@ -41,11 +41,25 @@ typedef struct		s_path
 	struct stat		stat_buff;
 }					t_path;
 
+typedef struct		s_usetenv
+{
+	t_list			**tmp;
+	t_list			*last;
+	t_list_elem		*elem;
+	int				i;
+}					t_usetenv;
+
+typedef struct		s_cd
+{
+	char			*path;
+	char			*home;
+}					t_cd;
+
 t_list				*get_env(char *envp[]);
-char				*get_data(t_list *env, char *key);
-void				free_path(t_path *path);
 char				*get_path(t_list *env, char *bin);
 char				**env_to_str(t_list *env);
+char				*get_data(t_list *env, char *key);
+void				free_path(t_path *path);
 
 int					c_env(t_list *env, char *args[]);
 int					c_setenv(t_list *env, char *args[]);
