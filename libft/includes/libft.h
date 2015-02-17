@@ -104,4 +104,6 @@ size_t				ft_strlen(const char *s);
 size_t				ft_strlcat(char *dst, const char *src, size_t size);
 t_list				*ft_lstnew(const void *content, size_t content_size);
 
+char				*ft_strjoinfree(char *s1, const char *s2);
+
 #endif

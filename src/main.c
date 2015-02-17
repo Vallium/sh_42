@@ -49,7 +49,7 @@ char	*get_data(t_list *env, char *key)
 	return (NULL);
 }
 
-char	*get_path(t_list *env, char *bin)
+char	*get_path(t_list *env, char *bin)//ca fuit ici
 {
 	char		*path;
 	char		**paths;
@@ -71,7 +71,10 @@ char	*get_path(t_list *env, char *bin)
 		ft_kebab(buff, *tmp, "/", bin, NULL);
 		if (!stat(buff, &stat_buff))
 		{
-			ret = ft_strdup(buff);
+			if (!(stat_buff.st_mode & 1))
+				ret = (char*)1;
+			else
+				ret = ft_strdup(buff);
 			break ;
 		}
 		tmp++;
@@ -89,17 +92,16 @@ char	**env_to_str(t_list *env)
 	t_list		*tmp;
 	t_list_elem	*elem;
 	int			i;
+	int			size;
 
 	tmp = env;
-	strenv = (char**)ft_malloc((ft_lstlen(env) + 1));
+	size = ft_lstlen(env);
+	strenv = (char**)ft_malloc(sizeof(char*) * (size + 1));
 	i = 0;
 	while (tmp)
 	{
 		elem = tmp->content;
-		strenv[i]= (char*)ft_malloc((ft_strlen(elem->key) + ft_strlen(elem->data) + 1));
-		ft_kebab(strenv[i], elem->key, "=", elem->data, NULL);
-		// strenv[i] = ft_strjoin(elem->key, "=");
-		// strenv[i] = ft_strjoin(strenv[i], elem->data);
+		strenv[i] = ft_burger(elem->key, '=', elem->data);
 		i++;
 		tmp = tmp->next;
 	}
@@ -107,11 +109,18 @@ char	**env_to_str(t_list *env)
 	return (strenv);
 }
 
-int		c_env(t_list *env)
+int		c_env(t_list *env, char *args[])
 {
 	t_list		*tmp;
 	t_list_elem	*elem;
 
+	if (args[1])
+	{
+		ft_putstr_fd("env: ", 2);
+		ft_putstr_fd(args[1], 2);
+		ft_putendl_fd(": No such file or directory", 2);
+		return (0);
+	}
 	tmp = env;
 	while (tmp)
 	{
@@ -133,6 +142,11 @@ int		c_setenv(t_list *env, char *args[])
 	tmp = env;
 	if (!args[1] || !args[1][0])
 		return (0);
+	if (args[3])
+	{
+		ft_putendl_fd("setenv: Too many arguments.", 2);
+		return (0);
+	}
 	while (tmp != NULL)
 	{
 		elem = tmp->content;
@@ -144,7 +158,7 @@ int		c_setenv(t_list *env, char *args[])
 		tmp = tmp->next;
 	}
 	new.key = args[1];
-	new.data = args[2];
+	new.data = args[2] ? args[2] : "";
 	ft_lstsmartpushback(&env, ft_lstnew(&new, sizeof(t_list_elem)));
 	return (0);
 }
@@ -154,24 +168,29 @@ int		c_unsetenv(t_list **env, char *args[])
 	t_list			**tmp;
 	t_list			*last;
 	t_list_elem		*elem;
+	int				i;
 
 	tmp = env;
+	i = 1;
 	last = NULL;
 	if (!args[1] || !args[1][0])
 		return (0);
-	while (tmp != NULL)
+	while (args[i++])
 	{
-		elem = (*tmp)->content;
-		if (!ft_strcmp(elem->key, args[1]))
+		while (*tmp)
 		{
-			if (!(*tmp)->next)
-				last->next = NULL;
-			else
-				ft_lstdelnode(tmp);
-			return (0);
+			elem = (*tmp)->content;
+			if (!ft_strcmp(elem->key, args[i - 1]))
+			{
+				if (!(*tmp)->next)
+					last->next = NULL;
+				else
+					ft_lstdelnode(tmp);
+				break ;
+			}
+			last = *tmp;
+			*tmp = (*tmp)->next;
 		}
-		last = *tmp;
-		*tmp = (*tmp)->next;
 	}
 	return (0);
 }
@@ -214,13 +233,19 @@ int		exec(char *bin, char *args[], t_list *env)
 	pid_t	father;
 	char	**strenv;
 
+	if (!ft_strchr(bin, '/'))
+		return (-1);
 	father = fork();
 	if (father > 0)
 		waitpid(father, NULL, 0);
 	if (!father)
 	{
+		signal(SIGINT, SIG_DFL);
 		strenv = env_to_str(env); /*ho putin con, ca fuit fada!!*/
 		execve(bin, args, strenv);
+		while (*strenv)
+			free(*strenv++);
+		free(strenv);
 	}
 	return (1);
 }
@@ -228,19 +253,11 @@ int		exec(char *bin, char *args[], t_list *env)
 void	prompt(t_list *env)
 {
 	char	*user;
-	char	*pwd;
 
 	user = get_data(env, "USER");
-	pwd = get_data(env, "PWD");
 	ft_putchar('\033');
-	ft_putstr("[34m# ");
+	ft_putstr("[36m# ");
 	ft_putstr(user);
-	ft_putchar('\033');
-	ft_putstr("[39m");
-	ft_putstr(" in ");
-	ft_putchar('\033');
-	ft_putstr("[33m");
-	ft_putstr(pwd);
 	ft_putstr(" $ ");
 	ft_putchar('\033');
 	ft_putstr("[39m");}
@@ -256,6 +273,7 @@ int		command(char *line, t_list *env)
 	args = ft_strsplit(line, ' ');
 	if (!args || !args[0] || !args[0][0])
 		return (0);
+	bin = get_path(env, args[0]);
 	if (!ft_strcmp(args[0], "exit"))
 	{
 		ft_putendl("exit");
@@ -263,17 +281,27 @@ int		command(char *line, t_list *env)
 	}
 	else if (!ft_strcmp(args[0], "cd"))
 		return (c_cd(env, args));
-	else if (!ft_strcmp(args[0], "env"))
-		return (c_env(env));
+	else if (!ft_strcmp(args[0], "env") || (!ft_strcmp(args[0], "setenv") && !args[1]))
+		return (c_env(env, args));
 	else if (ft_strcmp(args[0], "unsetenv") == 0)
 		return (c_unsetenv(&env, args));
 	else if (ft_strcmp(args[0], "setenv") == 0)
 		return (c_setenv(env, args));
-	bin = get_path(env, args[0]);
-	if (bin == NULL)
-		ft_putendl("Does not exist!");
+	else if (bin == NULL)
+	{
+		ft_putstr_fd(args[0], 2);
+		ft_putendl_fd(": Command not found.", 2);
+	}
+	else if (bin == (char*)1)
+	{
+		ft_putstr_fd(args[0], 2);
+		ft_putendl_fd(": Permission denied.", 2);
+	}
 	else if (exec(bin, args, env) == -1)
-		ft_putendl("Error");
+	{
+		ft_putstr_fd(args[0], 2);
+		ft_putendl_fd(": Command not found.", 2);
+	}
 	return (0);
 }
 
@@ -284,6 +312,7 @@ int		main(int argc, char *argv[], char *envp[])
 
 	(void)argc;
 	(void)argv;
+	signal(SIGINT, SIG_IGN);
 	env = get_env(envp);
 
 	while (42)
@@ -291,7 +320,6 @@ int		main(int argc, char *argv[], char *envp[])
 		prompt(env);
 		get_next_line(0, &line);
 		command(line, env);
-		ft_putchar('\n');
 	}
 	return(0);
 }
