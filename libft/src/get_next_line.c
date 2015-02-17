@@ -82,7 +82,7 @@ int		get_next_line(const int fd, char **line)
 {
 	static t_gnl 		all = {NULL, NULL};
 	int					ret;
-	char				buff[BUFF_SIZE];
+	char				buff[BUFF_SIZE + 1];
 
 	if (!line || BUFF_SIZE <= 0 || fd < 0)										// gestion erreur
 		return (-1);
@@ -93,6 +93,9 @@ int		get_next_line(const int fd, char **line)
 			if (ret == -1)														// si erreur
 				return (-1);
 			ft_lstsmartpushback(&(all.lst), ft_lstnew((void *)buff, ret));			//save
+			buff[ret] = 0;
+			if (ft_strchr(buff,'\n'))
+				break;
 		}
 		if (all.lst)
 			all.pos = all.lst->content;
