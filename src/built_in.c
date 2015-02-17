@@ -45,7 +45,7 @@ int		c_setenv(t_list *env, char *args[])
 	tmp = env;
 	if (!args[1] || !args[1][0])
 		return (0);
-	if (args[3])
+	if (args[2] && args[3])
 	{
 		ft_putendl_fd("setenv: Too many arguments.", 2);
 		return (0);
@@ -53,14 +53,27 @@ int		c_setenv(t_list *env, char *args[])
 	while (tmp != NULL)
 	{
 		elem = tmp->content;
-		if (!ft_strcmp(elem->key, args[1]) && (elem->data = args[2]))
+		if (!ft_strcmp(elem->key, args[1]))
+		{
+			free(elem->data);
+			elem->data = (args[2] ? ft_strdup(args[2]) : ft_strnew(1));
 			return (0);
+		}
 		tmp = tmp->next;
 	}
-	new.key = args[1];
-	new.data = args[2] ? args[2] : "";
+	new.key = ft_strdup(args[1]);
+	new.data = args[2] ? ft_strdup(args[2]) : ft_strnew(1);
 	ft_lstsmartpushback(&env, ft_lstnew(&new, sizeof(t_list_elem)));
 	return (0);
+}
+
+void	del_content(t_list *lst)
+{
+	t_list_elem	*elem;
+
+	elem = lst->content;
+	free(elem->data);
+	free(elem->key);
 }
 
 int		c_unsetenv(t_list **env, char *args[])

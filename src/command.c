@@ -20,23 +20,42 @@ int		line_trim(char **line)
 	return (1);
 }
 
+int		magic_free(void *ptr)
+{
+	free(ptr);
+	ptr = NULL;
+	return (0);
+}
+
+int		command_free(char *args[], char *line, char *bin)
+{
+	char	**tmp;
+
+	tmp = args;
+	while (tmp && *tmp)
+	{
+		free(*tmp++);
+		//*tmp++ = NULL;
+	}
+	free(args);
+	args = NULL;
+	free(line);
+	line = NULL;
+	free(bin);
+	bin = NULL;
+	return (0);
+}
+
 int		command(char *line, t_list *env)
 {
 	char	*bin;
 	char	**args;
-	char	**tmp;
 
 	if (!line_trim(&line))
-	{
-		free(line);
-		return (0);
-	}
+		return (magic_free(line));
 	args = ft_strsplit(line, ' ');
 	if (!args || !args[0] || !args[0][0])
-	{
-		free(line);
-		return (0);
-	}
+		return (magic_free(line));
 	bin = get_path(env, args[0]);
 	if (!ft_strcmp(args[0], "exit"))
 		ft_exit();
@@ -53,17 +72,7 @@ int		command(char *line, t_list *env)
 		print_error(1, args[0]);
 	else if (bin == NULL || exec(bin, args, env) == -1)
 		print_error(2, args[0]);
-
-	tmp = args;
-
-	while (tmp && *tmp)
-	{
-		free(*tmp++);
-	}
-	free(args);
-	free(line);
-	free(bin);
-	return (0);
+	return (command_free(args, line, bin));
 }
 
 int		exec(char *bin, char *args[], t_list *env)
