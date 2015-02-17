@@ -47,16 +47,16 @@ char	*get_data(t_list *env, char *key)
 	}
 	return (NULL);
 }
-
+/*
 void	free_path(t_path *path)
 {
 	path->tmp = path->paths;
-	while (path->tmp && *path->tmp)
-		free(*path->tmp++);
+	while (path->tmp)
+		free(path->tmp++);
 	free(path->paths);
-}
+}*/
 
-char	*get_path(t_list *env, char *bin)//ca fuit ici
+char	*get_path(t_list *env, char *bin)										//ca fuit ici
 {
 	t_path		path;
 
@@ -70,7 +70,7 @@ char	*get_path(t_list *env, char *bin)//ca fuit ici
 	path.ret = NULL;
 	while (path.tmp && *path.tmp)
 	{
-		ft_kebab(path.buff, *path.tmp, "/", bin, NULL);
+		ft_kebab(path.buff, *(path.tmp), "/", bin, NULL);
 		if (!stat(path.buff, &path.stat_buff))
 		{
 			if (!(path.stat_buff.st_mode & 1))
@@ -79,9 +79,11 @@ char	*get_path(t_list *env, char *bin)//ca fuit ici
 				path.ret = ft_strdup(path.buff);
 			break ;
 		}
-		path.tmp++;
+		free(*(path.tmp));
+		(path.tmp)++;
 	}
-	free_path(&path);
+	free(path.paths);
+	//free_path(&path);
 	return (path.ret);
 }
 

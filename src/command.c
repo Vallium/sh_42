@@ -28,6 +28,7 @@ int		command(char *line, t_list *env)
 	if (!line_trim(&line))
 		return (0);
 	args = ft_strsplit(line, ' ');
+	free(line);
 	if (!args || !args[0] || !args[0][0])
 		return (0);
 	bin = get_path(env, args[0]);
