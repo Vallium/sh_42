@@ -38,11 +38,9 @@ int		c_env(t_list *env, char *args[])
 
 int		c_setenv(t_list *env, char *args[])
 {
-	t_list			*tmp;
-	t_list_elem		*elem;
-	t_list_elem		new;
+	t_setenv	senv;
 
-	tmp = env;
+	senv.tmp = env;
 	if (!args[1] || !args[1][0])
 		return (0);
 	if (args[2] && args[3])
@@ -50,20 +48,20 @@ int		c_setenv(t_list *env, char *args[])
 		ft_putendl_fd("setenv: Too many arguments.", 2);
 		return (0);
 	}
-	while (tmp != NULL)
+	while (senv.tmp != NULL)
 	{
-		elem = tmp->content;
-		if (!ft_strcmp(elem->key, args[1]))
+		senv.elem = senv.tmp->content;
+		if (!ft_strcmp(senv.elem->key, args[1]))
 		{
-			free(elem->data);
-			elem->data = (args[2] ? ft_strdup(args[2]) : ft_strnew(1));
+			free(senv.elem->data);
+			senv.elem->data = (args[2] ? ft_strdup(args[2]) : ft_strnew(1));
 			return (0);
 		}
-		tmp = tmp->next;
+		senv.tmp = senv.tmp->next;
 	}
-	new.key = ft_strdup(args[1]);
-	new.data = args[2] ? ft_strdup(args[2]) : ft_strnew(1);
-	ft_lstsmartpushback(&env, ft_lstnew(&new, sizeof(t_list_elem)));
+	senv.new.key = ft_strdup(args[1]);
+	senv.new.data = args[2] ? ft_strdup(args[2]) : ft_strnew(1);
+	ft_lstsmartpushback(&env, ft_lstnew(&senv.new, sizeof(t_list_elem)));
 	return (0);
 }
 

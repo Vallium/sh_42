@@ -41,6 +41,13 @@ typedef struct		s_path
 	struct stat		stat_buff;
 }					t_path;
 
+typedef struct		s_setenv
+{
+	t_list			*tmp;
+	t_list_elem		*elem;
+	t_list_elem		new;
+}					t_setenv;
+
 typedef struct		s_usetenv
 {
 	t_list			**tmp;

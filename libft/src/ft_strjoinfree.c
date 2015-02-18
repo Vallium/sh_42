@@ -35,6 +35,7 @@ char			*ft_strjoinfree(char *s1, const char *s2)
 	while (*s2)
 		*dst++ = *s2++;
 	*dst = 0;
+	save_s1 = NULL;
 	free(save_s1);
 	return (ret);
 }
