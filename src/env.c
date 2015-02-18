@@ -51,7 +51,7 @@ char	*get_data(t_list *env, char *key)
 void	free_path(t_path *path)
 {
 	path->tmp = path->paths;
-	while (path->tmp && *path->tmp)
+	while (*path->tmp)
 	{
 		free(*(path->tmp));
 		*path->tmp = NULL;
@@ -72,7 +72,7 @@ char	*get_path(t_list *env, char *bin)										//ca fuit ici
 	path.paths = ft_strsplit(path.path, ':');
 	path.tmp = path.paths;
 	path.ret = NULL;
-	while (path.tmp && *path.tmp)
+	while (*path.tmp)
 	{
 		ft_kebab(path.buff, *(path.tmp), "/", bin, NULL);
 		if (!stat(path.buff, &path.stat_buff))

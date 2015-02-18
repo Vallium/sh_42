@@ -11,16 +11,28 @@
 /* ************************************************************************** */
 
 #include <string.h>
+#include <stdlib.h>
 #include "libft.h"
 
-void	ft_lstdelnode(t_list **node)
+void	rm(void *content, size_t size)
 {
-	if ((*node)->next != NULL)
+	(void)size;
+	free(content);
+}
+
+void	ft_lstdelnode(t_list **lst)
+{
+	//t_list	*tmp;
+	if ((*lst)->next != NULL)
 	{
-		(*node)->content = (*node)->next->content;
-		(*node)->content_size = (*node)->next->content_size;
-		(*node)->next = (*node)->next->next;
+		//tmp = (*lst)->next;
+		(*lst)->content = (*lst)->next->content;
+		(*lst)->content_size = (*lst)->next->content_size;
+		(*lst)->next = (*lst)->next->next;
+		//ft_lstdelone(&tmp, rm);
 	}
 	else
-		*node = NULL;
+	{
+		//ft_lstdelone(lst, rm);
+	}
 }
