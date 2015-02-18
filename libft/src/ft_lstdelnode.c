@@ -22,20 +22,20 @@ void	rm(void *content, size_t size)
 
 void	ft_lstdelnode(t_list **lst)
 {
-	t_list	**tmp;
+	//t_list	**tmp;
 	if ((*lst)->next != NULL)
 	{
-		tmp = lst;
-		(*tmp) = (*lst)->next;
-		free((*lst)->content);
+		//tmp = lst;
+		//(*tmp) = (*lst)->next;
+		//free((*lst)->content);
 		(*lst)->content = NULL;
 		(*lst)->content = (*lst)->next->content;
 		(*lst)->content_size = (*lst)->next->content_size;
 		(*lst)->next = (*lst)->next->next;
-		free((*tmp)->content);
-		(*tmp)->content = NULL;
-		free(*tmp);
-		*tmp = NULL;
+		//free((*tmp)->content);
+		//(*tmp)->content = NULL;
+		//free(*tmp);
+		//*tmp = NULL;
 		//ft_lstdelone(&tmp, rm);
 	}
 	else

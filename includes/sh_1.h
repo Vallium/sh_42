@@ -53,6 +53,7 @@ typedef struct		s_usetenv
 	t_list			**tmp;
 	t_list			*last;
 	t_list_elem		*elem;
+	t_list			*tmp2;
 	int				i;
 }					t_usetenv;
 
@@ -75,7 +76,7 @@ int					c_cd(t_list *env, char *args[]);
 
 int					exec(char *bin, char *args[], t_list *env);
 void				prompt(t_list *env);
-int					command(char *line, t_list *env);
+int					command(char *line, t_list **env);
 
 void				print_error(int ind, char *args);
 void				ft_exit();

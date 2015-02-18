@@ -42,7 +42,7 @@ int		main(int argc, char *argv[], char *envp[])
 	{
 		prompt(env);
 		get_next_line(0, &line);
-		command(line, env);
+		command(line, &env);
 	}
 	return (0);
 }

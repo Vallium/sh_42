@@ -74,23 +74,42 @@ void	del_content(t_list *lst)
 	free(elem->key);
 }
 
+void	del_test(void *content, size_t size)
+{
+	t_list_elem	*elem;
+
+	elem = (t_list_elem*)content;
+	free(elem->data);
+	free(elem->key);
+	(void)size;
+}
+
 int		c_unsetenv(t_list **env, char *args[])
 {
 	t_usetenv	usenv;
 
-	usenv.tmp = env;
 	usenv.i = 1;
 	usenv.last = NULL;
+	usenv.tmp = NULL;
 	if (!args[1] || !args[1][0])
 		return (0);
 	while (args[usenv.i++])
 	{
+		usenv.tmp = env;
+		usenv.elem = (*usenv.tmp)->content;
+		if (!ft_strcmp(usenv.elem->key , args[usenv.i - 1]))					// if premier
+		{
+			usenv.tmp2 = *env;
+			(*env) = (*env)->next;
+			ft_lstdelone(&usenv.tmp2, del_test);
+			continue ;
+		}
 		while (*usenv.tmp)
 		{
 			usenv.elem = (*usenv.tmp)->content;
 			if (!ft_strcmp(usenv.elem->key, args[usenv.i - 1]))
 			{
-				if (!(*usenv.tmp)->next)
+				if (!(*usenv.tmp)->next)		// free tmp last
 					usenv.last->next = NULL;
 				else
 				{

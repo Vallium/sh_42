@@ -49,7 +49,7 @@ int		command_free(char *args[], char *line, char *bin)
 	return (0);
 }
 
-int		command(char *line, t_list *env)
+int		command(char *line, t_list **env)
 {
 	char	*bin;
 	char	**args;
@@ -59,21 +59,21 @@ int		command(char *line, t_list *env)
 	args = ft_strsplit(line, ' ');
 	if (!args || !args[0] || !args[0][0])
 		return (magic_free(line));
-	bin = get_path(env, args[0]);
+	bin = get_path(*env, args[0]);
 	if (!ft_strcmp(args[0], "exit"))
 		ft_exit();
 	else if (!ft_strcmp(args[0], "cd"))
-		c_cd(env, args);
+		c_cd(*env, args);
 	else if (!ft_strcmp(args[0], "env") ||
 			(!ft_strcmp(args[0], "setenv") && !args[1]))
-		c_env(env, args);
+		c_env(*env, args);
 	else if (ft_strcmp(args[0], "unsetenv") == 0)
-		c_unsetenv(&env, args);
+		c_unsetenv(env, args);
 	else if (ft_strcmp(args[0], "setenv") == 0)
-		c_setenv(env, args);
+		c_setenv(*env, args);
 	else if (bin == (char*)1)
 		print_error(1, args[0]);
-	else if (bin == NULL || exec(bin, args, env) == -1)
+	else if (bin == NULL || exec(bin, args, *env) == -1)
 		print_error(2, args[0]);
 	return (command_free(args, line, bin));
 }
