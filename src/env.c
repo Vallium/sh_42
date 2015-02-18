@@ -60,15 +60,13 @@ void	free_path(t_path *path)
 	free(path->paths);
 }
 
-char	*get_path(t_list *env, char *bin)										//ca fuit ici
+char	*get_path(t_list *env, char *bin)
 {
 	t_path		path;
 
 	path.path = get_data(env, "PATH");
-	if (!path.path)
-		return (bin);
-	if (!stat(bin, &path.stat_buff))
-		return (bin);
+	if (!path.path || !stat(bin, &path.stat_buff))
+		return (ft_strdup(bin));
 	path.paths = ft_strsplit(path.path, ':');
 	path.tmp = path.paths;
 	path.ret = NULL;
@@ -85,7 +83,6 @@ char	*get_path(t_list *env, char *bin)										//ca fuit ici
 		}
 		(path.tmp)++;
 	}
-	//free(path.paths);
 	free_path(&path);
 	return (path.ret);
 }

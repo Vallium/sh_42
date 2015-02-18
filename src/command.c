@@ -34,15 +34,18 @@ int		command_free(char *args[], char *line, char *bin)
 	tmp = args;
 	while (tmp && *tmp)
 	{
-		free(*tmp++);
-		//*tmp++ = NULL;
+		free(*tmp);
+		*tmp++ = NULL;
 	}
 	free(args);
 	args = NULL;
 	free(line);
 	line = NULL;
-	free(bin);
-	bin = NULL;
+	if (bin)
+	{
+		free(bin);
+		bin = NULL;
+	}
 	return (0);
 }
 
