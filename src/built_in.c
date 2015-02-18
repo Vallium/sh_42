@@ -93,7 +93,13 @@ int		c_unsetenv(t_list **env, char *args[])
 				if (!(*usenv.tmp)->next)
 					usenv.last->next = NULL;
 				else
+				{
+					free(usenv.elem->data);
+					usenv.elem->data = NULL;
+					free(usenv.elem->key);
+					usenv.elem->key = NULL;
 					ft_lstdelnode(usenv.tmp);
+				}
 				break ;
 			}
 			usenv.last = *usenv.tmp;
