@@ -86,44 +86,52 @@ void	del_test(void *content, size_t size)
 
 int		c_unsetenv(t_list **env, char *args[])
 {
-	t_usetenv	usenv;
+	t_list	*current;
+	t_list	*prev;
+	t_list	*to_delete;
 
-	usenv.i = 1;
-	usenv.last = NULL;
-	usenv.tmp = NULL;
 	if (!args[1] || !args[1][0])
 		return (0);
-	while (args[usenv.i++])
+	while (*args)
 	{
-		usenv.tmp = env;
-		usenv.elem = (*usenv.tmp)->content;
-		if (!ft_strcmp(usenv.elem->key , args[usenv.i - 1]))					// if premier
+		current = *env;
+		if (!ft_strcmp(((t_list_elem *)current->content)->key , *args))					// if premier
 		{
-			usenv.tmp2 = *env;
 			(*env) = (*env)->next;
-			ft_lstdelone(&usenv.tmp2, del_test);
+			//ft_lstdelone(current, del_test);
+			args++;
 			continue ;
 		}
-		while (*usenv.tmp)
+		prev = current;
+		current = current->next;
+		while (current)
 		{
-			usenv.elem = (*usenv.tmp)->content;
-			if (!ft_strcmp(usenv.elem->key, args[usenv.i - 1]))
+			if (!ft_strcmp(((t_list_elem *)current->content)->key, *args))
 			{
-				if (!(*usenv.tmp)->next)		// free tmp last
-					usenv.last->next = NULL;
+				if (!current->next)		// free tmp last
+				{
+					// free
+					prev->next = NULL;
+				}
 				else
 				{
-					free(usenv.elem->data);
-					usenv.elem->data = NULL;
-					free(usenv.elem->key);
-					usenv.elem->key = NULL;
-					ft_lstdelnode(usenv.tmp);
+					to_delete = current->next;
+					current->content = to_delete->content;
+					current->content_size = to_delete->content_size;
+					current->next = to_delete->next;
+
+					//free(usenv.elem->data);
+					//usenv.elem->data = NULL;
+					//free(usenv.elem->key);
+					//usenv.elem->key = NULL;
+					//ft_lstdelnode(usenv.tmp);
 				}
 				break ;
 			}
-			usenv.last = *usenv.tmp;
-			*usenv.tmp = (*usenv.tmp)->next;
+			prev = current;
+			current = current->next;
 		}
+		args++;
 	}
 	return (0);
 }
