@@ -57,6 +57,7 @@ int		readline(t_gnl *all, char *str)
 		{
 			tmp = all->lst;
 			all->lst = all->lst->next;
+			all->pos = (char *)(all->lst->content);
 			ft_lstdelone(&tmp, del);
 			if ((*all->pos != '\n' && !all->lst))
 				return (0);

@@ -15,7 +15,7 @@
 
 void			ft_putendl(const char *s)
 {
-	while (*s)
+	while (*s != '\0')
 		write(1, s++, 1);
 	ft_putchar('\n');
 }

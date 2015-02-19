@@ -72,6 +72,8 @@ void	del_content(t_list *lst)
 	elem = lst->content;
 	free(elem->data);
 	free(elem->key);
+	elem->data = NULL;
+	elem->key = NULL;
 }
 
 void	del_test(void *content, size_t size)
@@ -81,6 +83,8 @@ void	del_test(void *content, size_t size)
 	elem = (t_list_elem*)content;
 	free(elem->data);
 	free(elem->key);
+	elem->data = NULL;
+	elem->key = NULL;
 	(void)size;
 }
 
@@ -89,6 +93,7 @@ int		c_unsetenv(t_list **env, char *args[])
 	t_list	*current;
 	t_list	*prev;
 	t_list	*to_delete;
+	t_list_elem *to_del;
 
 	if (!args[1] || !args[1][0])
 		return (0);
@@ -101,6 +106,7 @@ int		c_unsetenv(t_list **env, char *args[])
 			args++;
 			free(((t_list_elem *)current->content)->data);
 			free(((t_list_elem *)current->content)->key);
+			free(current->content);
 			free(current);
 			continue ;
 		}
@@ -114,18 +120,25 @@ int		c_unsetenv(t_list **env, char *args[])
 				{
 					free(((t_list_elem *)current->content)->data);
 					free(((t_list_elem *)current->content)->key);
+					free(current->content);
 					free(current);
 					prev->next = NULL;
 				}
 				else
 				{
-					to_delete = current->next;
-					current->content = to_delete->content;
-					current->content_size = to_delete->content_size;
-					current->next = to_delete->next;
-					//free(((t_list_elem *)to_delete->content)->data);
-					//free(((t_list_elem *)to_delete->content)->key);
-					//free(to_delete);
+					// stocke donner a supprimer
+
+					to_delete = current;
+					to_del = current->content;
+
+					current->content = current->next->content;
+					current->content_size = current->next->content_size;
+					current->next = current->next->next;
+
+					free(((t_list_elem *)to_delete->content)->data);
+					free(((t_list_elem *)to_delete->content)->key);
+					free(to_del);
+					free(to_delete);
 				}
 				break ;
 			}
