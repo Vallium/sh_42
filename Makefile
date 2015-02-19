@@ -86,7 +86,7 @@ fclean: clean
 normeLibft:
 	@make -C libft norme
 
-norme: # normeLibft
+norme: normeLibft
 	@$(NORMINETTE) $(SRC_DIR)/ $(HEAD_DIR)/
 
 re: fclean
