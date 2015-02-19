@@ -48,14 +48,14 @@ typedef struct		s_setenv
 	t_list_elem		new;
 }					t_setenv;
 
-typedef struct		s_usetenv
-{
-	t_list			**tmp;
-	t_list			*last;
-	t_list_elem		*elem;
-	t_list			*tmp2;
-	int				i;
-}					t_usetenv;
+//typedef struct		s_usetenv
+//{
+//	t_list			**tmp;
+//	t_list			*last;
+//	t_list_elem		*elem;
+//	t_list			*tmp2;
+//	int				i;
+//}					t_usetenv;
 
 typedef struct		s_cd
 {
