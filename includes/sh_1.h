@@ -60,6 +60,8 @@ typedef struct		s_cd
 {
 	char			*path;
 	char			*home;
+	t_list_elem		*pwd;
+	t_list_elem		*old;
 }					t_cd;
 
 t_list				*get_env(char *envp[]);
@@ -68,7 +70,8 @@ char				**env_to_str(t_list *env);
 char				*get_data(t_list *env, char *key);
 
 int					command_free(char *args[], char *line, char *bin);
-int					free_home_path(t_cd *cd);
+int					free_home_path(t_list *env, t_cd *cd);
+void				free_path(t_path *path);
 int					magic_free(void *ptr);
 
 int					c_env(t_list *env, char *args[]);
@@ -82,5 +85,7 @@ int					command(char *line, t_list **env);
 
 void				print_error(int ind, char *args);
 void				ft_exit();
+
+t_list_elem			*get_elem(t_list *env, char *key);
 
 #endif

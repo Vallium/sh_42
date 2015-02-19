@@ -16,17 +16,30 @@
 void	prompt(t_list *env)
 {
 	char	*user;
+	char	*home;
+	char	*pwd;
 
+	pwd = getwd(0);
 	user = get_data(env, "USER");
+	home = get_data(env, "HOME");
 	ft_putchar('\033');
 	ft_putstr("[36m# ");
 	if (user)
 		ft_putstr(user);
 	else
 		ft_putstr("LongZboobDu06");
-	ft_putstr(" $ ");
 	ft_putchar('\033');
-	ft_putstr("[39m");
+	ft_putstr("[39m in ");
+	ft_putchar('\033');
+	ft_putstr("[33m");
+	if (home && ft_strstr(pwd, home))
+		ft_putchar('~'),
+		ft_putstr(ft_strstr(pwd, home) + ft_strlen(home));
+	else
+		ft_putstr(pwd);
+	ft_putchar('\033');
+	ft_putstr("[39m $ ");
+	free(pwd);
 }
 
 int		main(int argc, char *argv[], char *envp[])

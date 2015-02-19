@@ -89,7 +89,5 @@ int		c_cd(t_list *env, char *args[])
 			return (0);
 		}
 	}
-	if (chdir(cd.path))
-		print_error(3, cd.path);
-	return (free_home_path(&cd));
+	return (free_home_path(env, &cd));
 }

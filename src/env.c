@@ -12,7 +12,7 @@
 
 #include "sh_1.h"
 
-t_list	*get_env(char *envp[])
+t_list			*get_env(char *envp[])
 {
 	t_list_elem	elem;
 	t_list		*env;
@@ -32,7 +32,7 @@ t_list	*get_env(char *envp[])
 	return (env);
 }
 
-char	*get_data(t_list *env, char *key)
+char			*get_data(t_list *env, char *key)
 {
 	t_list		*tmp;
 	t_list_elem	*elem;
@@ -48,19 +48,23 @@ char	*get_data(t_list *env, char *key)
 	return (NULL);
 }
 
-void	free_path(t_path *path)
+t_list_elem		*get_elem(t_list *env, char *key)
 {
-	path->tmp = path->paths;
-	while (*path->tmp)
+	t_list		*tmp;
+	t_list_elem	*elem;
+
+	tmp = env;
+	while (tmp)
 	{
-		free(*(path->tmp));
-		*path->tmp = NULL;
-		path->tmp++;
+		elem = tmp->content;
+		if (!ft_strcmp(elem->key, key))
+			return (elem);
+		tmp = tmp->next;
 	}
-	free(path->paths);
+	return (NULL);
 }
 
-char	*get_path(t_list *env, char *bin)
+char			*get_path(t_list *env, char *bin)
 {
 	t_path		path;
 
@@ -87,7 +91,7 @@ char	*get_path(t_list *env, char *bin)
 	return (path.ret);
 }
 
-char	**env_to_str(t_list *env)
+char			**env_to_str(t_list *env)
 {
 	char		**strenv;
 	t_list		*tmp;
