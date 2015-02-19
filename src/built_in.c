@@ -126,17 +126,17 @@ int		c_unsetenv(t_list **env, char *args[])
 				}
 				else
 				{
-					// stocke donner a supprimer
+					// stocke data a supprimer
 
-					to_delete = current;
+					to_delete = current->next;
 					to_del = current->content;
 
 					current->content = current->next->content;
 					current->content_size = current->next->content_size;
 					current->next = current->next->next;
 
-					free(((t_list_elem *)to_delete->content)->data);
-					free(((t_list_elem *)to_delete->content)->key);
+					free(to_del->data);
+					free(to_del->key);
 					free(to_del);
 					free(to_delete);
 				}
