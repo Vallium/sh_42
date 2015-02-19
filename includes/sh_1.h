@@ -20,9 +20,12 @@
 
 # ifdef __APPLE__
 #  include <sys/types.h>
+#  define  GET_CWD getwd(0);
 # elif __linux
 #  include <sys/types.h>
 #  include <sys/wait.h>
+#  include <unistd.h>
+#  define  GET_CWD get_current_dir_name()
 # endif
 
 typedef struct		s_list_elem

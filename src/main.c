@@ -19,7 +19,7 @@ void	prompt(t_list *env)
 	char	*home;
 	char	*pwd;
 
-	pwd = getwd(0);
+	pwd = GET_CWD;
 	user = get_data(env, "USER");
 	home = get_data(env, "HOME");
 	ft_putchar('\033');
