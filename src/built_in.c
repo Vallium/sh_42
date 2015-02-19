@@ -105,13 +105,26 @@ typedef struct		s_usenv
 	t_list_elem *to_del;
 }					t_usenv;
 
+void	free_mid_node(t_usenv *usenv)
+{
+	usenv->to_delete = usenv->current->next;
+	usenv->to_del = usenv->current->content;
+	usenv->current->content = usenv->current->next->content;
+	usenv->current->content_size = usenv->current->next->content_size;
+	usenv->current->next = usenv->current->next->next;
+	free(usenv->to_del->data);
+	free(usenv->to_del->key);
+	free(usenv->to_del);
+	free(usenv->to_delete);
+}
+
 void	unsetenv_rest(t_usenv *usenv, char *args)
 {
 	while (usenv->current)
 	{
 		if (!ft_strcmp(((t_list_elem *)usenv->current->content)->key, args))
 		{
-			if (!usenv->current->next)		// free tmp last
+			if (!usenv->current->next)
 			{
 				free(((t_list_elem *)usenv->current->content)->data);
 				free(((t_list_elem *)usenv->current->content)->key);
@@ -120,20 +133,7 @@ void	unsetenv_rest(t_usenv *usenv, char *args)
 				usenv->prev->next = NULL;
 			}
 			else
-			{
-				// stocke data a supprimer
-				usenv->to_delete = usenv->current->next;
-				usenv->to_del = usenv->current->content;
-
-				usenv->current->content = usenv->current->next->content;
-				usenv->current->content_size = usenv->current->next->content_size;
-				usenv->current->next = usenv->current->next->next;
-
-				free(usenv->to_del->data);
-				free(usenv->to_del->key);
-				free(usenv->to_del);
-				free(usenv->to_delete);
-			}
+				free_mid_node(usenv);
 			break ;
 		}
 		usenv->prev = usenv->current;
@@ -143,11 +143,6 @@ void	unsetenv_rest(t_usenv *usenv, char *args)
 
 int		c_unsetenv(t_list **env, char *args[])
 {
-//	t_list	*current;
-//	t_list	*prev;
-//	t_list	*to_delete;
-//	t_list_elem *to_del;
-
 	t_usenv	usenv;
 
 	if (!args[1] || !args[1][0])
@@ -158,49 +153,12 @@ int		c_unsetenv(t_list **env, char *args[])
 		if (!ft_strcmp(((t_list_elem *)usenv.current->content)->key , *args))
 		{
 			unsetenv_first(env, usenv.current);
-//			(*env) = (*env)->next;
 			args++;
-//			free(((t_list_elem *)current->content)->data);
-//			free(((t_list_elem *)current->content)->key);
-//			free(current->content);
-//			free(current);
 			continue ;
 		}
 		usenv.prev = usenv.current;
 		usenv.current = usenv.current->next;
 		unsetenv_rest(&usenv, *args);
-//		while (usenv.current)
-//		{
-//			if (!ft_strcmp(((t_list_elem *)usenv.current->content)->key, *args))
-//			{
-//				if (!usenv.current->next)		// free tmp last
-//				{
-//					free(((t_list_elem *)usenv.current->content)->data);
-//					free(((t_list_elem *)usenv.current->content)->key);
-//					free(usenv.current->content);
-//					free(usenv.current);
-//					usenv.prev->next = NULL;
-//				}
-//				else
-//				{
-//					// stocke data a supprimer
-//					usenv.to_delete = usenv.current->next;
-//					usenv.to_del = usenv.current->content;
-//
-//					usenv.current->content = usenv.current->next->content;
-//					usenv.current->content_size = usenv.current->next->content_size;
-//					usenv.current->next = usenv.current->next->next;
-//
-//					free(usenv.to_del->data);
-//					free(usenv.to_del->key);
-//					free(usenv.to_del);
-//					free(usenv.to_delete);
-//				}
-//				break ;
-//			}
-//			usenv.prev = usenv.current;
-//			usenv.current = usenv.current->next;
-//		}
 		args++;
 	}
 	return (0);
