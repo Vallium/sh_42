@@ -57,7 +57,7 @@ char		**ft_strsplit(const char *s, char c)
 	if (!s)
 		return (0);
 	w = wc(s, c);
-	ret = (char **)malloc(sizeof(char *) * w + 1);
+	ret = (char **)malloc(sizeof(char *) * (w + 1));
 	if (!ret)
 		return (NULL);
 	i = 0;

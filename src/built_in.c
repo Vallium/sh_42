@@ -17,7 +17,7 @@ int		c_env(t_list *env, char *args[])
 	t_list		*tmp;
 	t_list_elem	*elem;
 
-	if (args[1])
+	if (args[1] != NULL)
 	{
 		ft_putstr_fd("env: ", 2);
 		ft_putstr_fd(args[1], 2);
@@ -98,8 +98,10 @@ int		c_unsetenv(t_list **env, char *args[])
 		if (!ft_strcmp(((t_list_elem *)current->content)->key , *args))					// if premier
 		{
 			(*env) = (*env)->next;
-			//ft_lstdelone(current, del_test);
 			args++;
+			free(((t_list_elem *)current->content)->data);
+			free(((t_list_elem *)current->content)->key);
+			free(current);
 			continue ;
 		}
 		prev = current;
@@ -110,7 +112,9 @@ int		c_unsetenv(t_list **env, char *args[])
 			{
 				if (!current->next)		// free tmp last
 				{
-					// free
+					free(((t_list_elem *)current->content)->data);
+					free(((t_list_elem *)current->content)->key);
+					free(current);
 					prev->next = NULL;
 				}
 				else
@@ -119,12 +123,9 @@ int		c_unsetenv(t_list **env, char *args[])
 					current->content = to_delete->content;
 					current->content_size = to_delete->content_size;
 					current->next = to_delete->next;
-
-					//free(usenv.elem->data);
-					//usenv.elem->data = NULL;
-					//free(usenv.elem->key);
-					//usenv.elem->key = NULL;
-					//ft_lstdelnode(usenv.tmp);
+					//free(((t_list_elem *)to_delete->content)->data);
+					//free(((t_list_elem *)to_delete->content)->key);
+					//free(to_delete);
 				}
 				break ;
 			}
