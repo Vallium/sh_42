@@ -83,11 +83,9 @@ fclean: clean
 	@make -C libft fclean
 	@rm -f $(STATIC_EXE) $(DEBUG_EXE)
 
-normeLibft:
-	@make -C libft norme
-
-norme: normeLibft
-	@$(NORMINETTE) $(SRC_DIR)/ $(HEAD_DIR)/
+norme:
+	$(NORMINETTE) $(SRC_DIR)/ $(HEAD_DIR)/
+	make -C libft norme
 
 re: fclean
 	make
