@@ -7,4 +7,3 @@ install:
   - make -j
   - make debug -j
 script:
-  - echo "env\n" | ./ft_minishell_debug
