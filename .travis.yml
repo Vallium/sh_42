@@ -4,6 +4,7 @@ compiler:
   - gcc
 
 install:
-  - make -j
-  - make debug -j
+
 script:
+  - make
+  - make debug
