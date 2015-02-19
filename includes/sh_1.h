@@ -62,6 +62,7 @@ typedef struct		s_cd
 	char			*home;
 	t_list_elem		*pwd;
 	t_list_elem		*old;
+	t_list_elem		elem;
 }					t_cd;
 
 t_list				*get_env(char *envp[]);

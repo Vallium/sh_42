@@ -71,14 +71,15 @@ int		c_cd(t_list *env, char *args[])
 
 	cd.home = get_data(env, "HOME");
 	if (cd.home)
-	{
 		if (args && args[1] && args[1][0] == '~')
 			cd.path = ft_strjoin(cd.home, args[1] + 1);
+		else if (args && args[1] && args[1][0] == '-'
+				&& !args[1][1] && get_data(env, "OLDPWD"))
+			cd.path = ft_strdup(get_data(env, "OLDPWD"));
 		else if (args && args[1])
 			cd.path = ft_strdup(args[1]);
 		else
 			cd.path = ft_strdup(cd.home);
-	}
 	else
 	{
 		if (args && args[1])

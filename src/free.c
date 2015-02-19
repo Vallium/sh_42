@@ -45,22 +45,20 @@ int		free_home_path(t_list *env, t_cd *cd)
 {
 	cd->old = get_elem(env, "OLDPWD");
 	cd->pwd = get_elem(env, "PWD");
-
-	t_list_elem elem;
-
-
-
 	if (!cd->pwd)
 	{
-		elem.key = ft_strdup("PATH");
-		elem.data = getwd(0);
-		ft_lstsmartpushback(&env, ft_lstnew(&senv.new, sizeof(t_list_elem)));
+		cd->elem.key = ft_strdup("PWD");
+		cd->elem.data = getwd(0);
+		ft_lstsmartpushback(&env, ft_lstnew(&cd->elem, sizeof(t_list_elem)));
+		cd->pwd = get_elem(env, "PWD");
 	}
-
 	if (cd->old)
-	{
-		free(cd->old->data);
+		free(cd->old->data),
 		cd->old->data = cd->pwd->data;
+	else
+		cd->elem.key = ft_strdup("OLDPWD"),
+		cd->elem.data = getwd(0),
+		ft_lstsmartpushback(&env, ft_lstnew(&cd->elem, sizeof(t_list_elem)));
 	if (chdir(cd->path))
 		print_error(3, cd->path);
 	cd->pwd->data = getwd(0);
