@@ -3,22 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalliot  <aalliot@student.42.fr>           +#+  +:+       +#+        */
+/*   By: adoussau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/11/13 14:13:14 by aalliot           #+#    #+#             */
-/*   Updated: 2014/11/27 19:21:17 by aalliot          ###   ########.fr       */
+/*   Created: 2015/02/19 15:56:25 by adoussau          #+#    #+#             */
+/*   Updated: 2015/02/19 15:56:30 by adoussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-typedef struct	s_gnl
-{
-	t_list		*lst;		// pointeur sur chainon
-	char		*pos;		// pointeur sur contenu du chainon
-}				t_gnl;
-
-int		len(t_gnl all)
+int					len(t_gnl all)
 {
 	unsigned int	ret;
 
@@ -28,48 +22,29 @@ int		len(t_gnl all)
 		ret++;
 		all.pos++;
 		if ((unsigned int)((void*)all.pos - all.lst->content)
-			 == all.lst->content_size)											// si fin du maillon
+			== all.lst->content_size)
 		{
-			all.lst = all.lst->next;											// maillon suivant
-			if (!all.lst)														// si plus de maillon
+			all.lst = all.lst->next;
+			if (!all.lst)
 				break ;
-			all.pos = (char *)(all.lst->content);								// pointeur place au debut du content maillon suivant
+			all.pos = (char *)(all.lst->content);
 		}
 	}
 	return (ret);
 }
 
-void	del(void *ptr, size_t size)
+void				del(void *ptr, size_t size)
 {
 	(void)size;
 	free(ptr);
 }
 
-int		readline(t_gnl *all, char *str)
+void				last(t_gnl *all)
 {
-	//char			*localcontent;
-	t_list          *tmp;
+	t_list		*tmp;
 
-	while (*all->pos != '\n')													// while pas de fin de ligne
-	{
-		*str++ = *all->pos++;													// copie
-		if ((unsigned int)((void*)all->pos - all->lst->content) == all->lst->content_size)		// si fin du maillon
-		{
-			tmp = all->lst;
-			all->lst = all->lst->next;
-			all->pos = (char *)(all->lst->content);
-			ft_lstdelone(&tmp, del);
-			if ((*all->pos != '\n' && !all->lst))
-				return (0);
-			if (!all->lst)
-				return (1);
-			all->pos = (char *)(all->lst->content);
-		}
-	}
-	*str = 0;
-	all->pos++;
 	if ((unsigned int)((void*)all->pos - all->lst->content)
-		== all->lst->content_size)											// si fin de tout les maillons
+		== all->lst->content_size)
 	{
 		if (all->lst)
 		{
@@ -80,36 +55,59 @@ int		readline(t_gnl *all, char *str)
 				all->pos = all->lst->content;
 		}
 	}
+}
+
+int					readline(t_gnl *all, char *str)
+{
+	t_list		*tmp;
+
+	while (*all->pos != '\n')
+	{
+		*str++ = *all->pos++;
+		if ((unsigned int)((void*)all->pos - all->lst->content)
+				== all->lst->content_size)
+		{
+			tmp = all->lst;
+			all->lst = all->lst->next;
+			all->pos = (char *)(all->lst->content);
+			ft_lstdelone(&tmp, del);
+			if ((*all->pos != '\n' && !all->lst))
+				return (0);
+			if (!all->lst)
+				return (1);
+			all->pos = (char *)all->lst->content;
+		}
+	}
+	*str = 0;
+	all->pos++;
+	last(all);
 	return (1);
 }
 
-int		get_next_line(const int fd, char **line)
+int					get_next_line(const int fd, char **line)
 {
-	static t_gnl 		all = {NULL, NULL};
-	int					ret;
-	char				buff[BUFF_SIZE + 1];
+	static t_gnl	all = {NULL, NULL};
+	int				ret;
+	char			buff[BUFF_SIZE + 1];
 
-	if (!line || BUFF_SIZE <= 0 || fd < 0)										// gestion erreur
-		return (-1);
 	if (!all.lst)
 	{
-		while ((ret = read(fd, buff, BUFF_SIZE)))								// while je peut lire
+		while ((ret = read(fd, buff, BUFF_SIZE)))
 		{
-			if (ret == -1)														// si erreur
+			if (ret == -1)
 				return (-1);
-			ft_lstsmartpushback(&(all.lst), ft_lstnew((void *)buff, ret));			//save
+			ft_lstsmartpushback(&(all.lst), ft_lstnew((void *)buff, ret));
 			buff[ret] = 0;
-			if (ft_strchr(buff,'\n'))
-				break;
+			if (ft_strchr(buff, '\n'))
+				break ;
 		}
 		if (all.lst)
 			all.pos = all.lst->content;
 	}
 	if (all.lst)
 	{
-		int size = len(all);
-		*line = (char *)malloc(sizeof(char) * (size + 1));						// malloc une ligne
-		return (readline(&all, *line));												// remplie et renvoit une ligne
+		*line = (char *)malloc(sizeof(char) * (len(all) + 1));
+		return (readline(&all, *line));
 	}
 	return (0);
 }

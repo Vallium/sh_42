@@ -20,6 +20,12 @@
 # include <fcntl.h>
 # include <stdlib.h>
 
-int			get_next_line(int fd, char **line);
+int				get_next_line(int fd, char **line);
+
+typedef struct	s_gnl
+{
+	t_list		*lst;
+	char		*pos;
+}				t_gnl;
 
 #endif
