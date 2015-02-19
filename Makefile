@@ -16,7 +16,9 @@ DEBUG_EXE	= ft_minishell1_debug
 SRC		=	main.c		\
 			env.c		\
 			command.c	\
-			built_in.c
+			built_in.c	\
+			unsetenv.c	\
+			free.c
 
 UNAME_S := $(shell uname -s)
 

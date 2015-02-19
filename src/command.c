@@ -20,35 +20,6 @@ int		line_trim(char **line)
 	return (1);
 }
 
-int		magic_free(void *ptr)
-{
-	free(ptr);
-	ptr = NULL;
-	return (0);
-}
-
-int		command_free(char *args[], char *line, char *bin)
-{
-	char	**tmp;
-
-	tmp = args;
-	while (tmp && *tmp)
-	{
-		free(*tmp);
-		*tmp++ = NULL;
-	}
-	free(args);
-	args = NULL;
-	free(line);
-	line = NULL;
-	if (bin)
-	{
-		free(bin);
-		bin = NULL;
-	}
-	return (0);
-}
-
 int		command(char *line, t_list **env)
 {
 	char	*bin;
@@ -112,12 +83,12 @@ void	print_error(int ind, char *args)
 	if (ind == 1)
 	{
 		ft_putstr_fd(args, 2);
-		ft_putendl_fd(": Permission denied.", 2);
+		ft_putendl_fd(": permission denied.", 2);
 	}
 	else if (ind == 2)
 	{
 		ft_putstr_fd(args, 2);
-		ft_putendl_fd(": Command not found.", 2);
+		ft_putendl_fd(": command not found.", 2);
 	}
 	else if (ind == 3)
 	{

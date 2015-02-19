@@ -48,14 +48,13 @@ typedef struct		s_setenv
 	t_list_elem		new;
 }					t_setenv;
 
-//typedef struct		s_usetenv
-//{
-//	t_list			**tmp;
-//	t_list			*last;
-//	t_list_elem		*elem;
-//	t_list			*tmp2;
-//	int				i;
-//}					t_usetenv;
+typedef struct		s_usenv
+{
+	t_list			*current;
+	t_list			*prev;
+	t_list			*to_delete;
+	t_list_elem		*to_del;
+}					t_usenv;
 
 typedef struct		s_cd
 {
@@ -67,7 +66,10 @@ t_list				*get_env(char *envp[]);
 char				*get_path(t_list *env, char *bin);
 char				**env_to_str(t_list *env);
 char				*get_data(t_list *env, char *key);
-void				free_path(t_path *path);
+
+int					command_free(char *args[], char *line, char *bin);
+int					free_home_path(t_cd *cd);
+int					magic_free(void *ptr);
 
 int					c_env(t_list *env, char *args[]);
 int					c_setenv(t_list *env, char *args[]);

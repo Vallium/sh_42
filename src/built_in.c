@@ -21,7 +21,7 @@ int		c_env(t_list *env, char *args[])
 	{
 		ft_putstr_fd("env: ", 2);
 		ft_putstr_fd(args[1], 2);
-		ft_putendl_fd(": No such file or directory", 2);
+		ft_putendl_fd(": no such file or directory", 2);
 		return (0);
 	}
 	tmp = env;
@@ -45,7 +45,7 @@ int		c_setenv(t_list *env, char *args[])
 		return (0);
 	if (args[2] && args[3])
 	{
-		ft_putendl_fd("setenv: Too many arguments.", 2);
+		ft_putendl_fd("setenv: too many arguments.", 2);
 		return (0);
 	}
 	while (senv.tmp != NULL)
@@ -62,112 +62,6 @@ int		c_setenv(t_list *env, char *args[])
 	senv.new.key = ft_strdup(args[1]);
 	senv.new.data = args[2] ? ft_strdup(args[2]) : ft_strnew(1);
 	ft_lstsmartpushback(&env, ft_lstnew(&senv.new, sizeof(t_list_elem)));
-	return (0);
-}
-
-void	del_content(t_list *lst)
-{
-	t_list_elem	*elem;
-
-	elem = lst->content;
-	free(elem->data);
-	free(elem->key);
-	elem->data = NULL;
-	elem->key = NULL;
-}
-
-void	del_test(void *content, size_t size)
-{
-	t_list_elem	*elem;
-
-	elem = (t_list_elem*)content;
-	free(elem->data);
-	free(elem->key);
-	elem->data = NULL;
-	elem->key = NULL;
-	(void)size;
-}
-
-void	unsetenv_first(t_list **env, t_list *current)
-{
-	(*env) = (*env)->next;
-	free(((t_list_elem *)current->content)->data);
-	free(((t_list_elem *)current->content)->key);
-	free(current->content);
-	free(current);
-}
-
-typedef struct		s_usenv
-{
-	t_list	*current;
-	t_list	*prev;
-	t_list	*to_delete;
-	t_list_elem *to_del;
-}					t_usenv;
-
-void	free_mid_node(t_usenv *usenv)
-{
-	usenv->to_delete = usenv->current->next;
-	usenv->to_del = usenv->current->content;
-	usenv->current->content = usenv->current->next->content;
-	usenv->current->content_size = usenv->current->next->content_size;
-	usenv->current->next = usenv->current->next->next;
-	free(usenv->to_del->data);
-	free(usenv->to_del->key);
-	free(usenv->to_del);
-	free(usenv->to_delete);
-}
-
-void	unsetenv_rest(t_usenv *usenv, char *args)
-{
-	while (usenv->current)
-	{
-		if (!ft_strcmp(((t_list_elem *)usenv->current->content)->key, args))
-		{
-			if (!usenv->current->next)
-			{
-				free(((t_list_elem *)usenv->current->content)->data);
-				free(((t_list_elem *)usenv->current->content)->key);
-				free(usenv->current->content);
-				free(usenv->current);
-				usenv->prev->next = NULL;
-			}
-			else
-				free_mid_node(usenv);
-			break ;
-		}
-		usenv->prev = usenv->current;
-		usenv->current = usenv->current->next;
-	}
-}
-
-int		c_unsetenv(t_list **env, char *args[])
-{
-	t_usenv	usenv;
-
-	if (!args[1] || !args[1][0])
-		return (0);
-	while (*args)
-	{
-		usenv.current = *env;
-		if (!ft_strcmp(((t_list_elem *)usenv.current->content)->key , *args))
-		{
-			unsetenv_first(env, usenv.current);
-			args++;
-			continue ;
-		}
-		usenv.prev = usenv.current;
-		usenv.current = usenv.current->next;
-		unsetenv_rest(&usenv, *args);
-		args++;
-	}
-	return (0);
-}
-
-int		free_home_path(t_cd *cd)
-{
-	if (cd->path)
-		free(cd->path);
 	return (0);
 }
 
@@ -191,7 +85,7 @@ int		c_cd(t_list *env, char *args[])
 			cd.path = ft_strdup(args[1]);
 		else
 		{
-			ft_putendl("Home error");
+			ft_putendl("cd: path to HOME not found.");
 			return (0);
 		}
 	}
