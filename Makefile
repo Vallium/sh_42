@@ -73,7 +73,7 @@ $(LIBFT_STATIC):
 $(LIBFT_DEBUG):
 	make -C libft/ libft_debug.a
 
-.PHONY: clean fclean re debug norme normeLibft
+.PHONY: clean fclean re debug norme
 
 clean:
 	@make -C libft clean
