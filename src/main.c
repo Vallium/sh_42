@@ -23,11 +23,11 @@ void	prompt(t_list *env)
 	user = get_data(env, "USER");
 	home = get_data(env, "HOME");
 	ft_putchar('\033');
-	ft_putstr("[36m# ");
+	ft_putstr("[36m• ");
 	if (user)
 		ft_putstr(user);
 	else
-		ft_putstr("LongZboobDu06");
+		ft_putstr("Vallium");
 	ft_putchar('\033');
 	ft_putstr("[39m in ");
 	ft_putchar('\033');
@@ -38,7 +38,7 @@ void	prompt(t_list *env)
 	else
 		ft_putstr(pwd);
 	ft_putchar('\033');
-	ft_putstr("[39m $ ");
+	ft_putstr("[39m » ");
 	free(pwd);
 }
 
