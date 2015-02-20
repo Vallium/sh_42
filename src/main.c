@@ -54,7 +54,11 @@ int		main(int argc, char *argv[], char *envp[])
 	while (42)
 	{
 		prompt(env);
-		get_next_line(0, &line);
+		if (!get_next_line(0, &line))
+		{
+			ft_putendl("exit");
+			return (0);
+		}
 		command(line, &env);
 	}
 	return (0);
