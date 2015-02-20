@@ -6,7 +6,7 @@
 /*   By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/02 11:54:57 by aalliot           #+#    #+#             */
-/*   Updated: 2015/02/02 11:56:00 by aalliot          ###   ########.fr       */
+/*   Updated: 2015/02/20 20:06:18 by adoussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ int		main(int argc, char *argv[], char *envp[])
 	while (42)
 	{
 		prompt(env);
-		if (get_next_line(0, &line) < 1)
+		if (!get_next_line(0, &line))
 		{
-			ft_putchar('\n');
-			ft_exit();
+			ft_putendl("exit");
+			return (0);
 		}
 		command(line, &env);
 	}
