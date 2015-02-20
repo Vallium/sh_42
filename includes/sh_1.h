@@ -22,7 +22,7 @@
 #  include <sys/types.h>
 #  define GET_CWD getwd(0);
 
-# elif __linux
+# elif __linux__
 #  include <sys/types.h>
 #  include <sys/wait.h>
 #  include <unistd.h>
