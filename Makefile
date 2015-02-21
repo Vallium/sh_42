@@ -6,7 +6,7 @@
 #    By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/06 10:11:24 by aalliot           #+#    #+#              #
-#    Updated: 2014/11/28 15:13:43 by aalliot          ###   ########.fr        #
+#*   Updated: 2015/02/22 00:29:54 by adoussau         ###   ########.fr       *#
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,11 +55,11 @@ debug: $(DEBUG_EXE)
 	
 $(DEBUG_EXE): $(DEBUG_OBJ) $(LIBFT_DEBUG)
 	$(CC) -I $(HEAD_DIR) -I $(LIBFT_HEAD) -o $(DEBUG_EXE) $(DEBUG_OBJ) $(LIBFT_DEBUG) $(FLAGS) -g
-	@echo "\n\033[32mCompilation complete. (debug)\n"
+	@echo "\n\033[32mCompilation complete. (debug)\033[39m\n"
 
 $(STATIC_EXE): $(STATIC_OBJ) $(LIBFT_STATIC)
 	$(CC) -O3 -I $(HEAD_DIR) -I $(LIBFT_HEAD) -o $@ $(STATIC_OBJ) $(LIBFT_STATIC) $(FLAGS)
-	@echo "\n\033[32mCompilation complete. (realease)\n"
+	@echo "\n\033[32mCompilation complete. (realease)\n\033[39m"
 
 $(STATIC_DIR)/%.o: $(SRC_DIR)/%.c $(LIBFT)
 	$(CC) -O3 -I $(HEAD_DIR) -I $(LIBFT_HEAD) -o $@ -c $< $(FLAGS)
