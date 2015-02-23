@@ -32,7 +32,7 @@ int		command(char *line, t_list **env)
 		return (magic_free(line));
 	bin = get_path(*env, args[0]);
 	if (!ft_strcmp(args[0], "exit"))
-		ft_exit();
+		ft_exit(args);
 	else if (!ft_strcmp(args[0], "cd"))
 		c_cd(*env, args);
 	else if (!ft_strcmp(args[0], "env") ||
@@ -81,10 +81,19 @@ int		exec(char *bin, char *args[], t_list *env)
 	return (1);
 }
 
-void	ft_exit(void)
+void	ft_exit(char **args)
 {
-	ft_putendl("exit");
-	exit(2);
+	int		ex;
+	if (args[2])
+		ft_putendl_fd("exit: too many arguments", 2);
+	else if (!args[1])
+		exit(0);
+	else
+	{
+		ex = ft_atoi(args[1]);
+		ft_putendl("exit");
+		exit(ex);
+	}
 }
 
 int		print_error(int ind, char *args)
