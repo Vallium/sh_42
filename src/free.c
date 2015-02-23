@@ -21,9 +21,10 @@ int		magic_free(void *ptr)
 
 int		command_free(char *args[], char *line, char *bin)
 {
-	char	**tmp;
+	char			**tmp;
 	struct stat		stat_buff;
 
+	lstat(bin, &stat_buff);
 	tmp = args;
 	if (!stat(line, &stat_buff) && S_ISDIR(stat_buff.st_mode))
 		return (0);
@@ -36,7 +37,7 @@ int		command_free(char *args[], char *line, char *bin)
 	args = NULL;
 	free(line);
 	line = NULL;
-	if (bin)
+	if (bin && (stat_buff.st_mode & 1))
 	{
 		free(bin);
 		bin = NULL;

@@ -32,7 +32,7 @@ int		command(char *line, t_list **env)
 		return (magic_free(line));
 	bin = get_path(*env, args[0]);
 	if (!ft_strcmp(args[0], "exit"))
-		ft_exit();
+		ft_exit(args);
 	else if (!ft_strcmp(args[0], "cd"))
 		c_cd(*env, args);
 	else if (!ft_strcmp(args[0], "env") ||
@@ -51,9 +51,13 @@ int		command(char *line, t_list **env)
 
 int		exec(char *bin, char *args[], t_list *env)
 {
-	pid_t	father;
-	char	**strenv;
+	pid_t			father;
+	char			**strenv;
+	struct stat		stat_buff;
 
+	lstat(bin, &stat_buff);
+	if (!S_ISREG(stat_buff.st_mode) || !(stat_buff.st_mode & 1))
+		return (print_error(1, bin));
 	if (!ft_strchr(bin, '/'))
 		return (-1);
 	father = fork();
@@ -61,24 +65,38 @@ int		exec(char *bin, char *args[], t_list *env)
 		waitpid(father, NULL, 0);
 	if (!father)
 	{
-		signal(SIGINT, SIG_DFL);
 		strenv = env_to_str(env);
-		execve(bin, args, strenv);
-		while (*strenv)
-			free(*strenv++);
-		free(bin);
-		free(strenv);
+		signal(SIGINT, SIG_DFL);
+		if (execve(bin, args, strenv) < 0)
+		{
+			ft_putstr("ft_minishell1: exec format error: ");
+			ft_putendl_fd(bin, 2);
+			exit(2);
+		}
 	}
+//	while (*strenv)
+//		free(*strenv++);
+//	free(strenv);
+//	free(bin);
 	return (1);
 }
 
-void	ft_exit(void)
+void	ft_exit(char **args)
 {
-	ft_putendl("exit");
-	exit(2);
+	int		ex;
+	if (args[2])
+		ft_putendl_fd("exit: too many arguments", 2);
+	else if (!args[1])
+		exit(0);
+	else
+	{
+		ex = ft_atoi(args[1]);
+		ft_putendl("exit");
+		exit(ex);
+	}
 }
 
-void	print_error(int ind, char *args)
+int		print_error(int ind, char *args)
 {
 	if (ind == 1)
 	{
@@ -95,4 +113,5 @@ void	print_error(int ind, char *args)
 		ft_putstr_fd("cd: no such file or directory: ", 2);
 		ft_putendl_fd(args, 2);
 	}
+	return (0);
 }
