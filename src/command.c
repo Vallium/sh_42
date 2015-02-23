@@ -56,7 +56,7 @@ int		exec(char *bin, char *args[], t_list *env)
 	struct stat		stat_buff;
 
 	lstat(bin, &stat_buff);
-	if (!S_ISREG(stat_buff.st_mode))
+	if (!S_ISREG(stat_buff.st_mode) || !(stat_buff.st_mode & 1))
 	{
 		ft_putstr_fd(bin, 2);
 		ft_putendl_fd(": permission denied.", 2);
