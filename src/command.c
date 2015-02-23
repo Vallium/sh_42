@@ -53,22 +53,35 @@ int		exec(char *bin, char *args[], t_list *env)
 {
 	pid_t	father;
 	char	**strenv;
+	struct stat		stat_buff;
 
+	lstat(bin, &stat_buff);
+	if (!S_ISREG(stat_buff.st_mode))
+	{
+		ft_putstr_fd(bin, 2);
+		ft_putendl_fd(": permission denied.", 2);
+		return (0);
+	}
 	if (!ft_strchr(bin, '/'))
 		return (-1);
 	father = fork();
 	if (father > 0)
 		waitpid(father, NULL, 0);
+	strenv = env_to_str(env);
 	if (!father)
 	{
 		signal(SIGINT, SIG_DFL);
-		strenv = env_to_str(env);
-		execve(bin, args, strenv);
-		while (*strenv)
-			free(*strenv++);
-		free(bin);
-		free(strenv);
+		if(execve(bin, args, strenv) < 0)
+		{
+			ft_putstr("ft_minishell1: exec format error: ");
+			ft_putendl_fd(bin, 2);
+			exit(2);
+		}
 	}
+//	while (*strenv)
+//		free(*strenv++);
+//	free(strenv);
+//	free(bin);
 	return (1);
 }
 

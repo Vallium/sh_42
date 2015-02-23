@@ -69,7 +69,7 @@ char			*get_path(t_list *env, char *bin)
 	t_path		path;
 
 	path.path = get_data(env, "PATH");
-	if (!path.path || !stat(bin, &path.stat_buff))
+	if (!path.path || !lstat(bin, &path.stat_buff))
 		return (ft_strdup(bin));
 	path.paths = ft_strsplit(path.path, ':');
 	path.tmp = path.paths;
@@ -77,7 +77,7 @@ char			*get_path(t_list *env, char *bin)
 	while (*path.tmp)
 	{
 		ft_kebab(path.buff, *(path.tmp), "/", bin, NULL);
-		if (!stat(path.buff, &path.stat_buff))
+		if (!lstat(path.buff, &path.stat_buff))
 		{
 			if (!(path.stat_buff.st_mode & 1))
 				path.ret = (char*)1;
