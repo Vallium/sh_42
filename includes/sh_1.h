@@ -89,7 +89,7 @@ int					exec(char *bin, char *args[], t_list *env);
 void				prompt(t_list *env);
 int					command(char *line, t_list **env);
 
-void				print_error(int ind, char *args);
+int					print_error(int ind, char *args);
 void				ft_exit();
 
 t_list_elem			*get_elem(t_list *env, char *key);
