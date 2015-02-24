@@ -12,6 +12,7 @@ char					*ft_strclean(char *str)
 {
 	char	*tmp;
 	char	*ret;
+	char	*tmp_ret;
 	int		cnt;
 
 	cnt = 0;
@@ -20,13 +21,39 @@ char					*ft_strclean(char *str)
 	{
 		if (!ft_sp(*tmp))
 			cnt++, tmp++;
-		else if (ft_sp(*tmp) && !ft_sp(*tmp + 1))
+		else if (ft_sp(*tmp) && !ft_sp(*(tmp + 1)))
 			cnt++, tmp++;
 		else if (ft_sp(*tmp))
 			tmp++;
 	}
+	cnt++;
 	printf("%d\n", cnt);
-	ret = NULL;
+
+	ret = (char*)malloc(sizeof(char) * cnt);
+
+	tmp = str;
+	tmp_ret = ret;
+
+	while (*tmp)
+	{
+		if (!ft_sp(*tmp))
+		{
+			*tmp_ret = *tmp;
+			tmp++;
+			tmp_ret++;
+		}
+		else if (ft_sp(*tmp) && !ft_sp(*(tmp + 1)))
+		{
+			*tmp_ret = ' ';
+			tmp++;
+			tmp_ret++;
+		}
+		else if (ft_sp(*tmp))
+			tmp++;
+	}
+	*tmp_ret = 0;
+
+	printf("%s\n", ret);
 	return (ret);
 }
 
