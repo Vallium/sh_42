@@ -101,6 +101,7 @@ char				*ft_strmap(const char *s, char (*f)(char));
 char				*ft_strmapi(const char *s, char (*f)(unsigned int, char));
 char				*ft_strsub(const char *s, unsigned int start, size_t len);
 char				*ft_strtrim(char *s);
+char				*ft_strclean(char *str);
 char				*ft_strjoin(const char *s1, const char *s2);
 char				*ft_itoa(int n);
 char				*ft_burger(const char *s1, char c, const char *s2);

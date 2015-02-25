@@ -90,6 +90,7 @@ SRC		=	ft_bzero.c				\
 			ft_intlen.c				\
 			ft_llilen.c				\
 			ft_strjoinfree.c		\
+			ft_strclean.c			\
 			get_next_line.c
 
 DYNAMIC_OBJ	= $(patsubst %.c,$(DYNAMIC_DIR)/%.o,$(SRC))
@@ -149,5 +150,5 @@ fclean: clean
 
 re: fclean
 	make
-	
+
 reall: all

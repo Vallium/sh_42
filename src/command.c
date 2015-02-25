@@ -14,7 +14,7 @@
 
 int		line_trim(char **line)
 {
-	*line = ft_strtrim(*line);
+	*line = ft_strclean(*line);
 	if (!*line || !*line[0])
 		return (0);
 	return (1);
