@@ -20,6 +20,24 @@ int		line_trim(char **line)
 	return (1);
 }
 
+void	args_filter(t_list *env, char **args, char *line)
+{
+	int		i;
+
+	i = 0;
+	(void)line;
+//	args = ft_strsplit(line, ' ');
+	while (args[i])
+	{
+		if (!ft_strcmp(args[i], "~"))
+		{
+			free(args[i]);
+			args[i] = ft_strdup(get_data(env, "HOME"));
+		}
+		i++;
+	}
+}
+
 int		command(char *line, t_list **env)
 {
 	char	*bin;
@@ -28,6 +46,7 @@ int		command(char *line, t_list **env)
 	if (!line_trim(&line))
 		return (magic_free(line));
 	args = ft_strsplit(line, ' ');
+	args_filter(*env, args, line);
 	if (!args || !args[0] || !args[0][0])
 		return (magic_free(line));
 	bin = get_path(*env, args[0]);
