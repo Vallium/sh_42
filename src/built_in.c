@@ -24,7 +24,7 @@ int		c_env(t_list *env, char *args[])
 		ft_putendl_fd(": no such file or directory", 2);
 		return (0);
 	}
-	tmp = env;
+	tmp = env; // normal
 	while (tmp)
 	{
 		elem = tmp->content;

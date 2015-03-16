@@ -113,3 +113,26 @@ char			**env_to_str(t_list *env)
 	strenv[i] = NULL;
 	return (strenv);
 }
+
+//char			**env_to_exec(t_list *env, int nb)
+//{
+//	char		**strenv;
+//	t_list		*tmp;
+//	t_list_elem	*elem;
+//	int			i;
+//	int			size;
+//
+//	tmp = env;
+//	size = ft_lstlen(env);
+//	strenv = (char**)ft_malloc(sizeof(char*) * (size + 1));
+//	i = 0;
+//	while (tmp)
+//	{
+//		elem = tmp->content;
+//		strenv[i] = ft_burger(elem->key, '=', elem->data);
+//		i++;
+//		tmp = tmp->next;
+//	}
+//	strenv[i] = NULL;
+//	return (strenv);
+//}
