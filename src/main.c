@@ -3,9 +3,9 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adoussau <antoine@doussaud.org>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/02/02 11:54:57 by aalliot           #+#    #+#             */
+/*   Created: 2015/02/02 11:54:57 by adoussau          #+#    #+#             */
 /*   Updated: 2015/02/20 20:06:18 by adoussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -51,6 +51,7 @@ int		main(int argc, char *argv[], char *envp[])
 	(void)argv;
 	signal(SIGINT, SIG_IGN);
 	env = get_env(envp);
+	printf("%p\n",env);
 	while (42)
 	{
 		prompt(env);

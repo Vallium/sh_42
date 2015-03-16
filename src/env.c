@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adoussau <antoine@doussaud.org>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/02/17 12:56:24 by aalliot           #+#    #+#             */
-/*   Updated: 2015/02/17 12:56:25 by aalliot          ###   ########.fr       */
+/*   Created: 2015/02/17 12:56:24 by adoussau          #+#    #+#             */
+/*   Updated: 2015/02/17 12:56:25 by adoussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sh_1.h"
+#include <stdio.h>
 
 t_list			*get_env(char *envp[])
 {
@@ -18,6 +19,8 @@ t_list			*get_env(char *envp[])
 	t_list		*env;
 	char		**tmp;
 	char		*chr;
+
+	printf("envp = %p\n",*envp);
 
 	env = NULL;
 	tmp = envp;
@@ -113,26 +116,3 @@ char			**env_to_str(t_list *env)
 	strenv[i] = NULL;
 	return (strenv);
 }
-
-//char			**env_to_exec(t_list *env, int nb)
-//{
-//	char		**strenv;
-//	t_list		*tmp;
-//	t_list_elem	*elem;
-//	int			i;
-//	int			size;
-//
-//	tmp = env;
-//	size = ft_lstlen(env);
-//	strenv = (char**)ft_malloc(sizeof(char*) * (size + 1));
-//	i = 0;
-//	while (tmp)
-//	{
-//		elem = tmp->content;
-//		strenv[i] = ft_burger(elem->key, '=', elem->data);
-//		i++;
-//		tmp = tmp->next;
-//	}
-//	strenv[i] = NULL;
-//	return (strenv);
-//}

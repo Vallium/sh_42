@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adoussau <antoine@doussaud.org>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/02/17 12:56:17 by aalliot           #+#    #+#             */
-/*   Updated: 2015/02/17 12:56:19 by aalliot          ###   ########.fr       */
+/*   Created: 2015/02/17 12:56:17 by adoussau          #+#    #+#             */
+/*   Updated: 2015/02/17 12:56:19 by adoussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	args_filter(t_list *env, char **args, char *line)
 
 	i = 0;
 	(void)line;
-//	args = ft_strsplit(line, ' ');
 	while (args[i])
 	{
 		if (!ft_strcmp(args[i], "~"))
@@ -45,8 +44,7 @@ int		command(char *line, t_list **env)
 
 	if (!line_trim(&line))
 		return (magic_free(line));
-	args = ft_strsplit(line, ' ');
-	args_filter(*env, args, line);
+	args = ft_strsplit(line, ' '), args_filter(*env, args, line);
 	if (!args || !args[0] || !args[0][0])
 		return (magic_free(line));
 	bin = get_path(*env, args[0]);
@@ -54,13 +52,13 @@ int		command(char *line, t_list **env)
 		ft_exit(args, 0);
 	else if (!ft_strcmp(args[0], "cd"))
 		c_cd(*env, args);
-	else if (!ft_strcmp(args[0], "env") ||
-			(!ft_strcmp(args[0], "setenv") && !args[1]))
+	else if ((!ft_strcmp(args[0], "env") || !ft_strcmp(args[0], "setenv"))
+			&& !args[1])
 		c_env(*env, args);
 	else if (ft_strcmp(args[0], "unsetenv") == 0)
 		c_unsetenv(env, args);
 	else if (ft_strcmp(args[0], "setenv") == 0)
-		c_setenv(*env, args);
+		c_setenv(env, args);
 	else if (bin == (char*)1)
 		print_error(1, args[0]);
 	else if (bin == NULL || exec(bin, args, *env) == -1)
@@ -93,10 +91,6 @@ int		exec(char *bin, char *args[], t_list *env)
 			exit(2);
 		}
 	}
-//	while (*strenv)
-//		free(*strenv++);
-//	free(strenv);
-//	free(bin);
 	return (1);
 }
 

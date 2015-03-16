@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adoussau <antoine@doussaud.org>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/02/17 12:56:07 by aalliot           #+#    #+#             */
-/*   Updated: 2015/02/17 12:56:09 by aalliot          ###   ########.fr       */
+/*   Created: 2015/02/17 12:56:07 by adoussau          #+#    #+#             */
+/*   Updated: 2015/02/17 12:56:09 by adoussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int		c_env(t_list *env, char *args[])
 		ft_putendl_fd(": no such file or directory", 2);
 		return (0);
 	}
-	tmp = env; // normal
+	tmp = env;
 	while (tmp)
 	{
 		elem = tmp->content;
@@ -36,11 +36,11 @@ int		c_env(t_list *env, char *args[])
 	return (0);
 }
 
-int		c_setenv(t_list *env, char *args[])
+int		c_setenv(t_list **env, char *args[])
 {
 	t_setenv	senv;
 
-	senv.tmp = env;
+	senv.tmp = *env;
 	if (!args[1] || !args[1][0])
 		return (0);
 	if (args[2] && args[3])
@@ -61,7 +61,7 @@ int		c_setenv(t_list *env, char *args[])
 	}
 	senv.new.key = ft_strdup(args[1]);
 	senv.new.data = args[2] ? ft_strdup(args[2]) : ft_strnew(1);
-	ft_lstsmartpushback(&env, ft_lstnew(&senv.new, sizeof(t_list_elem)));
+	ft_lstsmartpushback(env, ft_lstnew(&senv.new, sizeof(t_list_elem)));
 	return (0);
 }
 

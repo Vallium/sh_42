@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_1.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+        */
+/*   By: adoussau <antoine@doussaud.org>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/02/13 12:45:08 by aalliot           #+#    #+#             */
-/*   Updated: 2015/02/13 12:45:10 by aalliot          ###   ########.fr       */
+/*   Created: 2015/02/13 12:45:08 by adoussau          #+#    #+#             */
+/*   Updated: 2015/02/13 12:45:10 by adoussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void				free_path(t_path *path);
 int					magic_free(void *ptr);
 
 int					c_env(t_list *env, char *args[]);
-int					c_setenv(t_list *env, char *args[]);
+int					c_setenv(t_list **env, char *args[]);
 int					c_unsetenv(t_list **env, char *args[]);
 int					c_cd(t_list *env, char *args[]);
 
