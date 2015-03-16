@@ -51,7 +51,6 @@ int		main(int argc, char *argv[], char *envp[])
 	(void)argv;
 	signal(SIGINT, SIG_IGN);
 	env = get_env(envp);
-	printf("%p\n",env);
 	while (42)
 	{
 		prompt(env);

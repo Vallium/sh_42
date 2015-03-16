@@ -20,8 +20,6 @@ t_list			*get_env(char *envp[])
 	char		**tmp;
 	char		*chr;
 
-	printf("envp = %p\n",*envp);
-
 	env = NULL;
 	tmp = envp;
 	while (tmp && *tmp)

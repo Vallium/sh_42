@@ -92,3 +92,11 @@ int		c_cd(t_list *env, char *args[])
 	}
 	return (free_home_path(env, &cd));
 }
+
+void	ft_exit(char **args, int msg)
+{
+	if (!args[1])
+		exit(msg);
+	else
+		ft_putendl_fd("exit: too many arguments", 2);
+}

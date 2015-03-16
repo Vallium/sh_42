@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strclean.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adoussau <antoine@doussaud.org>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/02/02 11:54:57 by adoussau          #+#    #+#             */
+/*   Updated: 2015/02/20 20:06:18 by adoussau         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include <stdlib.h>
 
@@ -6,42 +18,37 @@ static unsigned int		ft_sp(char c)
 	return (c == ' ' || c == '\t');
 }
 
-// #include <stdio.h>
+static int				ctn(char *str)
+{
+	int		cnt;
+
+	cnt = 0;
+	while (*str)
+	{
+		if (!ft_sp(*str))
+			cnt++, str++;
+		else if (ft_sp(*str) && !ft_sp(*(str + 1)))
+			cnt++, str++;
+		else if (ft_sp(*str))
+			str++;
+	}
+	cnt++;
+	return (cnt);
+}
 
 char					*ft_strclean(char *str)
 {
 	char	*tmp;
 	char	*ret;
 	char	*tmp_ret;
-	int		cnt;
 
-	cnt = 0;
-	tmp = str;
-	while (*tmp)
-	{
-		if (!ft_sp(*tmp))
-			cnt++, tmp++;
-		else if (ft_sp(*tmp) && !ft_sp(*(tmp + 1)))
-			cnt++, tmp++;
-		else if (ft_sp(*tmp))
-			tmp++;
-	}
-	cnt++;
-	// printf("%d\n", cnt);
-
-	ret = (char*)malloc(sizeof(char) * cnt);
-
+	ret = (char*)malloc(sizeof(char) * ctn(str));
 	tmp = str;
 	tmp_ret = ret;
-
 	while (*tmp)
 	{
 		if (!ft_sp(*tmp))
-		{
-			*tmp_ret = *tmp;
-			tmp++;
-			tmp_ret++;
-		}
+			*tmp_ret++ = *tmp++;
 		else if (ft_sp(*tmp) && !ft_sp(*(tmp + 1)))
 		{
 			*tmp_ret = ' ';
@@ -53,14 +60,5 @@ char					*ft_strclean(char *str)
 	}
 	*tmp_ret = 0;
 	ret = ft_strtrim(ret);
-	// printf("%s\n", ret);
 	return (ret);
 }
-
-// int		main(int argc, char **argv)
-// {
-// 	(void)argc;
-//
-// 	argv[1] = ft_strclean(argv[1]);
-// 	return 0;
-// }

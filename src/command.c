@@ -94,14 +94,6 @@ int		exec(char *bin, char *args[], t_list *env)
 	return (1);
 }
 
-void	ft_exit(char **args, int msg)
-{
-	if (!args[1])
-		exit(msg);
-	else
-		ft_putendl_fd("exit: too many arguments", 2);
-}
-
 int		print_error(int ind, char *args)
 {
 	if (ind == 1)

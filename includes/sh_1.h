@@ -70,6 +70,8 @@ typedef struct		s_cd
 	t_list_elem		elem;
 }					t_cd;
 
+void				ft_exit(char **args, int msg);
+
 t_list				*get_env(char *envp[]);
 char				*get_path(t_list *env, char *bin);
 char				**env_to_str(t_list *env);
