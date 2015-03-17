@@ -66,6 +66,8 @@ int		command(char *line, t_list **env)
 	return (command_free(args, line, bin));
 }
 
+#include <stdio.h>
+
 int		exec(char *bin, char *args[], t_list *env)
 {
 	pid_t			father;
@@ -73,8 +75,11 @@ int		exec(char *bin, char *args[], t_list *env)
 	struct stat		stat_buff;
 
 	lstat(bin, &stat_buff);
-	if (!S_ISREG(stat_buff.st_mode) || !(stat_buff.st_mode & 1))
+
+	if (!(stat_buff.st_mode & 010) | S_ISDIR(stat_buff.st_mode))
 		return (print_error(1, bin));
+	if (!S_ISREG(stat_buff.st_mode) || !(stat_buff.st_mode & 1))
+		return (print_error(2, bin));
 	if (!ft_strchr(bin, '/'))
 		return (-1);
 	father = fork();
