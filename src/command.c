@@ -66,8 +66,6 @@ int		command(char *line, t_list **env)
 	return (command_free(args, line, bin));
 }
 
-#include <stdio.h>
-
 int		exec(char *bin, char *args[], t_list *env)
 {
 	pid_t			father;
