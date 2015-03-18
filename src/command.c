@@ -39,31 +39,30 @@ void	args_filter(t_list *env, char **args, char *line)
 
 int		command(char *line, t_list **env)
 {
-	char	*bin;
-	char	**args;
+	t_command	t;
 
 	if (!line_trim(&line))
 		return (magic_free(line));
-	args = ft_strsplit(line, ' '), args_filter(*env, args, line);
-	if (!args || !args[0] || !args[0][0])
+	t.args = ft_strsplit(line, ' '), args_filter(*env, t.args, line);
+	if (!t.args || !t.args[0] || !t.args[0][0])
 		return (magic_free(line));
-	bin = get_path(*env, args[0]);
-	if (!ft_strcmp(args[0], "exit"))
-		ft_exit(args, 0);
-	else if (!ft_strcmp(args[0], "cd"))
-		c_cd(*env, args);
-	else if ((!ft_strcmp(args[0], "env") || !ft_strcmp(args[0], "setenv"))
-			&& !args[1])
-		c_env(*env, args);
-	else if (ft_strcmp(args[0], "unsetenv") == 0)
-		c_unsetenv(env, args);
-	else if (ft_strcmp(args[0], "setenv") == 0)
-		c_setenv(env, args);
-	else if (bin == (char*)1)
-		print_error(1, args[0]);
-	else if (bin == NULL || exec(bin, args, *env) == -1)
-		print_error(2, args[0]);
-	return (command_free(args, line, bin));
+	t.bin = get_path(*env, t.args[0]);
+	if (!ft_strcmp(t.args[0], "exit"))
+		ft_exit(t.args, 0);
+	else if (!ft_strcmp(t.args[0], "cd"))
+		c_cd(*env, t.args);
+	else if ((!ft_strcmp(t.args[0], "env") || !ft_strcmp(t.args[0], "setenv"))
+			&& !t.args[1])
+		c_env(*env, t.args);
+	else if (ft_strcmp(t.args[0], "unsetenv") == 0)
+		c_unsetenv(env, t.args);
+	else if (ft_strcmp(t.args[0], "setenv") == 0)
+		c_setenv(env, t.args);
+	else if (t.bin == (char*)1)
+		print_error(1, t.args[0]);
+	else if (t.bin == NULL || exec(t.bin, t.args, *env) == -1)
+		print_error(2, t.args[0]);
+	return (command_free(t.args, line, t.bin));
 }
 
 int		exec(char *bin, char *args[], t_list *env)
@@ -73,7 +72,6 @@ int		exec(char *bin, char *args[], t_list *env)
 	struct stat		stat_buff;
 
 	lstat(bin, &stat_buff);
-
 	if (!(stat_buff.st_mode & 010) | S_ISDIR(stat_buff.st_mode))
 		return (print_error(1, bin));
 	if (!S_ISREG(stat_buff.st_mode) || !(stat_buff.st_mode & 1))

@@ -70,6 +70,13 @@ typedef struct		s_cd
 	t_list_elem		elem;
 }					t_cd;
 
+typedef struct	s_command
+{
+	char *bin;
+	char **args;
+}				t_command;
+
+
 void				ft_exit(char **args, int msg);
 
 t_list				*get_env(char *envp[]);
