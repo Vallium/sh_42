@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memalloc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalliot  <aalliot@student.42.fr>           +#+  +:+       +#+        */
+/*   By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/06 13:45:14 by aalliot           #+#    #+#             */
 /*   Updated: 2014/11/06 15:36:11 by aalliot          ###   ########.fr       */

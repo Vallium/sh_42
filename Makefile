@@ -3,7 +3,7 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aalliot  <aalliot@student.42.fr>           +#+  +:+       +#+         #
+#    By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/06 10:11:24 by aalliot           #+#    #+#              #
 #    Updated: 2015/02/22 00:29:54 by aalliot         ###   ########.fr         #
@@ -52,7 +52,7 @@ $(shell mkdir -p $(STATIC_DIR) $(DEBUG_DIR))
 all: $(STATIC_EXE)
 
 debug: $(DEBUG_EXE)
-	
+
 $(DEBUG_EXE): $(DEBUG_OBJ) $(LIBFT_DEBUG)
 	$(CC) -I $(HEAD_DIR) -I $(LIBFT_HEAD) -o $(DEBUG_EXE) $(DEBUG_OBJ) $(LIBFT_DEBUG) $(FLAGS) -g
 	@echo "\n\033[32mCompilation complete. (debug)\033[39m\n"

@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ft_llilen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalliot  <aalliot@student.42.fr>           +#+  +:+       +#+        */
+/*   By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/02 16:55:07 by aalliot           #+#    #+#             */
 /*   Updated: 2015/01/02 16:55:39 by aalliot          ###   ########.fr       */

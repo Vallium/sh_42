@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ft_kebab.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aalliot  <aalliot@student.42.fr>           +#+  +:+       +#+        */
+/*   By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/15 21:45:47 by aalliot           #+#    #+#             */
 /*   Updated: 2015/01/15 21:45:47 by aalliot          ###   ########.fr       */
