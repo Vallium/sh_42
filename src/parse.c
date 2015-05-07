@@ -38,25 +38,25 @@ static int		word_count(char *str)
 	return (nbr);
 }
 
-static void		tab_fill(char **tab,char *str, int nb)
-{
-	int		nbr;
-	char	*tmp;
-
-	nbr = 0;
-	if (!is_tab(*str))
-		nbr++;
-	for (tmp = str ; *tmp; tmp++) {
-		if (is_tab(*tmp) && !is_tab(*(tmp + 1)))
-			nbr++, tmp++;
-		if (*tmp == '"')
-		{
-			tmp++;
-			while (*tmp != '"')
-				tmp++;
-		}
-	}
-}
+//static void		tab_fill(char **tab,char *str, int nb)
+//{
+//	int		nbr;
+//	char	*tmp;
+//
+//	nbr = 0;
+//	if (!is_tab(*str))
+//		nbr++;
+//	for (tmp = str ; *tmp; tmp++) {
+//		if (is_tab(*tmp) && !is_tab(*(tmp + 1)))
+//			nbr++, tmp++;
+//		if (*tmp == '"')
+//		{
+//			tmp++;
+//			while (*tmp != '"')
+//				tmp++;
+//		}
+//	}
+//}
 
 char			**command_line_parser(char *line)
 {
@@ -64,13 +64,13 @@ char			**command_line_parser(char *line)
 	int		nb;
 
 	nb = word_count(line);
-	ret = (char**)malloc(sizeof(char*) * (line + 1));
-	tab_fill(ret, line, nb);
+	ret = (char**)malloc(sizeof(char*) * (nb + 1));
+//	tab_fill(ret, line, nb);
 	return (ret);
 }
 
 int		main() {
-	char	*line = "cat  	\"salut les gars\"  et puis \"alors quoi\" hein";
+	char	*line = "cat  	\"salut les gars\"  et puis \"alors quoi\" hein  \"sdfsdf\"  ";
 
 	printf("%d :%s\n", word_count(line), line);
 	return 0;
