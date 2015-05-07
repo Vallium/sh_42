@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/02/13 12:45:08 by aalliot           #+#    #+#             */
-/*   Updated: 2015/02/13 12:45:10 by aalliot          ###   ########.fr       */
+/*   Created: 2015/02/13 12:45:08 by adoussau          #+#    #+#             */
+/*   Updated: 2015/02/13 12:45:10 by adoussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,12 @@ typedef struct		s_cd
 	t_list_elem		*old;
 	t_list_elem		elem;
 }					t_cd;
+
+typedef struct		s_command
+{
+	char			*bin;
+	char			**args;
+}					t_command;
 
 void				ft_exit(char **args, int msg);
 
