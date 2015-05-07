@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adoussau <antoine@doussaud.org>            +#+  +:+       +#+        */
+/*   By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/02 11:54:57 by adoussau          #+#    #+#             */
 /*   Updated: 2015/02/20 20:06:18 by adoussau         ###   ########.fr       */

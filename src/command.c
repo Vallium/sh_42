@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adoussau <antoine@doussaud.org>            +#+  +:+       +#+        */
+/*   By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/02/17 12:56:17 by adoussau          #+#    #+#             */
-/*   Updated: 2015/02/17 12:56:19 by adoussau         ###   ########.fr       */
+/*   Created: 2015/03/23 14:49:25 by aalliot           #+#    #+#             */
+/*   Updated: 2015/03/23 14:49:29 by aalliot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	args_filter(t_list *env, char **args, char *line)
 
 int		command(char *line, t_list **env)
 {
+<<<<<<< HEAD
 	t_command	t;
 
 	if (!line_trim(&line))
@@ -63,6 +64,32 @@ int		command(char *line, t_list **env)
 	else if (t.bin == NULL || exec(t.bin, t.args, *env) == -1)
 		print_error(2, t.args[0]);
 	return (command_free(t.args, line, t.bin));
+=======
+	t_cmd		cmd;
+
+	if (!line_trim(&line))
+		return (magic_free(line));
+	cmd.args = ft_strsplit(line, ' '), args_filter(*env, cmd.args, line);
+	if (!cmd.args || !cmd.args[0] || !cmd.args[0][0])
+		return (magic_free(line));
+	cmd.bin = get_path(*env, cmd.args[0]);
+	if (!ft_strcmp(cmd.args[0], "exit"))
+		ft_exit(cmd.args, 0);
+	else if (!ft_strcmp(cmd.args[0], "cd"))
+		c_cd(*env, cmd.args);
+	else if ((!ft_strcmp(cmd.args[0], "env")
+	|| !ft_strcmp(cmd.args[0], "setenv")) && !cmd.args[1])
+		c_env(*env, cmd.args);
+	else if (ft_strcmp(cmd.args[0], "unsetenv") == 0)
+		c_unsetenv(env, cmd.args);
+	else if (ft_strcmp(cmd.args[0], "setenv") == 0)
+		c_setenv(env, cmd.args);
+	else if (cmd.bin == (char*)1)
+		print_error(1, cmd.args[0]);
+	else if (cmd.bin == NULL || exec(cmd.bin, cmd.args, *env) == -1)
+		print_error(2, cmd.args[0]);
+	return (command_free(cmd.args, line, cmd.bin));
+>>>>>>> 34dee0d9437f954436363ae126576b3c9e5f32e9
 }
 
 int		exec(char *bin, char *args[], t_list *env)
@@ -86,10 +113,16 @@ int		exec(char *bin, char *args[], t_list *env)
 		strenv = env_to_str(env);
 		signal(SIGINT, SIG_DFL);
 		if (execve(bin, args, strenv) < 0)
+<<<<<<< HEAD
 		{
 			ft_putstr("ft_minishell1: exec format error: ");
 			ft_putendl_fd(bin, 2), exit(2);
 		}
+=======
+			ft_putstr("ft_minishell1: exec format error: "),
+			ft_putendl_fd(bin, 2),
+			exit(2);
+>>>>>>> 34dee0d9437f954436363ae126576b3c9e5f32e9
 	}
 	return (1);
 }

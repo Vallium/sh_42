@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   sh_1.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adoussau <antoine@doussaud.org>            +#+  +:+       +#+        */
+/*   By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/13 12:45:08 by adoussau          #+#    #+#             */
 /*   Updated: 2015/02/13 12:45:10 by adoussau         ###   ########.fr       */
@@ -29,6 +29,12 @@
 #  define GET_CWD get_current_dir_name()
 
 # endif
+
+typedef struct		s_cmd
+{
+	char			*bin;
+	char			**args;
+}					t_cmd;
 
 typedef struct		s_list_elem
 {

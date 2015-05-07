@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adoussau <antoine@doussaud.org>            +#+  +:+       +#+        */
+/*   By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/19 15:30:38 by adoussau          #+#    #+#             */
 /*   Updated: 2015/02/19 15:30:40 by adoussau         ###   ########.fr       */

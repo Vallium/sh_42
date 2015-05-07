@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adoussau <antoine@doussaud.org>            +#+  +:+       +#+        */
+/*   By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/13 12:44:13 by adoussau          #+#    #+#             */
 /*   Updated: 2015/02/16 20:48:09 by adoussau         ###   ########.fr       */

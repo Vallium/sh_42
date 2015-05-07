@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: adoussau <antoine@doussaud.org>            +#+  +:+       +#+         #
+#    By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2014/11/06 10:11:24 by adoussau          #+#    #+#              #
-#    Updated: 2015/02/22 00:29:54 by adoussau        ###   ########.fr         #
+#    Created: 2014/11/06 10:11:24 by aalliot           #+#    #+#              #
+#    Updated: 2015/02/22 00:29:54 by aalliot         ###   ########.fr         #
 #                                                                              #
 # **************************************************************************** #
 
-STATIC_EXE	= ft_minishell1
-DEBUG_EXE	= ft_minishell1_debug
+STATIC_EXE	= ft_minishell2
+DEBUG_EXE	= ft_minishell2_debug
 
 SRC		=	main.c		\
 			env.c		\

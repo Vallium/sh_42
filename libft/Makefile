@@ -3,7 +3,7 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: adoussau <antoine@doussaud.org>            +#+  +:+       +#+         #
+#    By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/10 11:30:22 by adoussau          #+#    #+#              #
 #    Updated: 2015/02/15 19:34:52 by adoussau         ###   ########.fr        #

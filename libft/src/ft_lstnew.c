@@ -3,7 +3,11 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+<<<<<<< HEAD
 /*   By: adoussau <antoine@doussaud.org>            +#+  +:+       +#+        */
+=======
+/*   By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+        */
+>>>>>>> 34dee0d9437f954436363ae126576b3c9e5f32e9
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/14 10:43:27 by adoussau          #+#    #+#             */
 /*   Updated: 2014/11/14 11:33:15 by adoussau         ###   ########.fr       */

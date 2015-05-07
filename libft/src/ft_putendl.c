@@ -3,7 +3,11 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putendl.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+<<<<<<< HEAD
 /*   By: adoussau <antoine@doussaud.org>            +#+  +:+       +#+        */
+=======
+/*   By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+        */
+>>>>>>> 34dee0d9437f954436363ae126576b3c9e5f32e9
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/07 17:06:04 by adoussau          #+#    #+#             */
 /*   Updated: 2014/11/07 17:19:40 by adoussau         ###   ########.fr       */
