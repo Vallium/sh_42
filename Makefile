@@ -10,8 +10,8 @@
 #                                                                              #
 # **************************************************************************** #
 
-STATIC_EXE	= ft_minishell1
-DEBUG_EXE	= ft_minishell1_debug
+STATIC_EXE	= ft_minishell2
+DEBUG_EXE	= ft_minishell2_debug
 
 SRC		=	main.c		\
 			env.c		\
