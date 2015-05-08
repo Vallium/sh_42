@@ -1,7 +1,7 @@
 *.out
 *.o
-ft_minishell1
-ft_minishell1_debug
+ft_minishell2
+ft_minishell2_debug
 static/
 /debug/
 /test/
