@@ -87,7 +87,7 @@ int		exec(char *bin, char *args[], t_list *env)
 		signal(SIGINT, SIG_DFL);
 		if (execve(bin, args, strenv) < 0)
 		{
-			ft_putstr("ft_minishell1: exec format error: ");
+			ft_putstr("ft_minishell2: exec format error: ");
 			ft_putendl_fd(bin, 2), exit(2);
 		}
 
