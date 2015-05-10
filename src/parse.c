@@ -59,6 +59,45 @@ static void		tab_fill(char **tab,char *str, int nb)
 	}
 }
 
+static char			*wordlen(char **str)
+{
+	int i = 0;
+	int j = 0;
+	char *tmp = *str;
+	while (**str && **str != '\t' && **str != ' ')
+	{
+		if (**str == '\"')
+		{
+			(*str)++;
+			while (**str != '\"' && **str)
+			{
+				(*str)++;
+				i++;
+			}
+		}
+		else
+			i++;
+		(*str)++;
+	}
+	if (i)
+	{
+		char *ret = malloc(i + 1);
+		while(*tmp && i)
+		{
+			if (*tmp != '\"')
+			{
+				ret[j++] = *tmp;
+				i--;
+			}
+			tmp++;
+		}
+		ret[j] = 0;
+		return (ret);
+	}
+	else
+		return (0);
+}
+
 char			**command_line_parser(char *line)
 {
 	char	**ret;
@@ -71,8 +110,20 @@ char			**command_line_parser(char *line)
 }
 
 int		main() {
-	char	*line = "cat  	\"salut les gars\"  et puis \"alors quoi\" hein  \"sdfsdf\"";
+	char	*line = " cat  	\"salut les gars\"  et puis \"alors quoi\"sdad \" hello \" hein  \"sdfsdf\"  ";
 
-	printf("%d :%s\n", word_count(line), line);
+	char *str = line;
+	char *tmp;
+	int i;
+	for (str = line; *str; str++)
+	{
+		if (tmp = wordlen(&str))
+		{
+			printf("%s\n", tmp);
+		}
+	}
+
+
+	//printf("%d :%s\n", word_count(line), line);
 	return 0;
 }
