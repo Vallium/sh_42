@@ -17,27 +17,31 @@ static int		is_tab(char c)
 	return (c == ' ' || c == '\t');
 }
 
-static int		word_count(char *str)
+static int		word_len(char *str)
 {
-	int		nbr;
-	char	*tmp;
-
-	nbr = 0;
-	if (!is_tab(*str))
-		nbr++;
-	for (tmp = str ; *tmp; tmp++) {
-		if (is_tab(*tmp) && !is_tab(*(tmp + 1)))
-			nbr++, tmp++;
-		if (*tmp == '"')
+	int i = -1;
+	int j = 0;
+	char *tmp = str;
+	while (*tmp && *tmp != '\t' && *tmp != ' ')
+	{
+		if (*tmp == '\"')
 		{
+			i = i == -1 ? 0 : i;
 			tmp++;
-			while (*tmp != '"')
+			while (*tmp != '\"' && *tmp)
+			{
 				tmp++;
+				i++;
+			}
 		}
+		else
+			i++;
+		tmp++;
 	}
-	return (nbr);
+	return (i);
 }
 
+/*
 static void		tab_fill(char **tab,char *str, int nb)
 {
 	int		nbr;
@@ -58,8 +62,9 @@ static void		tab_fill(char **tab,char *str, int nb)
 		}
 	}
 }
+*/
 
-static char			*wordlen(char **str)
+static char			*word_malloc(char **str)
 {
 	int i = 0;
 	int j = 0;
@@ -98,6 +103,7 @@ static char			*wordlen(char **str)
 		return (0);
 }
 
+/*
 char			**command_line_parser(char *line)
 {
 	char	**ret;
@@ -108,6 +114,7 @@ char			**command_line_parser(char *line)
 	tab_fill(ret, line, nb);
 	return (ret);
 }
+*/
 
 int		main() {
 	char	*line = " cat  	\"salut les gars\"  et puis \"alors quoi\"sdad \" hello \" hein  \"sdfsdf\"  ";
@@ -117,9 +124,9 @@ int		main() {
 	int i;
 	for (str = line; *str; str++)
 	{
-		if (tmp = wordlen(&str))
+		if (word_len(str) > -1)
 		{
-			printf("%s\n", tmp);
+			printf("%s\n", word_malloc(&str));
 		}
 	}
 
