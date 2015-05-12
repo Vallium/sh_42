@@ -19,57 +19,75 @@ static int		is_tab(char c)
 
 static int		word_len(char *str)
 {
-	int i = -1;
-	int j = 0;
-	char *tmp = str;
-	while (*tmp && *tmp != '\t' && *tmp != ' ')
+	int		i;
+
+	i = -1;
+	while (*str && !is_tab(*str))
 	{
-		if (*tmp == '\"')
+		if (*str == '\"')
 		{
 			i = i == -1 ? 0 : i;
-			tmp++;
-			while (*tmp != '\"' && *tmp)
+			str++;
+			while (*str != '\"' && *str)
 			{
-				tmp++;
+				str++;
 				i++;
 			}
 		}
 		else
 			i++;
-		tmp++;
+		str++;
 	}
 	return (i);
 }
 
-/*
-static void		tab_fill(char **tab,char *str, int nb)
+static int			word_count(char *str)
 {
-	int		nbr;
-	char	*tmp;
+	int		i;
+	int		nb;
 
-	nbr = 0;
-	if (!is_tab(*str))
-		nbr++;
-	for (tmp = str ; *tmp; tmp++) {
-		if (is_tab(*tmp) && !is_tab(*(tmp + 1)))
-			nbr++, tmp++;
-		if (*tmp == '"')
+	i = 0;
+	nb = 0;
+	while (*str)
+	{
+		i = -1;
+		while (*str && !is_tab(*str))
 		{
-			tmp++;
-			while (*tmp != '"')
-				tmp++;
-			tmp++;
+			if (*str == '\"')
+			{
+				i = i == -1 ? 0 : i;
+				str++;
+				while (*str != '\"' && *str)
+				{
+					str++;
+					i++;
+				}
+			}
+			else
+				i++;
+			str++;
 		}
+		if (i > -1)
+			nb++;
+		if (is_tab(*str))
+			str++;
 	}
+	return nb;
 }
-*/
+
+#include "string.h"
 
 static char			*word_malloc(char **str)
 {
-	int i = 0;
-	int j = 0;
-	char *tmp = *str;
-	while (**str && **str != '\t' && **str != ' ')
+	int		i;
+	int		j;
+	char	*ret;
+	char	*tmp;
+
+	i = 0;
+	j = 0;
+	tmp = *str;
+	while (**str && !is_tab(**str))
 	{
 		if (**str == '\"')
 		{
@@ -84,53 +102,54 @@ static char			*word_malloc(char **str)
 			i++;
 		(*str)++;
 	}
-	if (i)
+	if (!(ret = (char*)malloc(sizeof(char) * (i + 1))))
+		return (NULL);
+	while(*tmp && i)
 	{
-		char *ret = malloc(i + 1);
-		while(*tmp && i)
+		if (*tmp != '\"')
 		{
-			if (*tmp != '\"')
-			{
-				ret[j++] = *tmp;
-				i--;
-			}
-			tmp++;
+			ret[j++] = *tmp;
+			i--;
 		}
-		ret[j] = 0;
-		return (ret);
+		tmp++;
 	}
-	else
-		return (0);
+	ret[j] = 0;
+	return (ret);
 }
 
-/*
+
 char			**command_line_parser(char *line)
 {
 	char	**ret;
+	char	**tmp;
+	char	*tmp_line;
 	int		nb;
 
+	tmp_line = line;
 	nb = word_count(line);
-	ret = (char**)malloc(sizeof(char*) * (nb + 1));
-	tab_fill(ret, line, nb);
+	if (!(ret = (char**)malloc(sizeof(char*) * (nb + 1))))
+		return (NULL);
+	tmp = ret;
+	while (*tmp_line)
+	{
+		if (word_len(tmp_line) > -1)
+		{
+			*tmp = word_malloc(&tmp_line);
+			tmp++;
+		}
+		tmp_line++;
+	}
+	*tmp = 0;
 	return (ret);
 }
-*/
 
-int		main() {
-	char	*line = " cat  	\"salut les gars\"  et puis \"alors quoi\"sdad \" hello \" hein  \"sdfsdf\"  ";
-
-	char *str = line;
-	char *tmp;
-	int i;
-	for (str = line; *str; str++)
-	{
-		if (word_len(str) > -1)
-		{
-			printf("%s\n", word_malloc(&str));
-		}
-	}
-
-
-	//printf("%d :%s\n", word_count(line), line);
-	return 0;
-}
+//
+// int		main() {
+// 	char	*line = " cat  	\"salut les gars\"  \"\" et puis \"alors quoi\"sdad \" hello \" hein  \"sdfsdf\"  ";
+//
+// 	char **tab = command_line_parser(line);
+//
+//
+//
+// 	return 0;
+// }
