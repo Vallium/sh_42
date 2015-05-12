@@ -18,7 +18,8 @@ SRC		=	main.c		\
 			command.c	\
 			built_in.c	\
 			unsetenv.c	\
-			free.c
+			free.c		\
+			parse.c
 
 UNAME_S := $(shell uname -s)
 

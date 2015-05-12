@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "sh_1.h"
+#include "sh_1.h"
 
 static int		is_tab(char c)
 {
@@ -74,8 +74,6 @@ static int			word_count(char *str)
 	}
 	return nb;
 }
-
-#include "string.h"
 
 static char			*word_malloc(char **str)
 {
@@ -142,14 +140,3 @@ char			**command_line_parser(char *line)
 	*tmp = 0;
 	return (ret);
 }
-
-//
-// int		main() {
-// 	char	*line = " cat  	\"salut les gars\"  \"\" et puis \"alors quoi\"sdad \" hello \" hein  \"sdfsdf\"  ";
-//
-// 	char **tab = command_line_parser(line);
-//
-//
-//
-// 	return 0;
-// }
