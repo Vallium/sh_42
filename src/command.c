@@ -14,7 +14,7 @@
 
 int		line_trim(char **line)
 {
-	*line = ft_strclean(*line);
+	*line = ft_strtrim(*line);
 	if (!*line || !*line[0])
 		return (0);
 	return (1);
@@ -43,7 +43,7 @@ int		command(char *line, t_list **env)
 
 	if (!line_trim(&line))
 		return (magic_free(line));
-	cmd.args = ft_strsplit(line, ' '), args_filter(*env, cmd.args, line);
+	cmd.args = command_line_parser(line), args_filter(*env, cmd.args, line);
 	if (!cmd.args || !cmd.args[0] || !cmd.args[0][0])
 		return (magic_free(line));
 	cmd.bin = get_path(*env, cmd.args[0]);

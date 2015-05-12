@@ -108,4 +108,6 @@ void				ft_exit(char **args, int msg);
 
 t_list_elem			*get_elem(t_list *env, char *key);
 
+char			**command_line_parser(char *line);
+
 #endif
