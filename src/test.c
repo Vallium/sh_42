@@ -120,7 +120,7 @@ static char			*word_malloc(char **str)
 }
 
 
-char			**command_line_parser(char *line)
+char			**parser(char *line)
 {
 	char	**ret;
 	char	**tmp;
@@ -145,20 +145,26 @@ char			**command_line_parser(char *line)
 	return (ret);
 }
 
+typedef struct		s_cmd2
+{
+	char			**tab;
+	char			ope;
+}					t_cmd2;
+
 typedef struct		s_cmd
 {
 	char			*cmd_line;
 	char			ope;
 }					t_cmd;
 
-t_cmd		*ope_chr(char **str)
+t_cmd		ope_chr(char **str)
 {
-	t_cmd	*ret;
+	t_cmd	ret;
 	char	*tmp;
-	char	*sub;
+	int		dec;
 
 	tmp = *str;
-	ret = (t_cmd*)malloc(sizeof(t_cmd));
+	dec = 0;
 	while (**str)
 	{
 		if (**str == '\"')
@@ -168,33 +174,81 @@ t_cmd		*ope_chr(char **str)
 				(*str)++;
 			(*str)++;
 		}
-		if (**str == '|')
+		if (**str == '|' || **str == ';')
 			break;
+		if (**str == '>')
+		{
+			dec = *(*str + 1) == '>' ? 1 : 0;
+			break;
+		}
+		if (**str == '<')
+		{
+			dec = *(*str + 1) == '<' ? 1 : 0;
+			break;
+		}
 		(*str)++;
 	}
-	ret->cmd_line = ft_strsub(tmp, 0, ft_strlen(tmp) - ft_strlen(*str));
-	ret->ope = **str;
-	(*str)++;
+	ret.cmd_line = ft_strsub(tmp, 0, ft_strlen(tmp) - ft_strlen(*str));
+	ret.ope = dec ? **str + 1 : **str;
+	(*str) += dec ? 2 : 1;
 	return (ret);
 }
 
+t_list			*command_line_parser(char *line)
+{
+	t_list		*lst;
+	t_cmd		cmd;
+	t_cmd2		cmd2;
+	char		**tmp;
+
+	lst = NULL;
+
+
+
+	while (*line)
+	{
+		cmd = ope_chr(&line);
+		cmd2.tab = parser(cmd.cmd_line);
+		cmd2.ope = cmd.ope;
+		ft_lstsmartpushback(&lst, ft_lstnew(&cmd2, sizeof(t_cmd2)));
+		if (!cmd2.ope)
+			break;
+		// free(cmd.cmd_line);
+		// cmd.cmd_line = NULL;
+		// tmp = cmd2.tab;
+		// while (*cmd2.tab)
+		// {
+		// 	free(*cmd2.tab);
+		// 	*cmd2.tab++ = NULL;
+		// }
+		// free(tmp);
+	}
+	return(lst);
+}
+
 int		main() {
-	char	*line = " cat  	\"salut les gars\" |  \"\" et puis \"alors quoi\"sdad \" hel|lo \" he|in  \"sdfsdf\"  ";
+	char	*line = " cat  	\"salut les gars\" |  \"\" et<<puis \"alors quoi\"sdad \" hel|lo \" he|in  \"sdfsdf\"  | salut    ";
 
-	// char **tab = command_line_parser(line);
+	t_list	*lst;
 
-	// int		i;
-	// for (i = 0; tab[i]; i++) {
-	// 	printf("%s\n", tab[i]);
-	// }
-	t_cmd *cmd = ope_chr(&line);
-	printf("%c : %s\n", cmd->ope, cmd->cmd_line);
-	t_cmd	*test = ope_chr(&line);
+	lst = command_line_parser(line);
 
-	printf("%c : %s\n", test->ope, test->cmd_line);
-		t_cmd	*test2 = ope_chr(&line);
 
-		printf("%c : %s\n", test2->ope, test2->cmd_line);
+	t_list *tmp = lst;
+	t_cmd2	*data;
+
+	while(tmp)
+	{
+		data = (t_cmd2 *)tmp->content;
+		int i = 0;
+		while (data->tab[i])
+		{
+			printf("tab[%d] = [%s]\n", i, data->tab[i]);
+			i++;
+		}
+		printf("opt = {%c}\n\n", data->ope);
+		tmp = tmp->next;
+	}
 
 	return 0;
 }
