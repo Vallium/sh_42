@@ -202,9 +202,6 @@ t_list			*command_line_parser(char *line)
 	char		**tmp;
 
 	lst = NULL;
-
-
-
 	while (*line)
 	{
 		cmd = ope_chr(&line);
@@ -213,15 +210,7 @@ t_list			*command_line_parser(char *line)
 		ft_lstsmartpushback(&lst, ft_lstnew(&cmd2, sizeof(t_cmd2)));
 		if (!cmd2.ope)
 			break;
-		// free(cmd.cmd_line);
-		// cmd.cmd_line = NULL;
-		// tmp = cmd2.tab;
-		// while (*cmd2.tab)
-		// {
-		// 	free(*cmd2.tab);
-		// 	*cmd2.tab++ = NULL;
-		// }
-		// free(tmp);
+		free(cmd.cmd_line);
 	}
 	return(lst);
 }
