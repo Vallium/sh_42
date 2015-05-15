@@ -1,4 +1,4 @@
-*.out
+*.out*
 *.o
 ft_minishell2
 ft_minishell2_debug
