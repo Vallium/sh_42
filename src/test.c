@@ -6,7 +6,7 @@
 /*   By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/15 12:15:04 by aalliot           #+#    #+#             */
-/*   Updated: 2015/05/15 12:15:07 by aalliot          ###   ########.fr       */
+/*   Updated: 2015/06/01 07:45:54 by adoussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,7 +216,7 @@ t_list			*command_line_parser(char *line)
 }
 
 int		main() {
-	char	*line = " cat  	\"salut les gars\" |  \"\" et<<puis \"alors quoi\"sdad \" hel|lo \" he|in  \"sdfsdf\"  | salut    ";
+	char	*line = " cat \"/usr/share/dict/words\" | grep \"bite\" ";
 
 	t_list	*lst;
 
