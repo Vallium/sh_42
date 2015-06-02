@@ -88,7 +88,7 @@ int		main(int argc, char *argv[], char *envp[])
 			ft_putendl("exit");
 			return (0);
 		}
-		printf("<<    |%s|    >>\n", line);
+		printf("<<%s>>\n", line);
 		interpret(line, &env);
 		// command(line, &env);
 	}
