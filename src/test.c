@@ -130,7 +130,7 @@ char			**parser(char *line)
 
 	tmp_line = line;
 	nb = word_count(line);
-	printf("wdnb = %d\n",nb);
+	//printf("wdnb = %d\n",nb);
 	if (!(ret = (char**)malloc(sizeof(char*) * (nb + 1))))
 		return (NULL);
 	tmp = ret;
@@ -139,11 +139,12 @@ char			**parser(char *line)
 
 		if (word_len(tmp_line) > -1)
 		{
-			printf("len: %d\n", word_len(tmp_line));
+			//printf("len: %d %s\n", word_len(tmp_line),tmp_line);
 			*tmp = word_malloc(&tmp_line);
 			tmp++;
 		}
-		tmp_line++;
+		else
+			tmp_line++;
 	}
 	*tmp = 0;
 	return (ret);
@@ -218,7 +219,7 @@ t_list			*command_line_parser(char *line)
 	}
 	return(lst);
 }
-
+// 
 // int		main() {
 // 	char	*line = "cat -e auteur|grep salut";
 //
