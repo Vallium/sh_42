@@ -19,7 +19,7 @@ SRC		=	main.c		\
 			built_in.c	\
 			unsetenv.c	\
 			free.c		\
-			parse.c
+			test.c
 
 UNAME_S := $(shell uname -s)
 
@@ -29,7 +29,7 @@ SRC	+=
 
 endif
 ifeq ($(UNAME_S),Darwin)
-FLAGS		= -Wall -Wextra -Werror
+FLAGS		= -Wall -Wextra # -Werror
 SRC	+=
 
 endif

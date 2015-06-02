@@ -41,6 +41,36 @@ void	prompt(t_list *env)
 	free(pwd);
 }
 
+#include <stdio.h>
+
+void		interpret(char *line, t_list **env)
+{
+	t_list		*data;
+
+	data = command_line_parser(line);
+	(void)env;
+		// t_list	*lst;
+
+		// lst = command_line_parser(line);
+
+
+		t_list *tmp = data;
+		t_cmd2	*data2;
+
+		while(tmp)
+		{
+			data2 = (t_cmd2 *)tmp->content;
+			int i = 0;
+			while (data2->tab[i])
+			{
+				printf("tab[%d] = [%s]\n", i, data2->tab[i]);
+				i++;
+			}
+			printf("opt = {%c}\n\n", data2->ope);
+			tmp = tmp->next;
+		}
+}
+
 int		main(int argc, char *argv[], char *envp[])
 {
 	t_list	*env;
@@ -58,7 +88,9 @@ int		main(int argc, char *argv[], char *envp[])
 			ft_putendl("exit");
 			return (0);
 		}
-		command(line, &env);
+		printf("<<    |%s|    >>\n", line);
+		interpret(line, &env);
+		// command(line, &env);
 	}
 	return (0);
 }

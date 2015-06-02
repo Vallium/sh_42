@@ -30,10 +30,22 @@
 
 # endif
 
+// typedef struct		s_cmd
+// {
+// 	char			*bin;
+// 	char			**args;
+// }					t_cmd;
+
+typedef struct		s_cmd2
+{
+	char			**tab;
+	char			ope;
+}					t_cmd2;
+
 typedef struct		s_cmd
 {
-	char			*bin;
-	char			**args;
+	char			*cmd_line;
+	char			ope;
 }					t_cmd;
 
 typedef struct		s_list_elem
@@ -108,6 +120,7 @@ void				ft_exit(char **args, int msg);
 
 t_list_elem			*get_elem(t_list *env, char *key);
 
-char			**command_line_parser(char *line);
+// char			**command_line_parser(char *line);
+t_list			*command_line_parser(char *line);
 
 #endif

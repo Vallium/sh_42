@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "../includes/sh_1.h"
-#include "libft.h"
+#include "sh_1.h"
+// #include "libft.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -39,7 +39,7 @@ static int		word_len(char *str)
 			}
 		}
 		else
-			i++;
+			i = i == -1 ? 1 : i + 1;
 		str++;
 	}
 	return (i);
@@ -104,6 +104,7 @@ static char			*word_malloc(char **str)
 			i++;
 		(*str)++;
 	}
+	// printf("len: %d\n", i);
 	if (!(ret = (char*)malloc(sizeof(char) * (i + 1))))
 		return (NULL);
 	while(*tmp && i)
@@ -129,13 +130,16 @@ char			**parser(char *line)
 
 	tmp_line = line;
 	nb = word_count(line);
+	// printf("wdnb = %d\n",nb);
 	if (!(ret = (char**)malloc(sizeof(char*) * (nb + 1))))
 		return (NULL);
 	tmp = ret;
 	while (*tmp_line)
 	{
+
 		if (word_len(tmp_line) > -1)
 		{
+			// printf("len: %d\n", word_len(tmp_line));
 			*tmp = word_malloc(&tmp_line);
 			tmp++;
 		}
@@ -145,17 +149,17 @@ char			**parser(char *line)
 	return (ret);
 }
 
-typedef struct		s_cmd2
-{
-	char			**tab;
-	char			ope;
-}					t_cmd2;
-
-typedef struct		s_cmd
-{
-	char			*cmd_line;
-	char			ope;
-}					t_cmd;
+// typedef struct		s_cmd2
+// {
+// 	char			**tab;
+// 	char			ope;
+// }					t_cmd2;
+//
+// typedef struct		s_cmd
+// {
+// 	char			*cmd_line;
+// 	char			ope;
+// }					t_cmd;
 
 t_cmd		ope_chr(char **str)
 {
@@ -199,7 +203,7 @@ t_list			*command_line_parser(char *line)
 	t_list		*lst;
 	t_cmd		cmd;
 	t_cmd2		cmd2;
-	char		**tmp;
+	// char		**tmp;
 
 	lst = NULL;
 	while (*line)
@@ -215,29 +219,31 @@ t_list			*command_line_parser(char *line)
 	return(lst);
 }
 
-int		main() {
-	char	*line = " cat \"/usr/share/dict/words\" | grep \"bite\" ";
-
-	t_list	*lst;
-
-	lst = command_line_parser(line);
-
-
-	t_list *tmp = lst;
-	t_cmd2	*data;
-
-	while(tmp)
-	{
-		data = (t_cmd2 *)tmp->content;
-		int i = 0;
-		while (data->tab[i])
-		{
-			printf("tab[%d] = [%s]\n", i, data->tab[i]);
-			i++;
-		}
-		printf("opt = {%c}\n\n", data->ope);
-		tmp = tmp->next;
-	}
-
-	return 0;
-}
+// int		main() {
+// 	char	*line = "cat -e \"salut\"";
+//
+// 	// printf("%s\n%d\n", line, word_len(line));
+//
+// 	t_list	*lst;
+//
+// 	lst = command_line_parser(line);
+//
+//
+// 	t_list *tmp = lst;
+// 	t_cmd2	*data;
+//
+// 	while(tmp)
+// 	{
+// 		data = (t_cmd2 *)tmp->content;
+// 		int i = 0;
+// 		while (data->tab[i])
+// 		{
+// 			printf("tab[%d] = [%s]\n", i, data->tab[i]);
+// 			i++;
+// 		}
+// 		printf("opt = {%c}\n\n", data->ope);
+// 		tmp = tmp->next;
+// 	}
+//
+// 	return 0;
+// }
