@@ -37,33 +37,35 @@ void	args_filter(t_list *env, char **args, char *line)
 	}
 }
 
-// int		command(char *line, t_list **env)
-// {
-// 	t_cmd		cmd;
-//
-// 	if (!line_trim(&line))
-// 		return (magic_free(line));
-// 	cmd.args = command_line_parser(line), args_filter(*env, cmd.args, line);
-// 	if (!cmd.args || !cmd.args[0] || !cmd.args[0][0])
-// 		return (magic_free(line));
-// 	cmd.bin = get_path(*env, cmd.args[0]);
-// 	if (!ft_strcmp(cmd.args[0], "exit"))
-// 		ft_exit(cmd.args, 0);
-// 	else if (!ft_strcmp(cmd.args[0], "cd"))
-// 		c_cd(*env, cmd.args);
-// 	else if ((!ft_strcmp(cmd.args[0], "env")
-// 	|| !ft_strcmp(cmd.args[0], "setenv")) && !cmd.args[1])
-// 		c_env(*env, cmd.args);
-// 	else if (ft_strcmp(cmd.args[0], "unsetenv") == 0)
-// 		c_unsetenv(env, cmd.args);
-// 	else if (ft_strcmp(cmd.args[0], "setenv") == 0)
-// 		c_setenv(env, cmd.args);
-// 	else if (cmd.bin == (char*)1)
-// 		print_error(1, cmd.args[0]);
-// 	else if (cmd.bin == NULL || exec(cmd.bin, cmd.args, *env) == -1)
-// 		print_error(2, cmd.args[0]);
-// 	return (command_free(cmd.args, line, cmd.bin));
-// }
+int		command(char **line, t_list **env)
+{
+	t_command		cmd;
+
+	// if (!line_trim(&line))
+	// 	return (magic_free(line));
+	// cmd.args = command_line_parser(line), args_filter(*env, cmd.args, line);
+	cmd.args = line;
+
+	if (!cmd.args || !cmd.args[0] || !cmd.args[0][0])
+		return (magic_free(line));
+	cmd.bin = get_path(*env, cmd.args[0]);
+	if (!ft_strcmp(cmd.args[0], "exit"))
+		ft_exit(cmd.args, 0);
+	else if (!ft_strcmp(cmd.args[0], "cd"))
+		c_cd(*env, cmd.args);
+	else if ((!ft_strcmp(cmd.args[0], "env")
+	|| !ft_strcmp(cmd.args[0], "setenv")) && !cmd.args[1])
+		c_env(*env, cmd.args);
+	else if (ft_strcmp(cmd.args[0], "unsetenv") == 0)
+		c_unsetenv(env, cmd.args);
+	else if (ft_strcmp(cmd.args[0], "setenv") == 0)
+		c_setenv(env, cmd.args);
+	else if (cmd.bin == (char*)1)
+		print_error(1, cmd.args[0]);
+	else if (cmd.bin == NULL || exec(cmd.bin, cmd.args, *env) == -1)
+		print_error(2, cmd.args[0]);
+	return (command_free(cmd.args, line, cmd.bin));
+}
 
 int		exec(char *bin, char *args[], t_list *env)
 {

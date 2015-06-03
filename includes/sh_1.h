@@ -30,11 +30,11 @@
 
 # endif
 
-// typedef struct		s_cmd
+// typedef struct		s_command
 // {
 // 	char			*bin;
 // 	char			**args;
-// }					t_cmd;
+// }					t_command;
 
 typedef struct		s_cmd2
 {
@@ -101,7 +101,7 @@ char				*get_path(t_list *env, char *bin);
 char				**env_to_str(t_list *env);
 char				*get_data(t_list *env, char *key);
 
-int					command_free(char *args[], char *line, char *bin);
+int					command_free(char *args[], char **line, char *bin);
 int					free_home_path(t_list *env, t_cd *cd);
 void				free_path(t_path *path);
 int					magic_free(void *ptr);
@@ -113,14 +113,13 @@ int					c_cd(t_list *env, char *args[]);
 
 int					exec(char *bin, char *args[], t_list *env);
 void				prompt(t_list *env);
-int					command(char *line, t_list **env);
+int					command(char **line, t_list **env);
 
 int					print_error(int ind, char *args);
 void				ft_exit(char **args, int msg);
 
 t_list_elem			*get_elem(t_list *env, char *key);
 
-// char			**command_line_parser(char *line);
 t_list			*command_line_parser(char *line);
 
 #endif

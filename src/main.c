@@ -56,13 +56,14 @@ void		interpret(char *line, t_list **env)
 		while(tmp)
 		{
 			data2 = (t_cmd2 *)tmp->content;
-			int i = 0;
-			while (data2->tab[i])
-			{
-				printf("tab[%d] = [%s]\n", i, data2->tab[i]);
-				i++;
-			}
-			printf("opt = {%c}\n\n", data2->ope);
+			command(data2->tab, env);
+			// int i = 0;
+			// while (data2->tab[i])
+			// {
+			// 	printf("tab[%d] = [%s]\n", i, data2->tab[i]);
+			// 	i++;
+			// }
+			// printf("opt = {%c}\n\n", data2->ope);
 			tmp = tmp->next;
 		}
 }

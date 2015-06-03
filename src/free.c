@@ -19,15 +19,15 @@ int		magic_free(void *ptr)
 	return (0);
 }
 
-int		command_free(char *args[], char *line, char *bin)
+int		command_free(char *args[], char **line, char *bin)
 {
 	char			**tmp;
 	struct stat		stat_buff;
 
 	lstat(bin, &stat_buff);
 	tmp = args;
-	if (!stat(line, &stat_buff) && S_ISDIR(stat_buff.st_mode))
-		return (0);
+	// if (!stat(line, &stat_buff) && S_ISDIR(stat_buff.st_mode))
+	// 	return (0);
 	while (tmp && *tmp)
 	{
 		free(*tmp);
@@ -35,8 +35,8 @@ int		command_free(char *args[], char *line, char *bin)
 	}
 	free(args);
 	args = NULL;
-	free(line);
-	line = NULL;
+	// free(line);
+	// line = NULL;
 	if (bin && (stat_buff.st_mode & 1))
 	{
 		free(bin);
