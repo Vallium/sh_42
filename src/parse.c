@@ -1,27 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/05/07 11:18:34 by aalliot           #+#    #+#             */
-/*   Updated: 2015/05/07 11:18:40 by aalliot          ###   ########.fr       */
+/*   Created: 2015/05/15 12:15:04 by aalliot           #+#    #+#             */
+/*   Updated: 2015/06/01 07:45:54 by adoussau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "sh_1.h"
-
+#include "sh_1.h"
+// #include "libft.h"
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 static int		is_tab(char c)
 {
 	return (c == ' ' || c == '\t');
-}
-
-char			is_cmd(char str)
-{
-	return (str == '|');
 }
 
 static int		word_len(char *str)
@@ -29,9 +26,6 @@ static int		word_len(char *str)
 	int		i;
 
 	i = -1;
-
-	/*if is_cmd(str)
-		return (-2);*/
 	while (*str && !is_tab(*str))
 	{
 		if (*str == '\"')
@@ -45,10 +39,11 @@ static int		word_len(char *str)
 			}
 		}
 		else
-			i++;
+			i = i == -1 ? 1 : i + 1;
 		str++;
 	}
 	return (i);
+	
 }
 
 static int			word_count(char *str)
@@ -73,16 +68,8 @@ static int			word_count(char *str)
 					i++;
 				}
 			}
-			else if (is_cmd(*str))
-			{
-				nb++;
-				str++;
-				break;
-			}
 			else
-			{
 				i++;
-			}
 			str++;
 		}
 		if (i > -1)
@@ -93,14 +80,12 @@ static int			word_count(char *str)
 	return nb;
 }
 
-static char			*word_malloc(char **str, int *cmd)
+static char			*word_malloc(char **str)
 {
 	int		i;
 	int		j;
 	char	*ret;
 	char	*tmp;
-
-	*cmd = 0;
 
 	i = 0;
 	j = 0;
@@ -116,15 +101,11 @@ static char			*word_malloc(char **str, int *cmd)
 				i++;
 			}
 		}
-		else if (is_cmd(**str))
-		{
-			*cmd = '|';
-			break;
-		}
 		else
 			i++;
 		(*str)++;
 	}
+	// printf("len: %d\n", i);
 	if (!(ret = (char*)malloc(sizeof(char) * (i + 1))))
 		return (NULL);
 	while(*tmp && i)
@@ -141,58 +122,130 @@ static char			*word_malloc(char **str, int *cmd)
 }
 
 
-typedef struct s_test
+char			**parser(char *line)
 {
-	char	type;
-	char	*data;
-}			t_test;
-
-t_test			*command_line_parser(char *line)
-{
-	t_test		*ret;
-	t_test		*tmp;
+	char	**ret;
+	char	**tmp;
 	char	*tmp_line;
 	int		nb;
-	int 	cmd;
 
 	tmp_line = line;
 	nb = word_count(line);
-
-	printf("nb : %d\n",nb);
-
-	if (!(ret = (t_test*)malloc(sizeof(t_test) * (nb))))
+	//printf("wdnb = %d\n",nb);
+	if (!(ret = (char**)malloc(sizeof(char*) * (nb + 1))))
 		return (NULL);
 	tmp = ret;
 	while (*tmp_line)
 	{
+
 		if (word_len(tmp_line) > -1)
 		{
-			tmp->type = 'w';
-			tmp->data = word_malloc(&tmp_line, &cmd);
-			if (cmd == '|')
-			{
-				tmp++;
-				tmp->type = '|';
-				tmp->data = 0;
-			}
+			//printf("len: %d %s\n", word_len(tmp_line),tmp_line);
+			*tmp = word_malloc(&tmp_line);
 			tmp++;
 		}
-		tmp_line++;
+		else
+			tmp_line++;
 	}
+	*tmp = 0;
 	return (ret);
 }
 
- int		main() {
- 	char	*line = " cat  	\"salut les gars\"  \"\" et  cat\"|\"grep puis \"alors quoi\"sdad \" hello \" hein  \"sdfsdf\"  ";
+// typedef struct		s_cmd2
+// {
+// 	char			**tab;
+// 	char			ope;
+// }					t_cmd2;
+//
+// typedef struct		s_cmd
+// {
+// 	char			*cmd_line;
+// 	char			ope;
+// }					t_cmd;
 
- 	t_test *tab = command_line_parser(line);
+t_cmd		ope_chr(char **str)
+{
+	t_cmd	ret;
+	char	*tmp;
+	int		dec;
 
-	int i = 0;
-
-	for (;i < 10;i++)
+	tmp = *str;
+	dec = 0;
+	while (**str)
 	{
-		printf("%c : %s\n", tab[i].type, tab[i].data);
+		if (**str == '\"')
+		{
+			(*str)++;
+			while (**str != '\"')
+				(*str)++;
+			(*str)++;
+		}
+		if (**str == '|' || **str == ';')
+			break;
+		if (**str == '>')
+		{
+			dec = *(*str + 1) == '>' ? 1 : 0;
+			break;
+		}
+		if (**str == '<')
+		{
+			dec = *(*str + 1) == '<' ? 1 : 0;
+			break;
+		}
+		(*str)++;
 	}
+	ret.cmd_line = ft_strsub(tmp, 0, ft_strlen(tmp) - ft_strlen(*str));
+	ret.ope = dec ? **str + 1 : **str;
+	(*str) += dec ? 2 : 1;
+	return (ret);
+}
 
- 	return 0;
- }
+t_list			*command_line_parser(char *line)
+{
+	t_list		*lst;
+	t_cmd		cmd;
+	t_cmd2		cmd2;
+	// char		**tmp;
+
+	lst = NULL;
+	while (*line)
+	{
+		cmd = ope_chr(&line);
+		cmd2.tab = parser(cmd.cmd_line);
+		cmd2.ope = cmd.ope;
+		ft_lstsmartpushback(&lst, ft_lstnew(&cmd2, sizeof(t_cmd2)));
+		if (!cmd2.ope)
+			break;
+		free(cmd.cmd_line);
+	}
+	return(lst);
+}
+//
+// int		main() {
+// 	char	*line = "cat -e auteur|grep salut";
+//
+// 	// printf("%s\n%d\n", line, word_len(line));
+//
+// 	t_list	*lst;
+//
+// 	lst = command_line_parser(line);
+//
+//
+// 	t_list *tmp = lst;
+// 	t_cmd2	*data;
+//
+// 	while(tmp)
+// 	{
+// 		data = (t_cmd2 *)tmp->content;
+// 		int i = 0;
+// 		while (data->tab[i])
+// 		{
+// 			printf("tab[%d] = [%s]\n", i, data->tab[i]);
+// 			i++;
+// 		}
+// 		printf("opt = {%c}\n\n", data->ope);
+// 		tmp = tmp->next;
+// 	}
+//
+// 	return 0;
+// }
