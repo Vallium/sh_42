@@ -6,7 +6,7 @@
 /*   By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/05/15 12:15:04 by aalliot           #+#    #+#             */
-/*   Updated: 2015/06/01 07:45:54 by adoussau         ###   ########.fr       */
+/*   Updated: 2015/06/01 07:45:54 by aalliot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int		word_len(char *str)
 		str++;
 	}
 	return (i);
-	
+
 }
 
 static int			word_count(char *str)
