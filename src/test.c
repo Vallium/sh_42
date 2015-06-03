@@ -43,7 +43,6 @@ static int		word_len(char *str)
 		str++;
 	}
 	return (i);
-	
 }
 
 static int			word_count(char *str)
