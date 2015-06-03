@@ -49,10 +49,6 @@ void		interpret(char *line, t_list **env)
 
 	data = command_line_parser(line);
 	(void)env;
-		// t_list	*lst;
-
-		// lst = command_line_parser(line);
-
 
 		t_list *tmp = data;
 		t_cmd2	*data2;
@@ -88,7 +84,7 @@ int		main(int argc, char *argv[], char *envp[])
 			ft_putendl("exit");
 			return (0);
 		}
-		printf("<<%s>>\n", line);
+		// printf("<<%s>>\n", line);
 		interpret(line, &env);
 		// command(line, &env);
 	}
