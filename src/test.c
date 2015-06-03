@@ -43,6 +43,7 @@ static int		word_len(char *str)
 		str++;
 	}
 	return (i);
+	
 }
 
 static int			word_count(char *str)
@@ -219,7 +220,7 @@ t_list			*command_line_parser(char *line)
 	}
 	return(lst);
 }
-// 
+//
 // int		main() {
 // 	char	*line = "cat -e auteur|grep salut";
 //
