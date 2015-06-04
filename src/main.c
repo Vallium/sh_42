@@ -43,26 +43,18 @@ void	prompt(t_list *env)
 
 #include <stdio.h>
 
-void		run_pipe (void) {
+void		run_pipe (char **args1, char **args2, t_list *env) {
 	int const	READ_END = 0;
 	int const	WRITE_END = 1;
 	pid_t		child = -1;
 	int		pdes[2];
+	char	*bin1;
+	char	*bin2;
+	char	**strenv;
 
-	char	*cmd1 = NULL;
-	char	*cmd2 = NULL;
-	char	*args1[3];
-	char	*args2[3];
-
-	cmd1 = "/bin/ls";
-	args1[0] = cmd1;
-	args1[1] = "-lf";
-	args1[2] = NULL;
-
-	cmd2 = "/bin/cat";
-	args2[0] = cmd2;
-	args2[1] = "-e";
-	args2[2] = NULL;
+	bin1 = get_path(env, args1[0]);
+	bin2 = get_path(env, args2[0]);
+	strenv = env_to_str(env);
 
 	pipe(pdes);
 
@@ -76,7 +68,7 @@ void		run_pipe (void) {
 		case 0:
 			dup2(pdes[WRITE_END], STDOUT_FILENO);
 			close(pdes[READ_END]);
-			execve(cmd1, args1, NULL);
+			execve(bin1, args1, strenv);
 			perror("error");
 			break;
 	}
@@ -84,15 +76,14 @@ void		run_pipe (void) {
 	dup2(pdes[READ_END], STDIN_FILENO);
 	close(pdes[WRITE_END]);
 	wait(NULL);
-	execve(cmd2, args2, NULL);
+	execve(bin2, args2, strenv);
 }
 
-void		pipe_cmd(char **cmd, t_list **env)
+void		pipe_cmd(char **cmd1, char **cmd2, t_list **env)
 {
 	pid_t	child = -1;
-	char	*bin;
 
-	// bin = get_path(cmd[0], )
+	// printf("1->%s\n2->%s\n", bin1, bin2);
 	child = fork();
 
 	switch ((int)child) {
@@ -100,7 +91,7 @@ void		pipe_cmd(char **cmd, t_list **env)
 			perror("error");
 			break;
 		case 0:
-			run_pipe();
+			run_pipe(cmd1, cmd2, *env);
 			perror("error");
 			break;
 	}
@@ -112,6 +103,7 @@ void		interpret(char *line, t_list **env)
 	t_list		*data;
 	t_list		*tmp;
 	t_cmd2		*data_tmp;
+	t_cmd2		*data_tmp2;
 
 	data = command_line_parser(line);
 	tmp = data;
@@ -124,8 +116,9 @@ void		interpret(char *line, t_list **env)
 				command(data_tmp->tab, env);
 			else if (data_tmp->ope == '|')
 			{
-				pipe_cmd(data_tmp->tab, env);
 				tmp = tmp->next;
+				data_tmp2 = (t_cmd2 *)tmp->content;
+				pipe_cmd(data_tmp->tab, data_tmp2->tab, env);
 			}
 			else
 				ft_putendl("other ope");
