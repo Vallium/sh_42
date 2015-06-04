@@ -49,6 +49,7 @@ int		command(char **line, t_list **env)
 	if (!cmd.args || !cmd.args[0] || !cmd.args[0][0])
 		return (magic_free(line));
 	cmd.bin = get_path(*env, cmd.args[0]);
+	// printf("%s\n", cmd.bin);
 	if (!ft_strcmp(cmd.args[0], "exit"))
 		ft_exit(cmd.args, 0);
 	else if (!ft_strcmp(cmd.args[0], "cd"))
