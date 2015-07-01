@@ -137,6 +137,7 @@ int		main(int argc, char *argv[], char *envp[])
 	env = get_env(envp);
 	while (42)
 	{
+		// ft_putstr("$> ");
 		prompt(env);
 		if (!get_next_line(0, &line))
 		{
