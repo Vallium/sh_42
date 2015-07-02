@@ -50,10 +50,9 @@ int		command(char **line, t_list **env)
 		return (magic_free(line));
 	cmd.bin = get_path(*env, cmd.args[0]);
 	// printf("%s\n", cmd.bin);
-	if (!ft_strcmp(cmd.args[0], "exit"))
-		ft_exit(cmd.args, 0);
-	else if (!ft_strcmp(cmd.args[0], "cd"))
-		c_cd(*env, cmd.args);
+	if (ft_exit(cmd.args, 0))
+		ft_putendl_fd("exit: too many arguments", 2);
+	else if (c_cd(*env, cmd.args));
 	else if ((!ft_strcmp(cmd.args[0], "env")
 	|| !ft_strcmp(cmd.args[0], "setenv")) && !cmd.args[1])
 		c_env(*env, cmd.args);

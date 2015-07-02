@@ -17,6 +17,7 @@ int		c_env(t_list *env, char *args[])
 	t_list		*tmp;
 	t_list_elem	*elem;
 
+	if ((!ft_strcmp(cmd.args[0], "env") || !ft_strcmp(cmd.args[0], "setenv")) && !cmd.args[1])
 	if (args[1] != NULL)
 	{
 		ft_putstr_fd("env: ", 2);
@@ -69,6 +70,9 @@ int		c_cd(t_list *env, char *args[])
 {
 	t_cd	cd;
 
+	if (ft_strcmp(args[0], "cd"))
+		return (0);
+
 	cd.home = get_data(env, "HOME");
 	if (cd.home)
 		if (args && args[1] && args[1][0] == '~')
@@ -87,16 +91,21 @@ int		c_cd(t_list *env, char *args[])
 		else
 		{
 			ft_putendl("cd: path to HOME not found.");
-			return (0);
+			return (1);
 		}
 	}
-	return (free_home_path(env, &cd));
+	return (free_home_path(env, &cd) == 0);
 }
 
-void	ft_exit(char **args, int msg)
+int		ft_exit(char **args, int msg)
 {
-	if (!args[1])
-		exit(msg);
+	if (!ft_strcmp(args[0], "exit"))
+	{
+		if (!args[1])
+			exit(msg);
+		else
+			return (1);
+	}
 	else
-		ft_putendl_fd("exit: too many arguments", 2);
+		return (0);
 }

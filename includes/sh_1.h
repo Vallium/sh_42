@@ -94,7 +94,7 @@ typedef struct		s_command
 	char			**args;
 }					t_command;
 
-void				ft_exit(char **args, int msg);
+int					ft_exit(char **args, int msg);
 
 t_list				*get_env(char *envp[]);
 char				*get_path(t_list *env, char *bin);
@@ -115,8 +115,7 @@ int					exec(char *bin, char *args[], t_list *env);
 void				prompt(t_list *env);
 int					command(char **line, t_list **env);
 
-int					print_error(int ind, char *args);
-void				ft_exit(char **args, int msg);
+int					print_error(int ind, char *args);\
 
 t_list_elem			*get_elem(t_list *env, char *key);
 
