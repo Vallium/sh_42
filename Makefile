@@ -6,7 +6,7 @@
 #    By: aalliot <aalliot@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/06 10:11:24 by aalliot           #+#    #+#              #
-#    Updated: 2015/02/22 00:29:54 by aalliot         ###   ########.fr         #
+#    Updated: 2015/07/03 18:13:11 by adoussau         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,8 @@ LIBFT_DEBUG	= libft/libft_debug.a
 LIBFT_HEAD	= libft/includes/
 
 CC			= gcc
-NORMINETTE	= ~/project/colorminette/colorminette
+#/NORMINETTE	= ~/project/colorminette/colorminette
+NORMINETTE	= norminette
 
 $(shell mkdir -p $(STATIC_DIR) $(DEBUG_DIR))
 

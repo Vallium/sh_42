@@ -53,11 +53,8 @@ int		command(char **line, t_list **env)
 	if (ft_exit(cmd.args, 0))
 		ft_putendl_fd("exit: too many arguments", 2);
 	else if (c_cd(*env, cmd.args));
-	else if ((!ft_strcmp(cmd.args[0], "env")
-	|| !ft_strcmp(cmd.args[0], "setenv")) && !cmd.args[1])
-		c_env(*env, cmd.args);
-	else if (ft_strcmp(cmd.args[0], "unsetenv") == 0)
-		c_unsetenv(env, cmd.args);
+	else if (c_env(*env, cmd.args));
+	else if (c_unsetenv(env, cmd.args));
 	else if (ft_strcmp(cmd.args[0], "setenv") == 0)
 		c_setenv(env, cmd.args);
 	else if (cmd.bin == (char*)1)

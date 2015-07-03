@@ -17,22 +17,25 @@ int		c_env(t_list *env, char *args[])
 	t_list		*tmp;
 	t_list_elem	*elem;
 
-	if ((!ft_strcmp(cmd.args[0], "env") || !ft_strcmp(cmd.args[0], "setenv")) && !cmd.args[1])
-	if (args[1] != NULL)
+	if ((!ft_strcmp(args[0], "env") || !ft_strcmp(args[0], "setenv")) && !args[1])
 	{
-		ft_putstr_fd("env: ", 2);
-		ft_putstr_fd(args[1], 2);
-		ft_putendl_fd(": no such file or directory", 2);
-		return (0);
-	}
-	tmp = env;
-	while (tmp)
-	{
-		elem = tmp->content;
-		ft_putstr(elem->key);
-		ft_putchar('=');
-		ft_putendl(elem->data);
-		tmp = tmp->next;
+		if (args[1] != NULL)
+		{
+			ft_putstr_fd("env: ", 2);
+			ft_putstr_fd(args[1], 2);
+			ft_putendl_fd(": no such file or directory", 2);
+			return (1);
+		}
+		tmp = env;
+		while (tmp)
+		{
+			elem = tmp->content;
+			ft_putstr(elem->key);
+			ft_putchar('=');
+			ft_putendl(elem->data);
+			tmp = tmp->next;
+		}
+		return (1);
 	}
 	return (0);
 }

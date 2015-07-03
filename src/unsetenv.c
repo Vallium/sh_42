@@ -61,10 +61,12 @@ int		c_unsetenv(t_list **env, char *args[])
 {
 	t_usenv	usenv;
 
+	if (ft_strcmp(args[0], "unsetenv"))
+		return (0);
 	if (!args[1] || !args[1][0])
 	{
 		ft_putendl_fd("unsetenv: too few arguments.", 2);
-		return (0);
+		return (1);
 	}
 	while (*args)
 	{
@@ -80,5 +82,5 @@ int		c_unsetenv(t_list **env, char *args[])
 		unsetenv_rest(&usenv, *args);
 		args++;
 	}
-	return (0);
+	return (1);
 }
