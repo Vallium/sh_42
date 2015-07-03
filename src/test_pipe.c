@@ -2,12 +2,13 @@
 #include <string.h>
 #include <stdio.h>
 #include <sys/wait.h>
+# include "libft.h"
 
 void		run_pipe (void) {
 	int const	READ_END = 0;
 	int const	WRITE_END = 1;
 	pid_t		child = -1;
-	int		pdes[2];
+	int			pdes[2];
 
 	char	*cmd1 = NULL;
 	char	*cmd2 = NULL;
@@ -34,17 +35,17 @@ void		run_pipe (void) {
 			close(pdes[WRITE_END]);
 			perror("error");
 		case 0:											// if cmd1
+			printf("run %s\n", cmd1);
 			dup2(pdes[WRITE_END], STDOUT_FILENO);
 			close(pdes[READ_END]);
-			printf("run %s\n", cmd1);
+			ft_putstr_fd("hello\n", pdes[WRITE_END]);
 			execve(cmd1, args1, NULL);
 			perror("error");
 			break;
 		default:										// if cmd2
+			printf("run %s\n", cmd2);
 			dup2(pdes[READ_END], STDIN_FILENO);
 			close(pdes[WRITE_END]);
-			wait4(child, NULL, 0, NULL);
-			printf("run %s\n", cmd2);
 			execve(cmd2, args2, NULL);
 			break;
 	}
