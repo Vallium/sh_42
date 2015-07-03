@@ -55,8 +55,7 @@ int		command(char **line, t_list **env)
 	else if (c_cd(*env, cmd.args));
 	else if (c_env(*env, cmd.args));
 	else if (c_unsetenv(env, cmd.args));
-	else if (ft_strcmp(cmd.args[0], "setenv") == 0)
-		c_setenv(env, cmd.args);
+	else if (c_setenv(env, cmd.args));
 	else if (cmd.bin == (char*)1)
 		print_error(1, cmd.args[0]);
 	else if (cmd.bin == NULL || exec(cmd.bin, cmd.args, *env) == -1)
