@@ -58,6 +58,8 @@ void		run_pipe (char **args1, char **args2, t_list *env) {
 
 	pipe(pdes);
 
+	printf("bin1 = %s,  bin2 = %s\n",bin1, bin2);
+
 	child = fork();
 
 	switch ((int)child) {
@@ -66,17 +68,19 @@ void		run_pipe (char **args1, char **args2, t_list *env) {
 			close(pdes[WRITE_END]);
 			perror("error");
 		case 0:
+		signal(SIGINT, SIG_DFL);
 			dup2(pdes[WRITE_END], STDOUT_FILENO);
 			close(pdes[READ_END]);
-			execve(bin1, args1, strenv);
+			wait(NULL);
+			execve(bin1, args1, strenv);					// cas bin1
 			perror("error");
 			break;
 	}
-
+	signal(SIGINT, SIG_DFL);
 	dup2(pdes[READ_END], STDIN_FILENO);
 	close(pdes[WRITE_END]);
 	wait(NULL);
-	execve(bin2, args2, strenv);
+	execve(bin2, args2, strenv);							// cas bin2
 }
 
 void		pipe_cmd(char **cmd1, char **cmd2, t_list **env)

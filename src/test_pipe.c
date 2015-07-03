@@ -14,37 +14,40 @@ void		run_pipe (void) {
 	char	*args1[3];
 	char	*args2[3];
 
-	cmd1 = "/bin/ls";
+	cmd1 = "/bin/cat";
 	args1[0] = cmd1;
-	args1[1] = "-lf";
+	args1[1] = "-e";
 	args1[2] = NULL;
 
-	cmd2 = "/bin/cat";
+	cmd2 = "/usr/bin/grep";
 	args2[0] = cmd2;
-	args2[1] = "-e";
+	args2[1] = "test";
 	args2[2] = NULL;
 
-	pipe(pdes);
+	pipe(pdes);		// create pipe
 
 	child = fork();
 
 	switch ((int)child) {
-		case -1:
+		case -1:										// if error
 			close(pdes[READ_END]);
 			close(pdes[WRITE_END]);
 			perror("error");
-		case 0:
+		case 0:											// if cmd1
 			dup2(pdes[WRITE_END], STDOUT_FILENO);
 			close(pdes[READ_END]);
+			printf("run %s\n", cmd1);
 			execve(cmd1, args1, NULL);
 			perror("error");
 			break;
+		default:										// if cmd2
+			dup2(pdes[READ_END], STDIN_FILENO);
+			close(pdes[WRITE_END]);
+			wait4(child, NULL, 0, NULL);
+			printf("run %s\n", cmd2);
+			execve(cmd2, args2, NULL);
+			break;
 	}
-
-	dup2(pdes[READ_END], STDIN_FILENO);
-	close(pdes[WRITE_END]);
-	wait(NULL);
-	execve(cmd2, args2, NULL);
 }
 
 int			main(void) {
