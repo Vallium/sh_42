@@ -131,9 +131,7 @@ void		pipe_cmd(t_list **tmp, t_list *env) {
 	pid_t		child;
 	int			pdes[2];
 	t_cmd2		*data_tmp;
-	// char		**strenv;
 
-	// strenv = env_to_str(env);
 	fd_in = 0;
 
 	data_tmp = (t_cmd2 *)(*tmp)->content;
@@ -149,27 +147,16 @@ void		pipe_cmd(t_list **tmp, t_list *env) {
 		}
 		else if (child == 0) {
 			dup2(fd_in, 0);
-			if ((*tmp)->next && data_tmp->ope == '|') {
-				// data_tmp2 = (t_cmd2 *)tmp->next->content;
-				// if (data_tmp2->ope == '|')
-					dup2(pdes[1], 1);
-			}
+			if ((*tmp)->next && data_tmp->ope == '|')
+				dup2(pdes[1], 1);
 			close(pdes[0]);
-			if (exec_test(get_path(env, data_tmp->tab[0]), data_tmp->tab, env) == -1)
-				printf("ERROR\n");
-			// execve(get_path(env, data_tmp->tab[0]), data_tmp->tab, strenv);
-			// ft_putendl_fd("error", 2);
-			// exit(0);
+			exec_test(get_path(env, data_tmp->tab[0]), data_tmp->tab, env);
 		}
 		else {
 			wait(NULL);
 			close(pdes[1]);
 			fd_in = pdes[0];
 			*tmp = (*tmp)->next;
-			// if (data_tmp->ope != '|')
-			// {	//*tmp = (*tmp)->next;
-			// 	return;
-			// }
 		}
 	}
 }
@@ -179,7 +166,6 @@ void		interpret(char *line, t_list **env)
 	t_list		*data;
 	t_list		*tmp;
 	t_cmd2		*data_tmp;
-	// t_cmd2		*data_tmp2;
 
 	data = command_line_parser(line);
 	tmp = data;
