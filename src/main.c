@@ -83,7 +83,7 @@ void		run_pipe (char **args1, char **args2, t_list *env) {
 	execve(bin2, args2, strenv);							// cas bin2
 }
 
-void		pipe_cmd(char **cmd1, char **cmd2, t_list **env)
+void		pipe_cmd2(char **cmd1, char **cmd2, t_list **env)
 {
 	pid_t	child = -1;
 
@@ -102,31 +102,76 @@ void		pipe_cmd(char **cmd1, char **cmd2, t_list **env)
 	wait(NULL);
 }
 
+void		pipe_cmd(t_list **tmp, t_list *env) {
+	int			fd_in;
+	pid_t		child;
+	int			pdes[2];
+	t_cmd2		*data_tmp;
+	t_cmd2		*data_tmp2;
+	char		**strenv;
+
+	strenv = env_to_str(env);
+	fd_in = 0;
+
+	// data_tmp = (t_cmd2 *)tmp->content;
+	while (*tmp) {
+		data_tmp = (t_cmd2 *)(*tmp)->content;
+
+		pipe(pdes);		// create pipe
+
+		if ((child = fork()) == -1) {
+			exit(EXIT_FAILURE);
+		}
+		else if (child == 0) {
+			dup2(fd_in, 0);
+			if ((*tmp)->next) {
+				// data_tmp2 = (t_cmd2 *)tmp->next->content;
+				// if (data_tmp2->ope == '|')
+					dup2(pdes[1], 1);
+			}
+			close(pdes[0]);
+			execve(get_path(env, data_tmp->tab[0]), data_tmp->tab, strenv);
+			perror("error");
+		}
+		else {
+			wait(NULL);
+			close(pdes[1]);
+			fd_in = pdes[0];
+			*tmp = (*tmp)->next;
+		}
+	}
+}
+
 void		interpret(char *line, t_list **env)
 {
 	t_list		*data;
 	t_list		*tmp;
 	t_cmd2		*data_tmp;
-	t_cmd2		*data_tmp2;
+	// t_cmd2		*data_tmp2;
 
 	data = command_line_parser(line);
 	tmp = data;
 
 
-		while(tmp)
+		while (tmp)
 		{
 			data_tmp = (t_cmd2 *)tmp->content;
-			if (data_tmp->ope == ';' || !data_tmp->ope)
+			if (data_tmp->ope == ';' || !data_tmp->ope) {
 				command(data_tmp->tab, env);
+				tmp = tmp->next;
+			}
 			else if (data_tmp->ope == '|')
 			{
-				tmp = tmp->next;
-				data_tmp2 = (t_cmd2 *)tmp->content;
-				pipe_cmd(data_tmp->tab, data_tmp2->tab, env);
+				// tmp = tmp->next;
+				// data_tmp2 = (t_cmd2 *)tmp->content;
+				// pipe_cmd2(data_tmp->tab, data_tmp2->tab, env);
+				pipe_cmd(&tmp, *env);
+				// tmp = tmp->next;
 			}
-			else
+			else {
 				ft_putendl("other ope");
-			tmp = tmp->next;
+				tmp = tmp->next;
+			}
 		}
 }
 
@@ -137,7 +182,7 @@ int		main(int argc, char *argv[], char *envp[])
 
 	(void)argc;
 	(void)argv;
-	signal(SIGINT, SIG_IGN);
+	// signal(SIGINT, SIG_IGN);
 	env = get_env(envp);
 	while (42)
 	{
