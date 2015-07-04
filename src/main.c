@@ -113,9 +113,11 @@ void		pipe_cmd(t_list **tmp, t_list *env) {
 	strenv = env_to_str(env);
 	fd_in = 0;
 
-	// data_tmp = (t_cmd2 *)tmp->content;
+	data_tmp = (t_cmd2 *)(*tmp)->content;
 	while (*tmp) {
 		data_tmp = (t_cmd2 *)(*tmp)->content;
+
+		// printf("exc = %s\n", data_tmp->tab[0]);
 
 		pipe(pdes);		// create pipe
 
@@ -124,7 +126,7 @@ void		pipe_cmd(t_list **tmp, t_list *env) {
 		}
 		else if (child == 0) {
 			dup2(fd_in, 0);
-			if ((*tmp)->next) {
+			if ((*tmp)->next && data_tmp->ope == '|') {
 				// data_tmp2 = (t_cmd2 *)tmp->next->content;
 				// if (data_tmp2->ope == '|')
 					dup2(pdes[1], 1);
@@ -138,6 +140,10 @@ void		pipe_cmd(t_list **tmp, t_list *env) {
 			close(pdes[1]);
 			fd_in = pdes[0];
 			*tmp = (*tmp)->next;
+			// if (data_tmp->ope != '|')
+			// {	//*tmp = (*tmp)->next;
+			// 	return;
+			// }
 		}
 	}
 }
