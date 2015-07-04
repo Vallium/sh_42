@@ -43,63 +43,87 @@ void	prompt(t_list *env)
 
 #include <stdio.h>
 
-void		run_pipe (char **args1, char **args2, t_list *env) {
-	int const	READ_END = 0;
-	int const	WRITE_END = 1;
-	pid_t		child = -1;
-	int		pdes[2];
-	char	*bin1;
-	char	*bin2;
-	char	**strenv;
+// void		run_pipe (char **args1, char **args2, t_list *env) {
+// 	int const	READ_END = 0;
+// 	int const	WRITE_END = 1;
+// 	pid_t		child = -1;
+// 	int		pdes[2];
+// 	char	*bin1;
+// 	char	*bin2;
+// 	char	**strenv;
+//
+// 	bin1 = get_path(env, args1[0]);
+// 	bin2 = get_path(env, args2[0]);
+// 	strenv = env_to_str(env);
+//
+// 	pipe(pdes);
+//
+// 	printf("bin1 = %s,  bin2 = %s\n",bin1, bin2);
+//
+// 	child = fork();
+//
+// 	switch ((int)child) {
+// 		case -1:
+// 			close(pdes[READ_END]);
+// 			close(pdes[WRITE_END]);
+// 			perror("error");
+// 		case 0:
+// 		signal(SIGINT, SIG_DFL);
+// 			dup2(pdes[WRITE_END], STDOUT_FILENO);
+// 			close(pdes[READ_END]);
+// 			wait(NULL);
+// 			execve(bin1, args1, strenv);					// cas bin1
+// 			perror("error");
+// 			break;
+// 	}
+// 	signal(SIGINT, SIG_DFL);
+// 	dup2(pdes[READ_END], STDIN_FILENO);
+// 	close(pdes[WRITE_END]);
+// 	wait(NULL);
+// 	execve(bin2, args2, strenv);							// cas bin2
+// }
+//
+// void		pipe_cmd2(char **cmd1, char **cmd2, t_list **env)
+// {
+// 	pid_t	child = -1;
+//
+// 	// printf("1->%s\n2->%s\n", bin1, bin2);
+// 	child = fork();
+//
+// 	switch ((int)child) {
+// 		case -1:
+// 			perror("error");
+// 			break;
+// 		case 0:
+// 			run_pipe(cmd1, cmd2, *env);
+// 			perror("error");
+// 			break;
+// 	}
+// 	wait(NULL);
+// }
 
-	bin1 = get_path(env, args1[0]);
-	bin2 = get_path(env, args2[0]);
-	strenv = env_to_str(env);
-
-	pipe(pdes);
-
-	printf("bin1 = %s,  bin2 = %s\n",bin1, bin2);
-
-	child = fork();
-
-	switch ((int)child) {
-		case -1:
-			close(pdes[READ_END]);
-			close(pdes[WRITE_END]);
-			perror("error");
-		case 0:
-		signal(SIGINT, SIG_DFL);
-			dup2(pdes[WRITE_END], STDOUT_FILENO);
-			close(pdes[READ_END]);
-			wait(NULL);
-			execve(bin1, args1, strenv);					// cas bin1
-			perror("error");
-			break;
-	}
-	signal(SIGINT, SIG_DFL);
-	dup2(pdes[READ_END], STDIN_FILENO);
-	close(pdes[WRITE_END]);
-	wait(NULL);
-	execve(bin2, args2, strenv);							// cas bin2
-}
-
-void		pipe_cmd2(char **cmd1, char **cmd2, t_list **env)
+int		exec_test(char *bin, char *args[], t_list *env)
 {
-	pid_t	child = -1;
+	char			**strenv;
+	struct stat		stat_buff;
 
-	// printf("1->%s\n2->%s\n", bin1, bin2);
-	child = fork();
+	lstat(bin, &stat_buff);
+	if (!(stat_buff.st_mode & 010) | S_ISDIR(stat_buff.st_mode))
+		dprintf(2, "error 1 bin = %s\n", bin), exit(2);
+	if (!S_ISREG(stat_buff.st_mode) || !(stat_buff.st_mode & 1))
+		dprintf(2, "error 2 bin = %s\n", bin), exit(2);
+	if (!ft_strchr(bin, '/') || bin == NULL)
+		dprintf(2, "error 3 bin = %s\n", bin), exit(2);
 
-	switch ((int)child) {
-		case -1:
-			perror("error");
-			break;
-		case 0:
-			run_pipe(cmd1, cmd2, *env);
-			perror("error");
-			break;
+	strenv = env_to_str(env);
+	signal(SIGINT, SIG_DFL);
+	if (execve(bin, args, strenv) < 0)
+	{
+		ft_putstr("ft_minishell2: exec format error: ");
+		ft_putendl_fd(bin, 2), exit(2);
 	}
-	wait(NULL);
+
+	return (1);
 }
 
 void		pipe_cmd(t_list **tmp, t_list *env) {
@@ -107,10 +131,9 @@ void		pipe_cmd(t_list **tmp, t_list *env) {
 	pid_t		child;
 	int			pdes[2];
 	t_cmd2		*data_tmp;
-	t_cmd2		*data_tmp2;
-	char		**strenv;
+	// char		**strenv;
 
-	strenv = env_to_str(env);
+	// strenv = env_to_str(env);
 	fd_in = 0;
 
 	data_tmp = (t_cmd2 *)(*tmp)->content;
@@ -122,7 +145,7 @@ void		pipe_cmd(t_list **tmp, t_list *env) {
 		pipe(pdes);		// create pipe
 
 		if ((child = fork()) == -1) {
-			exit(EXIT_FAILURE);
+			ft_putstr_fd("Fork Error\n", 2);
 		}
 		else if (child == 0) {
 			dup2(fd_in, 0);
@@ -132,8 +155,11 @@ void		pipe_cmd(t_list **tmp, t_list *env) {
 					dup2(pdes[1], 1);
 			}
 			close(pdes[0]);
-			execve(get_path(env, data_tmp->tab[0]), data_tmp->tab, strenv);
-			perror("error");
+			if (exec_test(get_path(env, data_tmp->tab[0]), data_tmp->tab, env) == -1)
+				printf("ERROR\n");
+			// execve(get_path(env, data_tmp->tab[0]), data_tmp->tab, strenv);
+			// ft_putendl_fd("error", 2);
+			// exit(0);
 		}
 		else {
 			wait(NULL);
@@ -188,7 +214,7 @@ int		main(int argc, char *argv[], char *envp[])
 
 	(void)argc;
 	(void)argv;
-	// signal(SIGINT, SIG_IGN);
+	signal(SIGINT, SIG_IGN);
 	env = get_env(envp);
 	while (42)
 	{
