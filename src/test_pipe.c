@@ -10,25 +10,25 @@ void		run_pipe (void) {
 	int			fd_in = 0;
 	pid_t		child = -1;
 	int			pdes[2];
-	char	*cmd1 = NULL;
-	char	*cmd2 = NULL;
-	char	*cmd3 = NULL;
+	// char	*cmd1 = NULL;
+	// char	*cmd2 = NULL;
+	// char	*cmd3 = NULL;
 	char	*args1[3];
 	char	*args2[3];
 	char	*args3[3];
 
-	cmd1 = "/bin/ls";
-	args1[0] = cmd1;
+	// cmd1 = "/bin/ls";
+	args1[0] = "/bin/ls";
 	args1[1] = "-l";
 	args1[2] = NULL;
 
-	cmd2 = "/usr/bin/grep";
-	args2[0] = cmd2;
+	// cmd2 = "/usr/bin/grep";
+	args2[0] = "/usr/bin/grep";
 	args2[1] = "test_pipe.c";
 	args2[2] = NULL;
 
-	cmd3 = "/bin/cat";
-	args3[0] = cmd3;
+	// cmd3 = "/bin/cat";
+	args3[0] = "/bin/cat";
 	args3[1] = "-e";
 	args3[2] = NULL;
 
