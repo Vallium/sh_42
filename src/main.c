@@ -171,6 +171,27 @@ void		interpret(char *line, t_list **env)
 	tmp = data;
 
 
+	// while (tmp)
+	// {
+	// 	data_tmp = (t_cmd2 *)tmp->content;
+	// 	// if (data_tmp->ope == ';' || !data_tmp->ope) {
+	// 	// 	command(data_tmp->tab, env);
+	// 	// 	tmp = tmp->next;
+	// 	// }
+	// 	if (data_tmp->ope == '|' || data_tmp->ope == ';' || !data_tmp->ope)
+	// 	{
+	// 		// tmp = tmp->next;
+	// 		// data_tmp2 = (t_cmd2 *)tmp->content;
+	// 		// pipe_cmd2(data_tmp->tab, data_tmp2->tab, env);
+	// 		pipe_cmd(&tmp, *env);
+	// 		// tmp = tmp->next;
+	// 	}
+	// 	else {
+	// 		ft_putendl("other ope");
+	// 		tmp = tmp->next;
+	// 	}
+	// }
+
 		while (tmp)
 		{
 			data_tmp = (t_cmd2 *)tmp->content;
