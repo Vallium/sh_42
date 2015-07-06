@@ -109,18 +109,19 @@ int		exec_test(char *bin, char *args[], t_list *env)
 
 	lstat(bin, &stat_buff);
 	if (!ft_strchr(bin, '/') || bin == NULL)
-		dprintf(2, "error 3 bin = %s\n", bin), exit(2);
+		dprintf(2, "command not found = %s\n", bin), exit(2);
 	if (!(stat_buff.st_mode & 010) | S_ISDIR(stat_buff.st_mode))
-		dprintf(2, "error 1 bin = %s\n", bin), exit(2);
+		dprintf(2, "permission denied 2 = %s\n", bin), exit(2);
 	if (!S_ISREG(stat_buff.st_mode) || !(stat_buff.st_mode & 1))
-		dprintf(2, "error 2 bin = %s\n", bin), exit(2);
+		dprintf(2, "permission denied 1 = %s\n", bin), exit(2);
 
 	strenv = env_to_str(env);
 	signal(SIGINT, SIG_DFL);
 	if (execve(bin, args, strenv) < 0)
 	{
 		ft_putstr("ft_minishell2: exec format error: ");
-		ft_putendl_fd(bin, 2), exit(2);
+		ft_putendl_fd(bin, 2);
+		exit(2);
 	}
 
 	return (1);
@@ -170,28 +171,6 @@ void		interpret(char *line, t_list **env)
 	data = command_line_parser(line);
 	tmp = data;
 
-
-	// while (tmp)
-	// {
-	// 	data_tmp = (t_cmd2 *)tmp->content;
-	// 	// if (data_tmp->ope == ';' || !data_tmp->ope) {
-	// 	// 	command(data_tmp->tab, env);
-	// 	// 	tmp = tmp->next;
-	// 	// }
-	// 	if (data_tmp->ope == '|' || data_tmp->ope == ';' || !data_tmp->ope)
-	// 	{
-	// 		// tmp = tmp->next;
-	// 		// data_tmp2 = (t_cmd2 *)tmp->content;
-	// 		// pipe_cmd2(data_tmp->tab, data_tmp2->tab, env);
-	// 		pipe_cmd(&tmp, *env);
-	// 		// tmp = tmp->next;
-	// 	}
-	// 	else {
-	// 		ft_putendl("other ope");
-	// 		tmp = tmp->next;
-	// 	}
-	// }
-
 		while (tmp)
 		{
 			data_tmp = (t_cmd2 *)tmp->content;
@@ -200,13 +179,7 @@ void		interpret(char *line, t_list **env)
 				tmp = tmp->next;
 			}
 			else if (data_tmp->ope == '|')
-			{
-				// tmp = tmp->next;
-				// data_tmp2 = (t_cmd2 *)tmp->content;
-				// pipe_cmd2(data_tmp->tab, data_tmp2->tab, env);
 				pipe_cmd(&tmp, *env);
-				// tmp = tmp->next;
-			}
 			else {
 				ft_putendl("other ope");
 				tmp = tmp->next;
