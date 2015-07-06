@@ -43,75 +43,16 @@ void	prompt(t_list *env)
 
 #include <stdio.h>
 
-// void		run_pipe (char **args1, char **args2, t_list *env) {
-// 	int const	READ_END = 0;
-// 	int const	WRITE_END = 1;
-// 	pid_t		child = -1;
-// 	int		pdes[2];
-// 	char	*bin1;
-// 	char	*bin2;
-// 	char	**strenv;
-//
-// 	bin1 = get_path(env, args1[0]);
-// 	bin2 = get_path(env, args2[0]);
-// 	strenv = env_to_str(env);
-//
-// 	pipe(pdes);
-//
-// 	printf("bin1 = %s,  bin2 = %s\n",bin1, bin2);
-//
-// 	child = fork();
-//
-// 	switch ((int)child) {
-// 		case -1:
-// 			close(pdes[READ_END]);
-// 			close(pdes[WRITE_END]);
-// 			perror("error");
-// 		case 0:
-// 		signal(SIGINT, SIG_DFL);
-// 			dup2(pdes[WRITE_END], STDOUT_FILENO);
-// 			close(pdes[READ_END]);
-// 			wait(NULL);
-// 			execve(bin1, args1, strenv);					// cas bin1
-// 			perror("error");
-// 			break;
-// 	}
-// 	signal(SIGINT, SIG_DFL);
-// 	dup2(pdes[READ_END], STDIN_FILENO);
-// 	close(pdes[WRITE_END]);
-// 	wait(NULL);
-// 	execve(bin2, args2, strenv);							// cas bin2
-// }
-//
-// void		pipe_cmd2(char **cmd1, char **cmd2, t_list **env)
-// {
-// 	pid_t	child = -1;
-//
-// 	// printf("1->%s\n2->%s\n", bin1, bin2);
-// 	child = fork();
-//
-// 	switch ((int)child) {
-// 		case -1:
-// 			perror("error");
-// 			break;
-// 		case 0:
-// 			run_pipe(cmd1, cmd2, *env);
-// 			perror("error");
-// 			break;
-// 	}
-// 	wait(NULL);
-// }
-
 int		exec_test(char *bin, char *args[], t_list *env)
 {
 	char			**strenv;
 	struct stat		stat_buff;
 
 	lstat(bin, &stat_buff);
-	if (!ft_strchr(bin, '/') || bin == NULL)
-		dprintf(2, "command not found = %s\n", bin), exit(2);
 	if (!(stat_buff.st_mode & 010) | S_ISDIR(stat_buff.st_mode))
 		dprintf(2, "permission denied 2 = %s\n", bin), exit(2);
+	if (!ft_strchr(bin, '/') || bin == NULL)
+		dprintf(2, "command not found = %s\n", bin), exit(2);
 	if (!S_ISREG(stat_buff.st_mode) || !(stat_buff.st_mode & 1))
 		dprintf(2, "permission denied 1 = %s\n", bin), exit(2);
 
@@ -177,6 +118,7 @@ void		interpret(char *line, t_list **env)
 			if (data_tmp->ope == ';' || !data_tmp->ope) {
 				command(data_tmp->tab, env);
 				tmp = tmp->next;
+				// pipe_cmd(&tmp, *env);
 			}
 			else if (data_tmp->ope == '|')
 				pipe_cmd(&tmp, *env);
@@ -205,7 +147,6 @@ int		main(int argc, char *argv[], char *envp[])
 			ft_putendl("exit");
 			return (0);
 		}
-		// printf("<<%s>>\n", line);
 		interpret(line, &env);
 		// command(line, &env);
 	}
