@@ -108,12 +108,12 @@ int		exec_test(char *bin, char *args[], t_list *env)
 	struct stat		stat_buff;
 
 	lstat(bin, &stat_buff);
+	if (!ft_strchr(bin, '/') || bin == NULL)
+		dprintf(2, "error 3 bin = %s\n", bin), exit(2);
 	if (!(stat_buff.st_mode & 010) | S_ISDIR(stat_buff.st_mode))
 		dprintf(2, "error 1 bin = %s\n", bin), exit(2);
 	if (!S_ISREG(stat_buff.st_mode) || !(stat_buff.st_mode & 1))
 		dprintf(2, "error 2 bin = %s\n", bin), exit(2);
-	if (!ft_strchr(bin, '/') || bin == NULL)
-		dprintf(2, "error 3 bin = %s\n", bin), exit(2);
 
 	strenv = env_to_str(env);
 	signal(SIGINT, SIG_DFL);
