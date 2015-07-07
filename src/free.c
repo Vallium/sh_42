@@ -19,7 +19,7 @@ int		magic_free(void *ptr)
 	return (0);
 }
 
-int		command_free(char *args[], char **line, char *bin)
+int		command_free(char *args[], char *bin)
 {
 	char			**tmp;
 	struct stat		stat_buff;

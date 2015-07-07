@@ -72,18 +72,19 @@ void		pipe_cmd(t_list **tmp, t_list *env) {
 	int			fd_in;
 	pid_t		child;
 	int			pdes[2];
+	char		*bin;
 	t_cmd2		*data_tmp;
 
 	fd_in = 0;
-
 	data_tmp = (t_cmd2 *)(*tmp)->content;
 	while (*tmp) {
 		data_tmp = (t_cmd2 *)(*tmp)->content;
-
-		// printf("exc = %s\n", data_tmp->tab[0]);
-
+		if ((bin = get_path(env, data_tmp->tab[0])) == (char*)1) {
+			dprintf(2, "Permission denied %s\n", data_tmp->tab[0]);		// Message a modifier
+			*tmp = (*tmp)->next;
+			continue;
+		}
 		pipe(pdes);		// create pipe
-
 		if ((child = fork()) == -1) {
 			ft_putstr_fd("Fork Error\n", 2);
 		}
@@ -92,7 +93,7 @@ void		pipe_cmd(t_list **tmp, t_list *env) {
 			if ((*tmp)->next && data_tmp->ope == '|')
 				dup2(pdes[1], 1);
 			close(pdes[0]);
-			exec_test(get_path(env, data_tmp->tab[0]), data_tmp->tab, env);
+			exec_test(bin, data_tmp->tab, env);
 		}
 		else {
 			wait(NULL);

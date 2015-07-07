@@ -101,7 +101,7 @@ char				*get_path(t_list *env, char *bin);
 char				**env_to_str(t_list *env);
 char				*get_data(t_list *env, char *key);
 
-int					command_free(char *args[], char **line, char *bin);
+int					command_free(char *args[], char *bin);
 int					free_home_path(t_list *env, t_cd *cd);
 void				free_path(t_path *path);
 int					magic_free(void *ptr);

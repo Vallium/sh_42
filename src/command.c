@@ -60,7 +60,7 @@ int		command(char **line, t_list **env)
 		print_error(1, cmd.args[0]);
 	else if (cmd.bin == NULL || exec(cmd.bin, cmd.args, *env) == -1)
 		print_error(2, cmd.args[0]);
-	return (command_free(cmd.args, line, cmd.bin));
+	return (command_free(cmd.args, cmd.bin));
 }
 
 int		exec(char *bin, char *args[], t_list *env)
