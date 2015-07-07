@@ -43,6 +43,32 @@ void	prompt(t_list *env)
 
 #include <stdio.h>
 
+int		command_test(char **line, t_list **env)
+{
+	// t_command		cmd;
+
+	// if (!line_trim(&line))
+	// 	return (magic_free(line));
+	cmd.args = command_line_parser(line), args_filter(*env, cmd.args, line);
+	cmd.args = line;
+
+	if (!cmd.args || !cmd.args[0] || !cmd.args[0][0])
+		return (magic_free(line));
+	cmd.bin = get_path(*env, cmd.args[0]);
+	// printf("%s\n", cmd.bin);
+	if (ft_exit(cmd.args, 0))
+		ft_putendl_fd("exit: too many arguments", 2);
+	else if (c_cd(*env, cmd.args));
+	else if (c_env(*env, cmd.args));
+	else if (c_unsetenv(env, cmd.args));
+	else if (c_setenv(env, cmd.args));
+	else if (cmd.bin == (char*)1)
+		print_error(1, cmd.args[0]);
+	else if (cmd.bin == NULL || exec(cmd.bin, cmd.args, *env) == -1)
+		print_error(2, cmd.args[0]);
+	return (command_free(cmd.args, cmd.bin));
+}
+
 int		exec_test(char *bin, char *args[], t_list *env)
 {
 	char			**strenv;
