@@ -21,7 +21,7 @@ void		run_pipe (void) {
 
 	// cmd1 = "/bin/ls";
 	args1[0] = "/bin/ls";
-	args1[1] = "-l";
+	args1[1] = "-la";
 	args1[2] = NULL;
 
 	// // cmd2 = "/usr/bin/grep";
@@ -34,14 +34,15 @@ void		run_pipe (void) {
 	// args3[1] = "-e";
 	// args3[2] = NULL;
 
-	int		file = open("test_redirect", O_RDWR | O_CREAT);
+	int		file = open("test_redirect", O_RDWR | O_CREAT | O_SHLOCK);						// simple redirect
+	// int		file = open("test_redirect", O_RDWR | O_APPEND | O_CREAT | O_SHLOCK);		// append redirect
 
 	if (file == -1) {
 		printf("Open error\n");
 		exit(0);
 	}
 
-	char **tab[4] = {args1, args2, NULL, NULL};
+	char **tab[4] = {args1, NULL, NULL, NULL};
 	char ***ptr = tab;
 
 	while (*ptr) {
@@ -56,7 +57,7 @@ void		run_pipe (void) {
 				perror("error");
 			case 0:											// if cmd1
 				// printf("run %s\n", cmd1);
-				dup2(fd_in, 0);
+				dup2(file, 1);
 				if (*(ptr + 1))
 					dup2(file, 1);
 				// close(pdes[0]);
@@ -70,7 +71,7 @@ void		run_pipe (void) {
 				// dup2(pdes[READ_END], STDIN_FILENO);
 				// close(pdes[1]);
 				// execve(cmd2, args2, NULL);
-				fd_in = file;
+				// fd_in = file;
 				ptr++;
 				break;
 		}
