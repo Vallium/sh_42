@@ -5,3 +5,4 @@ ft_minishell2_debug
 static/
 /debug/
 /test/
+test_redirect
