@@ -114,6 +114,18 @@ void		pipe_cmd(t_list **tmp, t_list *env) {
 		if ((child = fork()) == -1) {
 			ft_putstr_fd("Fork Error\n", 2);
 		}
+
+		/*
+		**	Right redirection if '>' or ">>" detected
+		*/
+
+		// else if (child == 0 && (data_tmp->ope == '>' or data_tmp->ope == '?') {
+		// 	if (data_tmp->ope == '>')
+		// }
+
+		/*
+		**	Pipe if '|' detected
+		*/
 		else if (child == 0) {
 			dup2(fd_in, 0);
 			if ((*tmp)->next && data_tmp->ope == '|')
