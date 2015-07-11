@@ -101,6 +101,7 @@ void		pipe_cmd(t_list **tmp, t_list *env) {
 	char		*bin;
 	int			file;
 	t_cmd2		*data_tmp;
+	t_cmd2		*data_tmp2;
 
 	fd_in = 0;
 	data_tmp = (t_cmd2 *)(*tmp)->content;
@@ -115,37 +116,16 @@ void		pipe_cmd(t_list **tmp, t_list *env) {
 		if ((child = fork()) == -1) {
 			ft_putstr_fd("Fork Error\n", 2);
 		}
-
-		/*
-		**	Right redirection if '>' or ">>" detected
-		*/
-
-		// else if (child == 0 && (data_tmp->ope == '>' || data_tmp->ope == '?')) {
-		// 	if (data_tmp->ope == '>') {
-		// 		// file = open("test_redirect", O_RDWR | O_CREAT | O_SHLOCK);
-		// 		// printf("redirection >\n");
-		// 		dup2(fd_in, 0);
-		// 		if ((*tmp)->next && data_tmp->ope == '|')
-		// 			dup2(pdes[1], 1);
-		// 		close(pdes[0]);
-		// 		exec_test(bin, data_tmp->tab, env);
-		// 	}
-		// 	else if (data_tmp->ope == '?') {
-		// 		file = open("test_redirect", O_RDWR | O_APPEND | O_CREAT | O_SHLOCK);
-		// 		// printf("redirection >>\n");
-		// 	}
-		// 	// dup2(file, fd_in);
-		// 	// exec_test(bin, data_tmp->tab, env);
-		// 	// *tmp = (*tmp)->next;
-		// }
-
-		/*
-		**	Pipe if '|' detected
-		*/
 		else if (child == 0) {
 			dup2(fd_in, 0);
 			if ((*tmp)->next && data_tmp->ope == '|')
 				dup2(pdes[1], 1);
+			if ((*tmp)->next && data_tmp->ope == '>') {
+				data_tmp2 = (t_cmd2 *)(*tmp)->next->content;
+				*tmp = (*tmp)->next;
+				file = open(data_tmp2->tab[0], O_RDWR | O_CREAT | O_SHLOCK);
+				dup2(file, 1);
+			}
 			close(pdes[0]);
 			exec_test(bin, data_tmp->tab, env);
 		}
@@ -157,42 +137,6 @@ void		pipe_cmd(t_list **tmp, t_list *env) {
 		}
 	}
 }
-
-// void		simple_right_cmd(t_list **tmp, t_list *env) {
-// 	int			fd_in;
-// 	pid_t		child;
-// 	int			pdes[2];
-// 	char		*bin;
-// 	t_cmd2		*data_tmp;
-//
-// 	fd_in = 0;
-// 	data_tmp = (t_cmd2 *)(*tmp)->content;
-// 	while (*tmp) {
-// 		data_tmp = (t_cmd2 *)(*tmp)->content;
-// 		if ((bin = get_path(env, data_tmp->tab[0])) == (char*)1) {
-// 			dprintf(2, "Permission denied %s\n", data_tmp->tab[0]);		// Message a modifier
-// 			*tmp = (*tmp)->next;
-// 			continue;
-// 		}
-// 		pipe(pdes);		// create pipe
-// 		if ((child = fork()) == -1) {
-// 			ft_putstr_fd("Fork Error\n", 2);
-// 		}
-// 		else if (child == 0) {
-// 			dup2(fd_in, 0);
-// 			if ((*tmp)->next && data_tmp->ope == '|')
-// 				dup2(pdes[1], 1);
-// 			close(pdes[0]);
-// 			exec_test(bin, data_tmp->tab, env);
-// 		}
-// 		else {
-// 			wait(NULL);
-// 			close(pdes[1]);
-// 			fd_in = pdes[0];
-// 			*tmp = (*tmp)->next;
-// 		}
-// 	}
-// }
 
 void		interpret(char *line, t_list **env)
 {
