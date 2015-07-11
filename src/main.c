@@ -112,6 +112,10 @@ void		pipe_cmd(t_list **tmp, t_list *env) {
 			*tmp = (*tmp)->next;
 			continue;
 		}
+		if ((*tmp)->next && data_tmp->ope == '>') {
+			data_tmp2 = (t_cmd2 *)(*tmp)->next->content;
+			*tmp = (*tmp)->next;
+		}
 		pipe(pdes);		// create pipe
 		if ((child = fork()) == -1) {
 			ft_putstr_fd("Fork Error\n", 2);
@@ -120,10 +124,8 @@ void		pipe_cmd(t_list **tmp, t_list *env) {
 			dup2(fd_in, 0);
 			if ((*tmp)->next && data_tmp->ope == '|')
 				dup2(pdes[1], 1);
-			if ((*tmp)->next && data_tmp->ope == '>') {
-				data_tmp2 = (t_cmd2 *)(*tmp)->next->content;
-				*tmp = (*tmp)->next;
-				file = open(data_tmp2->tab[0], O_RDWR | O_CREAT | O_SHLOCK);
+			if (data_tmp->ope == '>') {
+				file = open(data_tmp2->tab[0], O_RDWR | O_CREAT, 0644);
 				dup2(file, 1);
 			}
 			close(pdes[0]);
