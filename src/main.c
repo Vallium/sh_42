@@ -81,13 +81,19 @@ void		pipe_cmd(t_list **tmp, t_list *env) {
 	while (*tmp) {
 		data_tmp = (t_cmd2 *)(*tmp)->content;
 		if ((bin = get_path(env, data_tmp->tab[0])) == (char*)1) {
-			dprintf(2, "Permission denied %s\n", data_tmp->tab[0]);		// Message a modifier
+			dprintf(2, "Permission denied %s\n", data_tmp->tab[0]);			// Message a modifier
 			*tmp = (*tmp)->next;
 			continue;
 		}
 		if ((*tmp)->next && (data_tmp->ope == '>' || data_tmp->ope == '?' || data_tmp->ope == '<')) {
 			data_tmp2 = (t_cmd2 *)(*tmp)->next->content;
 			*tmp = (*tmp)->next;
+			if (data_tmp2->ope != ';' && data_tmp2->ope != 0) {
+				//dprintf(2, "ope = %c\n", data_tmp2->ope);
+				dprintf(2, "Ambigous output redirect.\n");
+				*tmp = 0;
+				return ;
+			}
 		}
 		pipe(pdes);		// create pipe
 		if ((child = fork()) == -1) {
@@ -96,7 +102,7 @@ void		pipe_cmd(t_list **tmp, t_list *env) {
 		else if (child == 0) {
 			if (data_tmp->ope == '<') {
 				file = open(data_tmp2->tab[0], O_RDONLY, 0);
-				dprintf(2, "fd file = %d", file);
+				// dprintf(2, "fd file = %d", file);
 				dup2(file, 0);
 			}
 			else
