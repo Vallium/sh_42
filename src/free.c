@@ -70,6 +70,7 @@ int		free_home_path(t_list *env, t_cd *cd)
 	cd->pwd->data = GET_CWD;
 	if (cd->path)
 		free(cd->path);
+		printf("pwd = %s\n", getwd(0));
 	return (0);
 }
 

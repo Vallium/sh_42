@@ -95,7 +95,8 @@ void		pipe_cmd(t_list **tmp, t_list *env) {
 				return ;
 			}
 		}
-		pipe(pdes);		// create pipe
+		if (data_tmp->ope != ';')
+			pipe(pdes);		// create pipe
 		if ((child = fork()) == -1) {
 			ft_putstr_fd("Fork Error\n", 2);
 		}
@@ -142,12 +143,12 @@ void		interpret(char *line, t_list **env)
 		while (tmp)
 		{
 			data_tmp = (t_cmd2 *)tmp->content;
-			if (data_tmp->ope == ';' || !data_tmp->ope) {
-				command(data_tmp->tab, env);
-				tmp = tmp->next;
-				// pipe_cmd(&tmp, *env);
-			}
-			else if (data_tmp->ope == '|' || data_tmp->ope == '>' || data_tmp->ope == '?' || data_tmp->ope == '<')
+			// if (data_tmp->ope == ';' || !data_tmp->ope) {
+			// 	command(data_tmp->tab, env);
+			// 	tmp = tmp->next;
+			// 	// pipe_cmd(&tmp, *env);
+			// }
+			if (data_tmp->ope == '|' || data_tmp->ope == '>' || data_tmp->ope == '?' || data_tmp->ope == '<' || data_tmp->ope == ';')
 				pipe_cmd(&tmp, *env);
 			else {
 				ft_putendl("other ope");

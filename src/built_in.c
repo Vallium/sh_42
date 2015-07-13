@@ -72,6 +72,7 @@ int		c_setenv(t_list **env, char *args[])
 int		c_cd(t_list *env, char *args[])
 {
 	t_cd	cd;
+	printf("{cd}\n");
 
 	if (ft_strcmp(args[0], "cd"))
 		return (0);
