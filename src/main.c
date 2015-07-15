@@ -89,21 +89,21 @@ void		pipe_cmd(t_list **tmp, t_list *env) {
 			data_tmp2 = (t_cmd2 *)(*tmp)->next->content;
 			*tmp = (*tmp)->next;
 			if (data_tmp2->ope != ';' && data_tmp2->ope != 0) {
-				//dprintf(2, "ope = %c\n", data_tmp2->ope);
 				dprintf(2, "Ambigous output redirect.\n");
 				*tmp = 0;
 				return ;
 			}
 		}
-		if (data_tmp->ope != ';')
-			pipe(pdes);		// create pipe
+		if (data_tmp->ope != ';' && data_tmp->ope) {
+			dprintf(2, "COUCOU\n\n");
+			pipe(pdes);
+		}
 		if ((child = fork()) == -1) {
 			ft_putstr_fd("Fork Error\n", 2);
 		}
 		else if (child == 0) {
 			if (data_tmp->ope == '<') {
 				file = open(data_tmp2->tab[0], O_RDONLY, 0);
-				// dprintf(2, "fd file = %d", file);
 				dup2(file, 0);
 			}
 			else
@@ -123,9 +123,11 @@ void		pipe_cmd(t_list **tmp, t_list *env) {
 		}
 		else {
 			wait(NULL);
-			close(pdes[1]);
-			close(file);
-			fd_in = pdes[0];
+			if (data_tmp->ope != ';' && data_tmp->ope) {
+				close(pdes[1]);
+				close(file);
+				fd_in = pdes[0];
+			}
 			*tmp = (*tmp)->next;
 		}
 	}
@@ -140,21 +142,22 @@ void		interpret(char *line, t_list **env)
 	data = command_line_parser(line);
 	tmp = data;
 
-		while (tmp)
-		{
-			data_tmp = (t_cmd2 *)tmp->content;
-			// if (data_tmp->ope == ';' || !data_tmp->ope) {
-			// 	command(data_tmp->tab, env);
-			// 	tmp = tmp->next;
-			// 	// pipe_cmd(&tmp, *env);
-			// }
-			if (data_tmp->ope == '|' || data_tmp->ope == '>' || data_tmp->ope == '?' || data_tmp->ope == '<' || data_tmp->ope == ';')
-				pipe_cmd(&tmp, *env);
-			else {
-				ft_putendl("other ope");
-				tmp = tmp->next;
-			}
-		}
+	pipe_cmd(&tmp, *env);
+		// while (tmp)
+		// {
+		// 	data_tmp = (t_cmd2 *)tmp->content;
+		// 	// if (data_tmp->ope == ';' || !data_tmp->ope) {
+		// 	// 	command(data_tmp->tab, env);
+		// 	// 	tmp = tmp->next;
+		// 	// 	// pipe_cmd(&tmp, *env);
+		// 	// }
+		// 	if (data_tmp->ope == '|' || data_tmp->ope == '>' || data_tmp->ope == '?' || data_tmp->ope == '<' || data_tmp->ope == ';' || !data_tmp->ope)
+		// 		pipe_cmd(&tmp, *env);
+		// 	else {
+		// 		ft_putendl("other ope");
+		// 		tmp = tmp->next;
+		// 	}
+		// }
 }
 
 int		main(int argc, char *argv[], char *envp[])
@@ -169,7 +172,7 @@ int		main(int argc, char *argv[], char *envp[])
 	while (42)
 	{
 		ft_putstr("$> ");
-		//prompt(env);
+		// prompt(env);
 		if (!get_next_line(0, &line))
 		{
 			ft_putendl("exit");
