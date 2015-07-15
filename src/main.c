@@ -94,10 +94,8 @@ void		pipe_cmd(t_list **tmp, t_list *env) {
 				return ;
 			}
 		}
-		if (data_tmp->ope != ';' && data_tmp->ope) {
-			dprintf(2, "COUCOU\n\n");
+		if (data_tmp->ope != ';' && data_tmp->ope)
 			pipe(pdes);
-		}
 		if ((child = fork()) == -1) {
 			ft_putstr_fd("Fork Error\n", 2);
 		}
@@ -136,28 +134,10 @@ void		pipe_cmd(t_list **tmp, t_list *env) {
 void		interpret(char *line, t_list **env)
 {
 	t_list		*data;
-	t_list		*tmp;
-	t_cmd2		*data_tmp;
 
 	data = command_line_parser(line);
-	tmp = data;
 
-	pipe_cmd(&tmp, *env);
-		// while (tmp)
-		// {
-		// 	data_tmp = (t_cmd2 *)tmp->content;
-		// 	// if (data_tmp->ope == ';' || !data_tmp->ope) {
-		// 	// 	command(data_tmp->tab, env);
-		// 	// 	tmp = tmp->next;
-		// 	// 	// pipe_cmd(&tmp, *env);
-		// 	// }
-		// 	if (data_tmp->ope == '|' || data_tmp->ope == '>' || data_tmp->ope == '?' || data_tmp->ope == '<' || data_tmp->ope == ';' || !data_tmp->ope)
-		// 		pipe_cmd(&tmp, *env);
-		// 	else {
-		// 		ft_putendl("other ope");
-		// 		tmp = tmp->next;
-		// 	}
-		// }
+	pipe_cmd(&data, *env);
 }
 
 int		main(int argc, char *argv[], char *envp[])
